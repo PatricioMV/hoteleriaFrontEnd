@@ -1,16 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Reservation, Day, Room } from '../models/Models';
+import { Reservation, Day, Room, CalendarRowProps } from '../models/Models';
 import { loadReservationsBetweenDatesById } from '../services/apiUtils';
 import moment from 'moment';
+import { Modal } from 'react-bootstrap';
 
-interface CalendarRowProps {
-  room: Room;
-  startDate: moment.Moment;
-  endDate: moment.Moment;
+const useNewReservationModal = () => {
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [checkIn, setCheckin] = useState<string>();
+  const [checkOut, setCheckout] = useState<string>();
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>();
+
+  const handleMouseDown = (day: Day) => {
+    const { room, date, isReserved } = day;
+    if (!isReserved) {
+      setIsDragging(true);
+      setCheckin(date)
+    }
+  }
+
+  const handleMouseUp = (day:Day) => {
+    const { room, date, isReserved } = day;
+    if (isDragging) {
+      setCheckout(date);
+      setIsDragging(false);
+    }
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  return { handleMouseDown, handleMouseUp, modalIsOpen, closeModal}
 }
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
+  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal } = useNewReservationModal();
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -45,6 +70,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       if (reservation) {
         days.push({
           date: formattedDate,
+          room: room,
           isReserved: true,
           reservation: reservation,
           colspan: reservation.nightsStayed,
@@ -53,6 +79,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       } else {
         days.push({
           date: formattedDate,
+          room: room,
           isReserved: false,
           colspan: 1,
         });
@@ -63,25 +90,36 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
   };
 
   return (
-    <tr key={room.number}>
-      <td>{room.number}</td>
-      {days.map((day) => (
-        <td key={day.date + room.number} colSpan={day.colspan}>
-          {day.isReserved ? (
-            <div>
-              <p>Reserved</p>
-              <p>
-                {day.reservation?.client.firstName}{' '}
-                {day.reservation?.client.lastName}
-              </p>
-              {/* Aquí puedes mostrar más detalles de la reserva si es necesario */}
-            </div>
-          ) : (
-            <p>&nbsp;</p> // Renderizar un espacio en blanco para días sin reserva
-          )}
-        </td>
-      ))}
-    </tr>
+    <>
+      <tr key={room.number}>
+        <td>{room.number}</td>
+        {days.map((day) => (
+          <td key={day.date + room.number} colSpan={day.colspan} className="calendar-cell" onMouseDown={() => handleMouseDown(day)} onMouseUp={()=> handleMouseUp(day)}>
+            {day.isReserved ? (
+              <div>
+                  {day.reservation?.client.firstName}{' '}{day.reservation?.client.lastName}
+                {/* Aquí puedes mostrar más detalles de la reserva si es necesario */}
+              </div>
+            ) : (
+              <p></p> // Renderizar un espacio en blanco para días sin reserva
+            )}
+          </td>
+        ))}
+      </tr>
+
+      {modalIsOpen && (
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="My Modal"
+        >
+          <h2>My Modal</h2>
+          <button onClick={closeModal}>Close</button>
+          {/* Aquí puedes añadir más contenido para el modal */}
+        </Modal>
+      )}
+
+      </>
   );
 };
 

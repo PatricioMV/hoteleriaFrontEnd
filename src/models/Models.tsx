@@ -27,6 +27,7 @@ export interface Reservation {
 
 export interface Day {
   date: string;
+  room: Room;
   isReserved: boolean;
   reservation?: Reservation;
   colspan: number;
@@ -39,22 +40,18 @@ export interface Payment {
   reservation: Reservation;
 }
 
+export interface CalendarRowProps {
+  room: Room;
+  startDate: moment.Moment;
+  endDate: moment.Moment;
+}
+
 //Vale la pena de que esta interface tenga todo el modelo de cliente? revisalo x ahora lo dejo strig
 /*
 export interface CalendarDay {
   date: string;
   reserved: boolean;
   client: string;
-}
-
-export interface CalendarRowProps {
-  room: Room;
-  calendar: any;
-  handleMouseDown: (room: Room, date: string) => void;
-  handleMouseUp: (room: Room, date: string) => void;
-  checkInDate: string;
-  checkOutDate: string;
-  isDragging: boolean;
 }
 
 export interface CalendarCellProps {

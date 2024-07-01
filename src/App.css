@@ -1,9 +1,18 @@
 .no-select {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* Internet Explorer/Edge */
-  user-select: none;         /* Non-prefixed version, currently supported by Chrome, Opera and Edge */
-  border: 1px solid rgb(0, 0, 0); /* Agrega un borde */
-  margin: 20px 0 20px 0; 
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome, Opera and Edge */
+  border: 1px solid rgb(0, 0, 0);
+  /* Agrega un borde */
+  margin: 20px 0 20px 0;
 }
 
+.calendar-cell {
+  width: auto;
+  /* Establece aquí la altura mínima deseada en píxeles */
+}
