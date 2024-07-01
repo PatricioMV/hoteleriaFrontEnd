@@ -8,7 +8,7 @@ import useNewReservationModal from '../hooks/useNewReservationModal';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
-  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut } = useNewReservationModal();
+  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, dispatch } = useNewReservationModal();
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -67,10 +67,10 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       <tr key={room.number}>
         <td >{room.number} {room.type}</td>
         {days.map((day) => (
-          <td key={day.date + room.number} colSpan={day.colspan} className="calendar-cell" onMouseDown={() => handleMouseDown(day)} onMouseUp={()=> handleMouseUp(day)}>
+          <td key={day.date + room.number} colSpan={day.colspan} className="calendar-cell" onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
             {day.isReserved ? (
               <div>
-                  {day.reservation?.client.firstName}{' '}{day.reservation?.client.lastName}
+                {day.reservation?.client.firstName}{' '}{day.reservation?.client.lastName}
                 {/* Aquí puedes mostrar más detalles de la reserva si es necesario */}
               </div>
             ) : (
@@ -80,9 +80,9 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
         ))}
       </tr>
 
-      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} checkIn={checkIn} checkOut={checkOut}/>   
+      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} room={room} checkIn={checkIn} checkOut={checkOut} dispatch={dispatch} />
 
-      </>
+    </>
   );
 };
 

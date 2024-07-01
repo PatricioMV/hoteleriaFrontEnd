@@ -21,6 +21,8 @@ export interface Client {
   firstName: string;
   lastName: string;
   dni: number;
+  email: string,
+  phoneNumber: number,
 }
 
 export const INTIAL_CLIENT: Client = {
@@ -28,6 +30,8 @@ export const INTIAL_CLIENT: Client = {
   firstName: '',
   lastName: '',
   dni: 0,
+  email: '',
+  phoneNumber: 0,
 }
 
 export interface Reservation {
@@ -97,5 +101,9 @@ export interface FetchingResponse {
 }
 
 export type Action =
-| { type: "SET_CHECKIN", payload: string }
-| { type: "SET_CHECKOUT", payload: string }
+  | { type: "SET_CHECK_IN", payload: string }
+  | { type: "SET_CHECK_OUT", payload: string }
+  | { type: "SET_CLIENT_FIRST_NAME", payload: string }
+  | { type: "SET_CLIENT_LAST_NAME", payload: string }
+  | { type: "SET_CLIENT_MAIL", payload: string }
+  | { type: "SET_CLIENT_PHONE_NUMBER", payload: number }

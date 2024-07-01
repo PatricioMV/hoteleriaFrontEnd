@@ -3,38 +3,34 @@ import { Action, Day, Reservation, INITIAL_RESERVATION } from "../models/Models"
 import reservationReducer from "../reducers/reservationReducer";
 
 const useNewReservationModal = () => {
-    const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  
-    const [{checkIn, checkOut}, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-    const handleMouseDown = (day: Day) => {
-      const { room, date, isReserved } = day;
-      if (!isReserved) {
-        setIsDragging(true);
-        dispatch({type: "SET_CHECKIN", payload: date});
-      }
-    }
-  
-    const handleMouseUp = (day:Day) => {
-      const { room, date, isReserved } = day;
-      if (isDragging) {
-        dispatch({ type: "SET_CHECKOUT", payload: date});
-        setIsDragging(false);
-        setModalIsOpen(true);
-      }
-    }
-  
-    const closeModal = () => {
-      setModalIsOpen(false);
-    };
+  const [{ checkIn, checkOut }, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
 
-    const handleCheckInChange = (newCheckIn: string) => {
-      dispatch({type:"SET_CHECKIN", payload:newCheckIn});
+  const handleMouseDown = (day: Day) => {
+    const { room, date, isReserved } = day;
+    if (!isReserved) {
+      setIsDragging(true);
+      dispatch({ type: "SET_CHECK_IN", payload: date });
     }
-  
-    return { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, handleCheckInChange}
   }
 
-  
+  const handleMouseUp = (day: Day) => {
+    const { room, date, isReserved } = day;
+    if (isDragging) {
+      dispatch({ type: "SET_CHECK_OUT", payload: date });
+      setIsDragging(false);
+      setModalIsOpen(true);
+    }
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  return { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, dispatch }
+}
+
+
 export default useNewReservationModal;
