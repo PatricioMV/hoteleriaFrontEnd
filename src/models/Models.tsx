@@ -5,8 +5,15 @@ export interface Room {
   id: number;
   number: number;
   type: string;
-  comments: string;
+  comments?: string;
   available: boolean;
+}
+
+export const INITIAL_ROOM: Room = {
+  id: 0,
+  number: 0,
+  type: '',
+  available: true
 }
 
 export interface Client {
@@ -16,6 +23,13 @@ export interface Client {
   dni: number;
 }
 
+export const INTIAL_CLIENT: Client = {
+  id: 0,
+  firstName: '',
+  lastName: '',
+  dni: 0,
+}
+
 export interface Reservation {
   id: number;
   client: Client;
@@ -23,6 +37,15 @@ export interface Reservation {
   checkOut: string;
   nightsStayed: number;
   room: Room;
+}
+
+export const INITIAL_RESERVATION: Reservation = {
+  id: 0,
+  client: INTIAL_CLIENT,
+  checkIn: '',
+  checkOut: '',
+  nightsStayed: 0,
+  room: INITIAL_ROOM
 }
 
 export interface Day {
@@ -72,3 +95,7 @@ export interface FetchingResponse {
   reservations?: Reservation[];
   payment?: Payment[];
 }
+
+export type Action =
+| { type: "SET_CHECKIN", payload: string }
+| { type: "SET_CHECKOUT", payload: string }
