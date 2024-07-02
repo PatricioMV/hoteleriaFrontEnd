@@ -1,18 +1,23 @@
 .no-select {
   -webkit-user-select: none;
-  /* Safari */
   -moz-user-select: none;
-  /* Firefox */
   -ms-user-select: none;
-  /* Internet Explorer/Edge */
   user-select: none;
-  /* Non-prefixed version, currently supported by Chrome, Opera and Edge */
   border: 1px solid rgb(0, 0, 0);
-  /* Agrega un borde */
   margin: 20px 0 20px 0;
+  width: 100%;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .calendar-cell {
-  width: auto;
-  /* Establece aquí la altura mínima deseada en píxeles */
+  min-width: 100px;
+  /* Ajusta según tus necesidades */
+  max-width: 200px;
+  /* Ajusta según tus necesidades */
 }
