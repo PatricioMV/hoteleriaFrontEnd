@@ -4,6 +4,8 @@ import {
   getReservations,
   postReservation,
   getReservationsBetweenDatesById,
+  getClientById,
+  postClient,
 } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
@@ -25,20 +27,36 @@ export const loadReservations = async (): Promise<Reservation[] | void> => {
   }
 };
 
-export const createReservation = (reservation: any) => {
-  return postReservation(reservation);
+export const createReservation = async (reservation: any) => {
+  try {
+    const response: AxiosResponse<Reservation> = await postReservation(reservation);
+    return response.data;
+  } catch (error) {
+    console.log('Error POSTING Reservation', error);
+  }
 };
 
-export const loadReservationsBetweenDatesById = async (
-  from: string,
-  to: string,
-  roomId: number
-): Promise<Reservation[] | void> => {
+export const loadReservationsBetweenDatesById = async (from: string, to: string, roomId: number): Promise<Reservation[] | void> => {
   try {
-    const response: AxiosResponse<Reservation[]> =
-      await getReservationsBetweenDatesById(from, to, roomId);
+    const response: AxiosResponse<Reservation[]> = await getReservationsBetweenDatesById(from, to, roomId);
     return response.data;
   } catch (error) {
     console.log('Error fetching Reservations between dates', error);
   }
 };
+
+export const loadClientsById = async (id: number): Promise<Client | void> => {
+  try {
+    const response: AxiosResponse<Client> = await getClientById(id);
+    return response.data
+  } catch (error) {
+    console.log('Error fetching Client by id', error);
+  }
+}
+
+export const createClient = async (client: Client): Promise<Client | void> => {
+  try {
+    const response: AxiosResponse<Client> = await postClient(client);
+    return response.data;
+  } catch (error) { console.log('Error posting Client', error); }
+}

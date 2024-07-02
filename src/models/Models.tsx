@@ -20,7 +20,7 @@ export interface Client {
   id: number;
   firstName: string;
   lastName: string;
-  dni: number;
+  dni: string;
   email: string,
   phoneNumber: number,
 }
@@ -29,7 +29,7 @@ export const INTIAL_CLIENT: Client = {
   id: 0,
   firstName: '',
   lastName: '',
-  dni: 0,
+  dni: '',
   email: '',
   phoneNumber: 0,
 }
@@ -76,20 +76,20 @@ export interface CalendarRowProps {
 //Vale la pena de que esta interface tenga todo el modelo de cliente? revisalo x ahora lo dejo strig
 /*
 export interface CalendarDay {
-  date: string;
-  reserved: boolean;
-  client: string;
+date: string;
+reserved: boolean;
+client: string;
 }
 
 export interface CalendarCellProps {
-  day: any;
-  index: number;
-  room: Room;
-  handleMouseDown: (room: Room, date: string) => void;
-  handleMouseUp: (room: Room, date: string) => void;
-  checkInDate: string;
-  checkOutDate: string;
-  isDragging: boolean;
+day: any;
+index: number;
+room: Room;
+handleMouseDown: (room: Room, date: string) => void;
+handleMouseUp: (room: Room, date: string) => void;
+checkInDate: string;
+checkOutDate: string;
+isDragging: boolean;
 }*/
 
 export interface FetchingResponse {
@@ -103,6 +103,9 @@ export interface FetchingResponse {
 export type Action =
   | { type: "SET_CHECK_IN", payload: string }
   | { type: "SET_CHECK_OUT", payload: string }
+  | { type: "SET_CLIENT", payload: Client }
+  | { type: "SET_ROOM", payload: Room }
+  | { type: "SET_CLIENT_DNI", payload: string }
   | { type: "SET_CLIENT_FIRST_NAME", payload: string }
   | { type: "SET_CLIENT_LAST_NAME", payload: string }
   | { type: "SET_CLIENT_MAIL", payload: string }

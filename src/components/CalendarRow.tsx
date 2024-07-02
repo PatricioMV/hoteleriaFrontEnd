@@ -8,32 +8,34 @@ import useNewReservationModal from '../hooks/useNewReservationModal';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
-  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, dispatch } = useNewReservationModal();
+  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, setClientDNI, setClientFirstName, setClientLastName, setClientMail, client, handlePostReservation, newReservationMade } = useNewReservationModal();
+
+  const fetchReservations = async () => {
+    try {
+      console.log('Fetching reservations...');
+      const reservations = await loadReservationsBetweenDatesById(
+        startDate.format('YYYY-MM-DD'),
+        endDate.format('YYYY-MM-DD'),
+        room.id
+      );
+      if (reservations) {
+        console.log('Reservations fetched:', reservations);
+        setDays(generateDays(startDate, endDate, reservations));
+      } else {
+        console.log('No reservations found');
+        setDays(generateDays(startDate, endDate, [])); // Ensuring days are reset if no reservations found
+      }
+    } catch (error) {
+      console.error('Error loading reservations:', error);
+      setDays(generateDays(startDate, endDate, [])); // Ensuring days are reset in case of error
+    }
+  };
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const reservations = await loadReservationsBetweenDatesById(
-          startDate.format('YYYY-MM-DD'),
-          endDate.format('YYYY-MM-DD'),
-          room.id
-        );
-        if (reservations) {
-          setDays(generateDays(startDate, endDate, reservations));
-        }
-      } catch (error) {
-        console.error('Error loading reservations:', error);
-      }
-    };
-
     fetchReservations();
   }, [room.id, startDate, endDate]);
 
-  const generateDays = (
-    startDate: moment.Moment,
-    endDate: moment.Moment,
-    reservations: Reservation[]
-  ): Day[] => {
+  const generateDays = (startDate: moment.Moment, endDate: moment.Moment, reservations: Reservation[]): Day[] => {
     const days: Day[] = [];
     let date = startDate.clone();
 
@@ -62,6 +64,10 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     return days;
   };
 
+  const onNewReservation = () => {
+    fetchReservations();
+  };
+
   return (
     <>
       <tr key={room.number}>
@@ -71,16 +77,15 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
             {day.isReserved ? (
               <div>
                 {day.reservation?.client.firstName}{' '}{day.reservation?.client.lastName}
-                {/* Aquí puedes mostrar más detalles de la reserva si es necesario */}
               </div>
             ) : (
-              <p></p> // Renderizar un espacio en blanco para días sin reserva
+              <p></p>
             )}
           </td>
         ))}
       </tr>
 
-      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} room={room} checkIn={checkIn} checkOut={checkOut} dispatch={dispatch} />
+      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} room={room} checkIn={checkIn} checkOut={checkOut} setClientDNI={setClientDNI} setClientFirstName={setClientFirstName} setClientLastName={setClientLastName} setClientMail={setClientMail} client={client} handlePostReservation={handlePostReservation} />
 
     </>
   );

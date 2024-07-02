@@ -1,24 +1,43 @@
-import { Action, Reservation } from "../models/Models";
+import { Action, INITIAL_RESERVATION, Reservation, INTIAL_CLIENT } from "../models/Models";
+import { createReservation } from "../services/apiUtils";
 
 const reservationReducer = (state: Reservation, action: Action): Reservation => {
-    const { type, payload } = action;
+    const { type } = action;
     switch (type) {
         case "SET_CHECK_IN":
             return {
                 ...state,
-                checkIn: payload,
+                checkIn: action.payload,
             };
         case "SET_CHECK_OUT":
             return {
                 ...state,
-                checkOut: payload,
+                checkOut: action.payload,
             };
+        case "SET_ROOM":
+            return {
+                ...state,
+                room: action.payload
+            }
+        case "SET_CLIENT":
+            return {
+                ...state,
+                client: action.payload,
+            }
+        case "SET_CLIENT_DNI":
+            return {
+                ...state,
+                client: {
+                    ...INTIAL_CLIENT,
+                    dni: action.payload,
+                },
+            }
         case "SET_CLIENT_FIRST_NAME":
             return {
                 ...state,
                 client: {
                     ...state.client,
-                    firstName: payload,
+                    firstName: action.payload,
                 },
             }
         case "SET_CLIENT_LAST_NAME":
@@ -26,7 +45,7 @@ const reservationReducer = (state: Reservation, action: Action): Reservation => 
                 ...state,
                 client: {
                     ...state.client,
-                    lastName: payload,
+                    lastName: action.payload,
                 }
             }
         case "SET_CLIENT_MAIL":
@@ -34,7 +53,7 @@ const reservationReducer = (state: Reservation, action: Action): Reservation => 
                 ...state,
                 client: {
                     ...state.client,
-                    email: payload,
+                    email: action.payload,
                 }
             }
         case "SET_CLIENT_PHONE_NUMBER":
@@ -42,7 +61,7 @@ const reservationReducer = (state: Reservation, action: Action): Reservation => 
                 ...state,
                 client: {
                     ...state.client,
-                    phoneNumber: payload,
+                    phoneNumber: action.payload,
                 }
             }
         default:
