@@ -6,7 +6,7 @@ import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow } from "../utils/dateUtils";
 
-const useNewReservationModal = () => {
+const useNewReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
@@ -84,7 +84,8 @@ const useNewReservationModal = () => {
       checkIn: moment(checkIn).format('DD/MM/YYYY'),
       checkOut: moment(checkOut).format('DD/MM/YYYY'),
     }
-    createReservation(formattedReservation);
+    await createReservation(formattedReservation);
+    onNewReservation();
   };
 
 
