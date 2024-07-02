@@ -8,7 +8,8 @@ import useNewReservationModal from '../hooks/useNewReservationModal';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
-  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, setClientDNI, setClientFirstName, setClientLastName, setClientMail, client, handlePostReservation, newReservationMade } = useNewReservationModal();
+  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, client, newReservationMade, handleClientChange, handleSubmitReservation } = useNewReservationModal();
+  const [newReservationFlag, setNewReservationFlag] = useState<boolean>(false);
 
   const fetchReservations = async () => {
     try {
@@ -64,8 +65,10 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     return days;
   };
 
-  const onNewReservation = () => {
-    fetchReservations();
+  const handleSubmitAndCloseModal = async () => {
+    await handleSubmitReservation();
+    setNewReservationFlag(true); // Set the flag to true when a new reservation is created
+    closeModal();
   };
 
   return (
@@ -85,7 +88,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
         ))}
       </tr>
 
-      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} room={room} checkIn={checkIn} checkOut={checkOut} setClientDNI={setClientDNI} setClientFirstName={setClientFirstName} setClientLastName={setClientLastName} setClientMail={setClientMail} client={client} handlePostReservation={handlePostReservation} />
+      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} room={room} checkIn={checkIn} checkOut={checkOut} client={client} handleClientChange={handleClientChange} handleSubmit={handleSubmitAndCloseModal} />
 
     </>
   );

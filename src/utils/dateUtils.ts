@@ -1,18 +1,24 @@
 import moment, { Moment } from "moment";
 
-export const formatDateDB = (date: moment.Moment): string => {
+export const getTomorrow = (date: string) => {
+    const today = moment(date);
+    const tomorrow = today.clone().add(1, 'day');
+    return tomorrow.format('YYYY-MM-DD');
+}
+
+export const formatDateDB = (date: Moment): string => {
     return date.format('YYYY-MM-DD');
 };
 
-export const daysBetweenDates = (startDate: moment.Moment, endDate: moment.Moment): number => {
+export const daysBetweenDates = (startDate: Moment, endDate: Moment): number => {
     return endDate.diff(startDate, 'days');
 };
 
-export const isDateInRange = (date: moment.Moment, startDate: moment.Moment, endDate: moment.Moment): boolean => {
+export const isDateInRange = (date: Moment, startDate: Moment, endDate: Moment): boolean => {
     return date.isSameOrAfter(startDate) && date.isSameOrBefore(endDate);
 };
 
-export const addDaysToDate = (date: moment.Moment, days: number): moment.Moment => {
+export const addDaysToDate = (date: Moment, days: number): Moment => {
     return date.clone().add(days, 'days');
 };
 

@@ -10,15 +10,12 @@ interface NewReservationModalProps {
     room: Room;
     checkIn: string;
     checkOut: string;
-    setClientDNI: (dni: string) => void;
-    setClientFirstName: (firstName: string) => void;
-    setClientLastName: (lastName: string) => void;
-    setClientMail: (email: string) => void;
+    handleClientChange: (value: any, field: string) => void;
+    handleSubmit: () => void;
     client: Client;
-    handlePostReservation: (closeModal: any) => void;
 }
 
-const NewReservationModal: React.FC<NewReservationModalProps> = ({ modalIsOpen, closeModal, room, checkIn, checkOut, setClientDNI, setClientFirstName, setClientLastName, setClientMail, client, handlePostReservation }) => {
+const NewReservationModal: React.FC<NewReservationModalProps> = ({ modalIsOpen, closeModal, room, checkIn, checkOut, client, handleClientChange, handleSubmit }) => {
 
     return (
         <Modal show={modalIsOpen} onHide={closeModal}>
@@ -26,31 +23,34 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ modalIsOpen, 
                 <Modal.Title>New Reservation</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit();
+                }}>
                     <Row>
                         <Form.Group controlId="dni">
                             <Form.Label>DNI:</Form.Label>
-                            <Form.Control type="number" placeholder="Enter DNI" onChange={(e) => setClientDNI(e.target.value)} autoFocus />
+                            <Form.Control type="number" placeholder="Enter DNI" onChange={(e) => handleClientChange("dni", e.target.value)} autoFocus />
                         </Form.Group>
                     </Row>
                     <Row>
                         <Col>
                             <Form.Group controlId="firstName">
                                 <Form.Label>First Name</Form.Label>
-                                <Form.Control type="text" placeholder="First name" value={client.firstName} onChange={(e) => setClientFirstName(e.target.value)} required />
+                                <Form.Control type="text" placeholder="First name" value={client.firstName} onChange={(e) => handleClientChange("firsName", e.target.value)} required />
                             </Form.Group>
                         </Col>
                         <Col>
                             <Form.Group controlId="lastName">
                                 <Form.Label>Last Name:</Form.Label>
-                                <Form.Control type="text" placeholder="Last name" value={client.lastName} onChange={(e) => setClientLastName(e.target.value)} required />
+                                <Form.Control type="text" placeholder="Last name" value={client.lastName} onChange={(e) => handleClientChange("lastName", e.target.value)} required />
                             </Form.Group>
                         </Col>
                     </Row>
                     <Row>
                         <Form.Group controlId="email">
                             <Form.Label>Email address:</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" value={client.email} onChange={(e) => setClientMail(e.target.value)} />
+                            <Form.Control type="email" placeholder="Enter email" value={client.email} onChange={(e) => handleClientChange("email", e.target.value)} />
                         </Form.Group>
                     </Row>
                     <Row>
@@ -80,7 +80,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ modalIsOpen, 
                         </Col>
                     </Row>
                     <Row>
-                        <Button variant="primary" onClick={() => handlePostReservation(closeModal)}>
+                        <Button variant="primary" type="submit" >
                             Save
                         </Button>
                     </Row>
