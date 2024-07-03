@@ -36,14 +36,15 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     let date = startDate.clone();
     while (date.isBefore(endDate)) {
       const formattedDate = date.format('YYYY-MM-DD');
-      const reservation = reservations.find((r) => r.checkIn === formattedDate);
+      const reservation = reservations.find((r) => date.isBetween(moment(r.checkIn), moment(r.checkOut), null, '[]'));
       if (reservation) {
+        const nightsStayed = moment(reservation.checkOut).diff(moment(formattedDate), 'days');
         days.push({
           date: formattedDate,
           room: room,
           isReserved: true,
           reservation: reservation,
-          colspan: reservation.nightsStayed,
+          colspan: nightsStayed,
         });
         date.add(reservation.nightsStayed, 'days');
       } else {

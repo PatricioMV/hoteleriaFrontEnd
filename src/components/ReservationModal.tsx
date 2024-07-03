@@ -14,10 +14,7 @@ interface ReservationModalProps {
 
 const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeModal, reservation, handleClientChange, handleSubmit }) => {
     const { checkIn, checkOut, client, room } = reservation;
-    console.log(reservation.id)
-    console.log(checkIn)
-    //const modalTitle = 
-    //const buttonText =  
+    //console.log(reservation.id)
 
     return (
         <Modal show={modalIsOpen} onHide={closeModal}>
@@ -39,7 +36,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                         <Col>
                             <Form.Group controlId="firstName">
                                 <Form.Label>First Name</Form.Label>
-                                <Form.Control type="text" placeholder="First name" value={client.firstName} onChange={(e) => handleClientChange("firsName", e.target.value)} required />
+                                <Form.Control type="text" placeholder="First name" value={client.firstName} onChange={(e) => handleClientChange("firstName", e.target.value)} required />
                             </Form.Group>
                         </Col>
                         <Col>
