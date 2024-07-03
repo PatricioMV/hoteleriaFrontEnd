@@ -21,3 +21,17 @@
   max-width: 200px;
   /* Ajusta según tus necesidades */
 }
+
+.today-row {
+  background-color: #c00010;
+  color: red;
+}
+
+.header {
+  background-color: lightgray;
+}
+
+.today-header {
+  background-color: yellow;
+  font-weight: bold;
+}

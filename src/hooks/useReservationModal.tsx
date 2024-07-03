@@ -34,12 +34,9 @@ const useReservationModal = (onNewReservation: () => void) => {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
     } else if (day.reservation != undefined) {
-      console.log(day.reservation!.id)
       try {
         const reservation = await loadReservationsById(day.reservation!.id);
-        console.log(reservation!.checkIn)
         dispatch({ type: "SET_RESERVATION", payload: reservation });
-        console.log(checkIn)
         setReservationModalIsOpen(true);
       } catch (error) {
         console.error('Error fetching reservation:', error);

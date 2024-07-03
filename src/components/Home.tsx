@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Modal from 'react-modal';
 import CalendarRow from './CalendarRow';
-import TableHeaders from './TableHeader';
+import CalendarHeaders from './CalendarHeader';
 import { useHotel } from '../hooks/useHotel';
 import { getEndDate, getYesterday } from '../utils/dateUtils';
 
@@ -25,12 +25,9 @@ const Home: React.FC = () => {
         <option value={15}>15 days</option>
         <option value={30}>30 days</option>
       </select>
-      <Table striped bordered hover responsive className="no-select">
+      <Table striped bordered hover responsive className="no-select" size="sm" >
         <thead>
-          <tr>
-            <th>Room:</th>
-            <TableHeaders numDays={numDays} />
-          </tr>
+          <CalendarHeaders numDays={numDays} />
         </thead>
         <tbody>
           {rooms.map((room) => (

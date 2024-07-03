@@ -1,4 +1,6 @@
 import moment, { Moment } from "moment";
+import { CalendarHeaderDays } from "../components/CalendarHeader";
+
 
 export const getTomorrow = (date: string) => {
     const today = moment(date);
@@ -46,3 +48,20 @@ export const getEndDate = (num: number) => {
 export const isSameOrBefore = (dateOne: string, dateTwo: string) => {
     return moment(dateOne).isSameOrBefore(moment(dateTwo));
 }
+
+export const generateHeadersDays = (amountOfDates: number): CalendarHeaderDays[] => {
+    const days: CalendarHeaderDays[] = [];
+    const today = moment();
+    const yesterday = getYesterday();
+    const cutoffDate = moment(yesterday).add(amountOfDates, 'days');
+    while (yesterday.isBefore(cutoffDate)) {
+        if (yesterday.isSame(today)) { // Fijarse si es necesario que tenga algo difente el dia {today}
+            days.push({ date: yesterday.format('DD/MM'), class: "today-header" });
+            yesterday.add(1, 'days');
+        } else {
+            days.push({ date: yesterday.format('DD/MM'), class: 'header' });
+            yesterday.add(1, 'days');
+        }
+    }
+    return days;
+};

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getReservations } from '../services/api';
+import { Table } from 'react-bootstrap';
 
 const Reservations: React.FC = () => {
   const [reservations, setReservations] = useState<any[]>([]);
@@ -17,11 +18,18 @@ const Reservations: React.FC = () => {
   return (
     <div>
       <h1>Reservations</h1>
-      <ul>
+      <Table striped bordered hover responsive >
+        <thead>
+          <tr>
+            <th>id</th><th >Client</th><th>Check-In</th><th>Check-Out</th><th>Nights stayed</th><th>Room</th>
+          </tr>
+        </thead>
         {reservations.map(reservation => (
-          <li key={reservation.id}>{reservation.client.firstName}</li>
+          <tr>
+            <td>{reservation.id}</td><td >{reservation.client.firstName + " " + reservation.client.lastName}</td><td>{reservation.checkIn}</td><td>{reservation.checkOut}</td><td>{reservation.nightsStayed}</td><td>{reservation.room.number}</td>
+          </tr>
         ))}
-      </ul>
+      </Table>
     </div>
   );
 };
