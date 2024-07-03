@@ -1,12 +1,5 @@
 import { AxiosResponse } from 'axios';
-import {
-  getRooms,
-  getReservations,
-  postReservation,
-  getReservationsBetweenDatesById,
-  getClientById,
-  postClient,
-} from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -26,6 +19,15 @@ export const loadReservations = async (): Promise<Reservation[] | void> => {
     console.log('Error fetching Reservations', error);
   }
 };
+
+export const loadReservationsById = async (id: number): Promise<Reservation | void> => {
+  try {
+    const response: AxiosResponse<Reservation> = await getReservationById(id);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching Reservation by id', error);
+  }
+}
 
 export const createReservation = async (reservation: any) => {
   try {

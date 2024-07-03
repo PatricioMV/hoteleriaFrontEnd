@@ -1,6 +1,6 @@
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState, useEffect, useCallback } from "react";
 import { Action, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
-import { createClient, createReservation, loadClientsById } from "../services/apiUtils";
+import { createClient, createReservation, loadClientsById, loadReservationsById } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
@@ -28,25 +28,33 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
   }, [debouncedDni, isDoneWriting])
 
-  const handleMouseDown = (day: Day,) => {
+  const handleMouseDown = useCallback(async (day: Day) => {
     const { room, date, isReserved } = day;
     if (!isReserved) {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
     } else {
-      setReservationMenuIsOpen(true);
+      try {
+        const reservation = await loadReservationsById(day.reservation!.id);
+        console.log(reservation!.checkIn)
+        dispatch({ type: "SET_RESERVATION", payload: reservation });
+        console.log(checkIn)
+        setReservationModalIsOpen(true);
+      } catch (error) {
+        console.error('Error fetching reservation:', error);
+      }
     }
-  }
+  }, []);
 
-  const handleMouseUp = (day: Day) => {
+  const handleMouseUp = useCallback((day: Day) => {
     const { room, date, isReserved } = day;
     if (isDragging && !isReserved) {
       dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
-      dispatch({ type: "SET_ROOM", payload: room })
+      dispatch({ type: "SET_ROOM", payload: room });
       setIsDragging(false);
       setReservationModalIsOpen(true);
     }
-  }
+  }, [isDragging]);
 
   const handleClientChange = (field: string, value: any) => {
     switch (field) {

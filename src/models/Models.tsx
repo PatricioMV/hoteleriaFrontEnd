@@ -101,6 +101,7 @@ export interface FetchingResponse {
 }
 
 export type Action =
+  | { type: "SET_RESERVATION", payload: any }
   | { type: "SET_CHECK_IN", payload: string }
   | { type: "SET_CHECK_OUT", payload: string }
   | { type: "SET_CLIENT", payload: Client }

@@ -1,27 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import Modal from 'react-modal';
-import { Room, Reservation } from '../models/Models';
-import {
-  loadRooms,
-  loadReservationsBetweenDatesById,
-  createReservation,
-} from '../services/apiUtils';
 import CalendarRow from './CalendarRow';
 import TableHeaders from './TableHeader';
-import { getReservationsBetweenDatesById } from '../services/api';
 import { useHotel } from '../hooks/useHotel';
-import moment from 'moment';
+import { getEndDate, getYesterday } from '../utils/dateUtils';
 
 Modal.setAppElement('#root');
-
-const roomUno: Room = {
-  id: 2,
-  number: 202,
-  type: 'Suite',
-  comments: '',
-  available: true,
-};
 
 const Home: React.FC = () => {
   const { rooms, loading } = useHotel();
@@ -51,8 +36,8 @@ const Home: React.FC = () => {
           {rooms.map((room) => (
             <CalendarRow
               room={room}
-              startDate={moment().subtract(1, 'days')}
-              endDate={moment().add(numDays - 1, 'days')}
+              startDate={getYesterday()}
+              endDate={getEndDate(numDays)}
             />
           ))}
         </tbody>

@@ -34,13 +34,12 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
   const generateDays = (startDate: moment.Moment, endDate: moment.Moment, reservations: Reservation[]): Day[] => {
     const days: Day[] = [];
     let date = startDate.clone();
-
     while (date.isBefore(endDate)) {
-      const formattedDate = date.format('DD/MM/YYYY');
+      const formattedDate = date.format('YYYY-MM-DD');
       const reservation = reservations.find((r) => r.checkIn === formattedDate);
       if (reservation) {
         days.push({
-          date: date.format('YYYY-MM-DD'),
+          date: formattedDate,
           room: room,
           isReserved: true,
           reservation: reservation,
@@ -49,7 +48,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
         date.add(reservation.nightsStayed, 'days');
       } else {
         days.push({
-          date: date.format('YYYY-MM-DD'),
+          date: formattedDate,
           room: room,
           isReserved: false,
           colspan: 1,

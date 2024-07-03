@@ -33,3 +33,12 @@ export const getDatesInRange = (startDate: Moment, endDate: Moment): string[] =>
 };
 
 // Otras funciones relacionadas con fechas...
+
+
+export const getYesterday = () => {
+    return moment().subtract(1, 'days')
+}
+
+export const getEndDate = (num: number) => {
+    return moment().add(num - 1, 'days');
+}

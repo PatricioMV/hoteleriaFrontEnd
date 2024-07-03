@@ -1,9 +1,16 @@
+import moment from "moment";
 import { Action, INITIAL_RESERVATION, Reservation, INTIAL_CLIENT } from "../models/Models";
 import { createReservation } from "../services/apiUtils";
 
 const reservationReducer = (state: Reservation, action: Action): Reservation => {
     const { type } = action;
     switch (type) {
+        case "SET_RESERVATION":
+            return {
+                ...action.payload,
+                checkIn: moment(action.payload.checkIn).format('YYYY-MM-DD'),
+                checkOut: moment(action.payload.checkOut).format('YYYY-MM-DD')
+            };
         case "SET_CHECK_IN":
             return {
                 ...state,
