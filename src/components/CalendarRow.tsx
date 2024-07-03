@@ -72,12 +72,15 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
 
   const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleClientChange, handleSubmitReservation, reservationMenuIsOpen } = useNewReservationModal(handleNewReservation);
 
+  //console.log(days)
+  //console.log(moment().format('YYYY-MM-DD'))
+
   return (
     <>
       <tr key={room.number}>
         <td >{room.number} {room.type}</td>
         {days.map((day) => (
-          <td key={day.date + room.number} colSpan={day.colspan} className="calendar-cell" onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
+          <td key={day.date + room.number} colSpan={day.colspan} className={moment().format('YYYY-MM-DD') === day.date ? 'today-header' : 'header'} onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
             {day.isReserved ? (
               <div>
                 {day.reservation?.client.firstName}{' '}{day.reservation?.client.lastName}

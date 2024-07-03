@@ -21,12 +21,12 @@ const Reservations: React.FC = () => {
       <Table striped bordered hover responsive >
         <thead>
           <tr>
-            <th>id</th><th >Client</th><th>Check-In</th><th>Check-Out</th><th>Nights stayed</th><th>Room</th>
+            <th>id</th><th className='table-header'>Client</th><th>Check-In</th><th>Check-Out</th><th>Nights stayed</th><th>Room</th>
           </tr>
         </thead>
         {reservations.map(reservation => (
           <tr>
-            <td>{reservation.id}</td><td >{reservation.client.firstName + " " + reservation.client.lastName}</td><td>{reservation.checkIn}</td><td>{reservation.checkOut}</td><td>{reservation.nightsStayed}</td><td>{reservation.room.number}</td>
+            <td>{reservation.id}</td><td className='today-header'>{reservation.client.firstName + " " + reservation.client.lastName}</td><td>{reservation.checkIn}</td><td>{reservation.checkOut}</td><td>{reservation.nightsStayed}</td><td>{reservation.room.number}</td>
           </tr>
         ))}
       </Table>

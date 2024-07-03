@@ -32,6 +32,12 @@
 }
 
 .today-header {
-  background-color: yellow;
+  background-color: rgba(65, 131, 207, 0.692) !important;
   font-weight: bold;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
