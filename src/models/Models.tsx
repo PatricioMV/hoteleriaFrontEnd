@@ -111,3 +111,4 @@ export type Action =
   | { type: "SET_CLIENT_LAST_NAME", payload: string }
   | { type: "SET_CLIENT_MAIL", payload: string }
   | { type: "SET_CLIENT_PHONE_NUMBER", payload: number }
+  | { type: "RESET_RESERVATION" }

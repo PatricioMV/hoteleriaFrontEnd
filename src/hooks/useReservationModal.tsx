@@ -4,7 +4,7 @@ import { createClient, createReservation, loadClientsById, loadReservationsById 
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
-import { getTomorrow } from "../utils/dateUtils";
+import { getTomorrow, isSameOrBefore } from "../utils/dateUtils";
 
 const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -33,7 +33,8 @@ const useReservationModal = (onNewReservation: () => void) => {
     if (!isReserved) {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
-    } else {
+    } else if (day.reservation != undefined) {
+      console.log(day.reservation!.id)
       try {
         const reservation = await loadReservationsById(day.reservation!.id);
         console.log(reservation!.checkIn)
@@ -48,11 +49,17 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const handleMouseUp = useCallback((day: Day) => {
     const { room, date, isReserved } = day;
-    if (isDragging && !isReserved) {
+
+    if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
       dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
       dispatch({ type: "SET_ROOM", payload: room });
       setIsDragging(false);
       setReservationModalIsOpen(true);
+    }
+
+    if (isDragging && !isSameOrBefore(checkIn, date)) {
+      setIsDragging(false);
+      dispatch({ type: "RESET_RESERVATION" });
     }
   }, [isDragging]);
 

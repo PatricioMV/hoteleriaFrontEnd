@@ -71,6 +71,10 @@ const reservationReducer = (state: Reservation, action: Action): Reservation => 
                     phoneNumber: action.payload,
                 }
             }
+        case "RESET_RESERVATION":
+            return {
+                ...INITIAL_RESERVATION
+            }
         default:
             return state;
     }

@@ -42,3 +42,7 @@ export const getYesterday = () => {
 export const getEndDate = (num: number) => {
     return moment().add(num - 1, 'days');
 }
+
+export const isSameOrBefore = (dateOne: string, dateTwo: string) => {
+    return moment(dateOne).isSameOrBefore(moment(dateTwo));
+}
