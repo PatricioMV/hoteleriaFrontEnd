@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import moment from 'moment';
-import useNewReservationModal from '../hooks/useNewReservationModal';
-import { Room, Client } from '../models/Models';
+import useNewReservationModal from '../hooks/useReservationModal';
+import { Room, Client, Reservation } from '../models/Models';
 
-interface NewReservationModalProps {
+interface ReservationModalProps {
     modalIsOpen: boolean;
     closeModal: () => void;
-    room: Room;
-    checkIn: string;
-    checkOut: string;
+    reservation: Reservation;
     handleClientChange: (value: any, field: string) => void;
     handleSubmit: () => void;
-    client: Client;
 }
 
-const NewReservationModal: React.FC<NewReservationModalProps> = ({ modalIsOpen, closeModal, room, checkIn, checkOut, client, handleClientChange, handleSubmit }) => {
+const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeModal, reservation, handleClientChange, handleSubmit }) => {
+    const { checkIn, checkOut, client, room } = reservation;
 
     return (
         <Modal show={modalIsOpen} onHide={closeModal}>
@@ -90,4 +88,4 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ modalIsOpen, 
     );
 };
 
-export default NewReservationModal;
+export default ReservationModal;

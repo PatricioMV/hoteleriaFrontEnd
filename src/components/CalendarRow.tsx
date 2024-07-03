@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Reservation, Day, Room, CalendarRowProps } from '../models/Models';
 import { loadReservationsBetweenDatesById } from '../services/apiUtils';
 import moment from 'moment';
-import NewReservationModal from './NewReservationModal';
-import useNewReservationModal from '../hooks/useNewReservationModal';
+import ReservationModal from './ReservationModal';
+import useNewReservationModal from '../hooks/useReservationModal';
+import ReservationMenu from './ReservationMenu';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
@@ -11,7 +12,6 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
 
   const fetchReservations = async () => {
     try {
-      console.log('Fetching reservations...');
       const reservations = await loadReservationsBetweenDatesById(
         startDate.format('YYYY-MM-DD'),
         endDate.format('YYYY-MM-DD'),
@@ -20,11 +20,9 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       if (reservations) {
         setDays(generateDays(startDate, endDate, reservations));
       } else {
-        console.log('No reservations found');
         setDays(generateDays(startDate, endDate, []));
       }
     } catch (error) {
-      console.error('Error loading reservations:', error);
       setDays(generateDays(startDate, endDate, []));
     }
   };
@@ -64,7 +62,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
 
   const handleSubmitAndCloseModal = async () => {
     await handleSubmitReservation();
-    closeModal();
+    closeReservationModal();
   };
 
   const handleNewReservation = () => {
@@ -72,7 +70,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     setNewReservationFlag(!newReservationFlag);
   };
 
-  const { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, client, newReservationMade, handleClientChange, handleSubmitReservation } = useNewReservationModal(handleNewReservation);
+  const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleClientChange, handleSubmitReservation, reservationMenuIsOpen } = useNewReservationModal(handleNewReservation);
 
   return (
     <>
@@ -91,7 +89,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
         ))}
       </tr>
 
-      <NewReservationModal modalIsOpen={modalIsOpen} closeModal={closeModal} room={room} checkIn={checkIn} checkOut={checkOut} client={client} handleClientChange={handleClientChange} handleSubmit={handleSubmitAndCloseModal} />
+      <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleClientChange={handleClientChange} handleSubmit={handleSubmitAndCloseModal} />
 
     </>
   );

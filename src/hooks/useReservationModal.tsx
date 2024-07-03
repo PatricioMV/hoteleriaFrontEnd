@@ -6,13 +6,13 @@ import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow } from "../utils/dateUtils";
 
-const useNewReservationModal = (onNewReservation: () => void) => {
+const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [reservationModalIsOpen, setReservationModalIsOpen] = useState<boolean>(false);
   const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
-  const [newReservationMade, setNewReservationMade] = useState<boolean>(false);
+  const [reservationMenuIsOpen, setReservationMenuIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (isDoneWriting && debouncedDni) {
@@ -33,6 +33,8 @@ const useNewReservationModal = (onNewReservation: () => void) => {
     if (!isReserved) {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
+    } else {
+      setReservationMenuIsOpen(true);
     }
   }
 
@@ -42,7 +44,7 @@ const useNewReservationModal = (onNewReservation: () => void) => {
       dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
       dispatch({ type: "SET_ROOM", payload: room })
       setIsDragging(false);
-      setModalIsOpen(true);
+      setReservationModalIsOpen(true);
     }
   }
 
@@ -89,13 +91,11 @@ const useNewReservationModal = (onNewReservation: () => void) => {
   };
 
 
-  const closeModal = () => {
-    setNewReservationMade(false)
-    setModalIsOpen(false);
+  const closeReservationModal = () => {
+    setReservationModalIsOpen(false);
   };
 
-
-  return { handleMouseDown, handleMouseUp, modalIsOpen, closeModal, checkIn, checkOut, client, newReservationMade, handleClientChange, handleSubmitReservation }
+  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleClientChange, handleSubmitReservation, reservationMenuIsOpen }
 }
 
-export default useNewReservationModal;
+export default useReservationModal;
