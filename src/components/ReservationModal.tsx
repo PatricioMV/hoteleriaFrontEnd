@@ -14,7 +14,6 @@ interface ReservationModalProps {
 
 const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeModal, reservation, handleChange, handleSubmit }) => {
     const { checkIn, checkOut, client, room } = reservation;
-    console.log(reservation.id)
     const newReservation = reservation.id === 0 ? true : false;
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
     const handleType = newReservation ? 'POST' : 'PUT';
@@ -88,6 +87,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                     </Row>
                 </Form>
             </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={() => handleSubmit(handleType)}>
+                    Create Reservation
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 };

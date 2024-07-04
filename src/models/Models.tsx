@@ -17,7 +17,7 @@ export const INITIAL_ROOM: Room = {
 }
 
 export interface Client {
-  id: number;
+  id?: number;
   firstName: string;
   lastName: string;
   dni: string;

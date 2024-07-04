@@ -101,23 +101,29 @@ const useReservationModal = (onNewReservation: () => void) => {
     return 0;
   };
 
-  const handleSubmitReservation = async (type: string) => {
-    if (type === 'POST') {
-      let newClientid;
-      if (client.id === 0) {
-        newClientid = await postClient();
-      }
-      const { id, ...rest } = reservation;
-      const formattedReservation = {
-        ...rest,
-        checkIn: moment(checkIn).format('YYYY-MM-DD'),
-        checkOut: moment(checkOut).format('YYYY-MM-DD'),
+  const formatReservation = (reservation: Reservation) => {
+    const isNewClient = reservation.client.id == 0 ? true : false;
+    const { id, ...rest } = reservation;
+    let formattedReservation = {
+      ...rest,
+      checkIn: moment(checkIn).format('YYYY-MM-DD'),
+      checkOut: moment(checkOut).format('YYYY-MM-DD'),
+    }
+    if (isNewClient) {
+      const { id, ...clientWithoutId } = reservation.client;
+      return formattedReservation = {
+        ...formattedReservation,
         client: {
-          ...client,
-          id: newClientid,
+          ...clientWithoutId,
         }
       }
-      await createReservation(formattedReservation).then(r => console.log(r));
+    } else return formattedReservation;
+  }
+
+  const handleSubmitReservation = async (type: string) => {
+    if (type === 'POST') {
+      const formattedReservation = formatReservation(reservation);
+      await createReservation(formattedReservation)
     }
     if (type === 'PUT') {
       await putClient(reservation.client);
