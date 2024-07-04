@@ -1,6 +1,6 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
 import { Action, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
-import { createClient, createReservation, loadClientsById, loadReservationsById } from "../services/apiUtils";
+import { createClient, createReservation, loadClientByDni, loadClientsById, loadReservationsById } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
@@ -18,7 +18,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     if (isDoneWriting && debouncedDni) {
       const getClientById = async () => {
         try {
-          const client = await loadClientsById(parseInt(debouncedDni))
+          const client = await loadClientByDni(parseInt(debouncedDni))
           if (client) {
             dispatch({ type: 'SET_CLIENT', payload: client });
           }
@@ -30,6 +30,7 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const handleMouseDown = useCallback(async (day: Day) => {
     const { room, date, isReserved } = day;
+    console.log(isSameOrBefore(date, checkIn))
     if (!isReserved) {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
@@ -105,6 +106,7 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const closeReservationModal = () => {
     setReservationModalIsOpen(false);
+    dispatch({ type: "RESET_RESERVATION" })
   };
 
   return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleClientChange, handleSubmitReservation, reservationMenuIsOpen }

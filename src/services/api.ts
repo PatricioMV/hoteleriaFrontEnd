@@ -19,5 +19,6 @@ export const getPayments = () => api.get('/payments');
 export const getRooms = () => api.get('/rooms');
 
 //Client
-export const getClientById = (id: number) => api.get<Client>('/clients/' + id);
+export const getClientById = (id: number) => api.get<Client>('/clients/id=' + id);
+export const getClientByDni = (dni: number) => api.get<Client>('/clients/' + dni);
 export const postClient = (client: Client) => api.post('/clients', client);
