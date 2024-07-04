@@ -27,6 +27,7 @@ const reservationReducer = (state: Reservation, action: Action): Reservation => 
                 room: action.payload
             }
         case "SET_CLIENT":
+            console.log(action.payload)
             return {
                 ...state,
                 client: action.payload,

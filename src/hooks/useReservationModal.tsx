@@ -1,10 +1,11 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
 import { Action, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
-import { createClient, createReservation, loadClientByDni, loadClientsById, loadReservationsById } from "../services/apiUtils";
+import { createClient, createReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow, isSameOrBefore } from "../utils/dateUtils";
+import { putClient } from "../services/api";
 
 const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -30,7 +31,6 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const handleMouseDown = useCallback(async (day: Day) => {
     const { room, date, isReserved } = day;
-    console.log(isSameOrBefore(date, checkIn))
     if (!isReserved) {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
@@ -61,7 +61,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
   }, [isDragging]);
 
-  const handleClientChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: any) => {
     switch (field) {
       case 'dni':
         dispatch({ type: 'SET_CLIENT_DNI', payload: value });
@@ -78,6 +78,12 @@ const useReservationModal = (onNewReservation: () => void) => {
       case 'phoneNumber':
         dispatch({ type: 'SET_CLIENT_PHONE_NUMBER', payload: value });
         break;
+      case 'checkIn':
+        dispatch({ type: "SET_CHECK_IN", payload: value });
+        break;
+      case 'checkOut':
+        dispatch({ type: "SET_CHECK_OUT", payload: value });
+        break;
       default:
         break;
     }
@@ -85,21 +91,43 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const postClient = async () => {
     const newClient = await createClient(client);
+    console.log(newClient)
     if (newClient) {
+      console.log('entro')
       dispatch({ type: "SET_CLIENT", payload: newClient });
+      return newClient!.id
     }
+    console.log('salio')
+    return 0;
   };
 
-  const handleSubmitReservation = async () => {
-    if (client.id === 0) {
-      await postClient();
+  const handleSubmitReservation = async (type: string) => {
+    if (type === 'POST') {
+      let newClientid;
+      if (client.id === 0) {
+        newClientid = await postClient();
+      }
+      const { id, ...rest } = reservation;
+      const formattedReservation = {
+        ...rest,
+        checkIn: moment(checkIn).format('YYYY-MM-DD'),
+        checkOut: moment(checkOut).format('YYYY-MM-DD'),
+        client: {
+          ...client,
+          id: newClientid,
+        }
+      }
+      await createReservation(formattedReservation).then(r => console.log(r));
     }
-    const formattedReservation = {
-      ...reservation,
-      checkIn: moment(checkIn).format('DD/MM/YYYY'),
-      checkOut: moment(checkOut).format('DD/MM/YYYY'),
+    if (type === 'PUT') {
+      await putClient(reservation.client);
+      const formattedReservation = {
+        ...reservation,
+        checkIn: moment(checkIn).format('YYYY-MM-DD'),
+        checkOut: moment(checkOut).format('YYYY-MM-DD'),
+      }
+      await updateReservation(formattedReservation);
     }
-    await createReservation(formattedReservation);
     onNewReservation();
   };
 
@@ -109,7 +137,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     dispatch({ type: "RESET_RESERVATION" })
   };
 
-  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleClientChange, handleSubmitReservation, reservationMenuIsOpen }
+  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmitReservation, reservationMenuIsOpen }
 }
 
 export default useReservationModal;

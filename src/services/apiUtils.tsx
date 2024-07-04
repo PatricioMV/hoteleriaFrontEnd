@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -31,12 +31,22 @@ export const loadReservationsById = async (id: number): Promise<Reservation | vo
 
 export const createReservation = async (reservation: any) => {
   try {
+    console.log(reservation.checkIn)
     const response: AxiosResponse<Reservation> = await postReservation(reservation);
     return response.data;
   } catch (error) {
     console.log('Error POSTING Reservation', error);
   }
 };
+
+export const updateReservation = async (reservation: Reservation) => {
+  try {
+    const response: AxiosResponse<Reservation> = await putReservation(reservation);
+    return response.data;
+  } catch (error) {
+    console.log('Error PUTTING Reservation', error);
+  }
+}
 
 export const loadReservationsBetweenDatesById = async (from: string, to: string, roomId: number): Promise<Reservation[] | void> => {
   try {
@@ -69,5 +79,16 @@ export const createClient = async (client: Client): Promise<Client | void> => {
   try {
     const response: AxiosResponse<Client> = await postClient(client);
     return response.data;
-  } catch (error) { console.log('Error posting Client', error); }
+  } catch (error) {
+    console.log('Error posting Client', error);
+  }
+}
+
+export const updateClient = async (client: Client): Promise<Client | void> => {
+  try {
+    const response: AxiosResponse<Client> = await putClient(client);
+    return response.data;
+  } catch (error) {
+    console.log('Error updating Client', error);
+  }
 }
