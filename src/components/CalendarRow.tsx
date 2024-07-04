@@ -60,7 +60,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
   };
 
   const handleSubmitAndCloseModal = async (type: string) => {
-    handleSubmitReservation(type);
+    handleSubmit(type);
     closeReservationModal();
   };
 
@@ -68,7 +68,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     setNewReservationFlag(!newReservationFlag);
   };
 
-  const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmitReservation, reservationMenuIsOpen } = useNewReservationModal(handleNewReservation);
+  const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, reservationMenuIsOpen } = useNewReservationModal(handleNewReservation);
 
   return (
     <>

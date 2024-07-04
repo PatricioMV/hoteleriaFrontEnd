@@ -1,6 +1,6 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
 import { Action, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
-import { createClient, createReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
+import { createClient, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
@@ -120,7 +120,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     } else return formattedReservation;
   }
 
-  const handleSubmitReservation = async (type: string) => {
+  const handleSubmit = async (type: string) => {
     if (type === 'POST') {
       const formattedReservation = formatReservation(reservation);
       await createReservation(formattedReservation)
@@ -134,6 +134,10 @@ const useReservationModal = (onNewReservation: () => void) => {
       }
       await updateReservation(formattedReservation);
     }
+    if (type === 'DELETE') {
+      try { await eraseReservation(reservation.id); }
+      catch (error) { console.log('error deleting reservation' + error) }
+    }
     onNewReservation();
   };
 
@@ -143,7 +147,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     dispatch({ type: "RESET_RESERVATION" })
   };
 
-  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmitReservation, reservationMenuIsOpen }
+  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, reservationMenuIsOpen }
 }
 
 export default useReservationModal;

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -56,6 +56,14 @@ export const loadReservationsBetweenDatesById = async (from: string, to: string,
     console.log('Error fetching Reservations between dates', error);
   }
 };
+
+export const eraseReservation = async (id: number) => {
+  try {
+    const response: AxiosResponse = await deleteReservation(id);
+  } catch (error) {
+    console.log('Error deleting Reservation', error);
+  }
+}
 
 export const loadClientsById = async (id: number): Promise<Client | void> => {
   try {

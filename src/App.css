@@ -15,7 +15,9 @@
   text-overflow: ellipsis;
 }
 
-.calendar-cell {
+.calendar-cell,
+.header,
+.today-header {
   min-width: 100px;
   /* Ajusta según tus necesidades */
   max-width: 200px;
@@ -46,4 +48,55 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* Estilos para el botón de actualización */
+.Update-Button {
+  background-color: #4CAF50;
+  /* Verde */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  /* Ajusta el ancho según sea necesario */
+}
+
+.Update-Button:hover {
+  background-color: #45a049;
+  /* Verde más oscuro */
+}
+
+/* Estilos para el botón de eliminación */
+.Delete-Button {
+  background-color: #f44336;
+  /* Rojo */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.Delete-Button:hover {
+  background-color: #d32f2f;
+  /* Rojo más oscuro */
 }

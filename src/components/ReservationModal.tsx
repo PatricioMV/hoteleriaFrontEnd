@@ -16,7 +16,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
     const { checkIn, checkOut, client, room } = reservation;
     const newReservation = reservation.id === 0 ? true : false;
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
-    const handleType = newReservation ? 'POST' : 'PUT';
 
     return (
         <Modal show={modalIsOpen} onHide={closeModal}>
@@ -24,10 +23,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                 <Modal.Title>{modalTitle}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit(handleType);
-                }}>
+                <Form>
                     <Row>
                         <Form.Group controlId="dni">
                             <Form.Label>DNI:</Form.Label>
@@ -80,17 +76,15 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Row>
-                        <Button variant="primary" type="submit" >
-                            Save
-                        </Button>
-                    </Row>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => handleSubmit(handleType)}>
-                    Create Reservation
-                </Button>
+                {newReservation ? <Button onClick={() => handleSubmit('POST')}> Create Reservation </Button> :
+                    <Col className='button-container'>
+                        <Button className='Update-Button' onClick={() => handleSubmit('PUT')}>Update</Button>
+                        <Button className='Delete-Button' onClick={() => handleSubmit('DELETE')}>Delete</Button>
+                    </Col>}
+
             </Modal.Footer>
         </Modal>
     );
