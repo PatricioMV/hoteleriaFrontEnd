@@ -10,6 +10,7 @@ export type RoomAction =
     | { type: "POST_ROOM" }
     | { type: "DELETE_ROOM" }
     | { type: "RESET_ROOM" }
+    | { type: "ROOM_NOT_FOUND", payload: number }
 
 const roomReducer = (state: Room, action: RoomAction): Room => {
     const { type } = action;
@@ -17,6 +18,11 @@ const roomReducer = (state: Room, action: RoomAction): Room => {
         case "SET_ROOM":
             return {
                 ...action.payload
+            }
+        case "ROOM_NOT_FOUND":
+            return {
+                ...INITIAL_ROOM,
+                number: action.payload
             }
         case "SET_NUMBER":
             return {

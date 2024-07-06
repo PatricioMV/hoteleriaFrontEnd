@@ -15,13 +15,15 @@ const useRoomCard = () => {
                 const roomDB = await loadRoomByNumber(number);
                 if (roomDB) {
                     dispatch({ type: "SET_ROOM", payload: roomDB })
+                } else {
+                    dispatch({ type: "ROOM_NOT_FOUND", payload: number })
                 }
             } catch (error) {
                 console.error('Error fetching room:', error);
             }
         }
         getRoomByNumber();
-    }, [debouncedNumber, isDoneWriting])
+    }, [isDoneWriting])
 
     const handleRoomCard = (field: string, value: any) => {
         switch (field) {
