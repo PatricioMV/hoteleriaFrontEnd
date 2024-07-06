@@ -1,41 +1,13 @@
-import { Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import RoomCard from "./RoomCard";
 
 const HotelManagment = () => {
+    const roomTypes = ['Single', 'Double', 'Suite', 'New Type'];
+
 
     return (
-        <Card style={{ padding: '9px 20px 3px 10px' }} >
-            <Card.Title>New Room</Card.Title>
-            <Card.Body>
-                <Row>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>Number:</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>Type:</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>Available:</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>Comment:</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                    </Col>
-                </Row>
-            </Card.Body>
-
-        </Card>
+        <RoomCard roomTypes={roomTypes} />
     )
 }
 

@@ -1,5 +1,5 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
-import { Action, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
+import { ReservationAction, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
 import { createClient, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
@@ -93,11 +93,9 @@ const useReservationModal = (onNewReservation: () => void) => {
     const newClient = await createClient(client);
     console.log(newClient)
     if (newClient) {
-      console.log('entro')
       dispatch({ type: "SET_CLIENT", payload: newClient });
       return newClient!.id
     }
-    console.log('salio')
     return 0;
   };
 

@@ -1,8 +1,8 @@
 import moment from "moment";
-import { Action, INITIAL_RESERVATION, Reservation, INTIAL_CLIENT } from "../models/Models";
+import { ReservationAction, INITIAL_RESERVATION, Reservation, INTIAL_CLIENT } from "../models/Models";
 import { createReservation } from "../services/apiUtils";
 
-const reservationReducer = (state: Reservation, action: Action): Reservation => {
+const reservationReducer = (state: Reservation, action: ReservationAction): Reservation => {
     const { type } = action;
     switch (type) {
         case "SET_RESERVATION":

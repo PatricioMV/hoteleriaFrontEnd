@@ -100,3 +100,28 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #d32f2f;
   /* Rojo más oscuro */
 }
+
+.card-premium {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+  background-color: #ffffff;
+}
+
+.card-premium-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 15px;
+}
+
+.card-premium-label {
+  font-weight: bold;
+  color: #666666;
+}
+
+.card-premium-control {
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+}

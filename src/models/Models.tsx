@@ -100,7 +100,7 @@ export interface FetchingResponse {
   payment?: Payment[];
 }
 
-export type Action =
+export type ReservationAction =
   | { type: "SET_RESERVATION", payload: any }
   | { type: "SET_CHECK_IN", payload: string }
   | { type: "SET_CHECK_OUT", payload: string }

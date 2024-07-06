@@ -20,6 +20,8 @@ export const getPayments = () => api.get('/payments');
 //Rooms
 export const getRooms = () => api.get('/rooms');
 export const getOccupiedRoomsNumber = (from: string, to:string) => api.get<number[]>('/rooms/occupiedRoomsBetweenDates?startDate=' + from + '&endDate=' + to);
+export const postRoom = (room: Room) => api.post('/rooms', room);
+
 
 //Client
 export const getClientById = (id: number) => api.get<Client>('/clients/id=' + id);

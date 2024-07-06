@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -17,6 +17,15 @@ export const loadOccupiedRooms = async (from: string, to: string) => {
     return response.data;
   } catch (error) {
     console.log('Error fetching occupied Rooms', error);
+  }
+}
+
+export const createRoom = async (room: Room) => {
+  try {
+    const response: AxiosResponse<Room> = await postRoom(room);
+    return response.data;
+  } catch (error) {
+    console.log('Error posting Room', error);
   }
 }
 
