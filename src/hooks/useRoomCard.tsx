@@ -1,13 +1,27 @@
-import { useReducer } from "react"
+import { useEffect, useReducer } from "react"
 import { INITIAL_ROOM } from "../models/Models"
 import roomReducer from "../reducers/roomReducer"
 import useDebounce from "./useDebounce";
-import { createRoom } from "../services/apiUtils";
+import { createRoom, loadRoomByNumber } from "../services/apiUtils";
 
 const useRoomCard = () => {
     const [room, dispatch] = useReducer(roomReducer, INITIAL_ROOM);
     const { number } = room;
     const [debouncedNumber, isDoneWriting] = useDebounce(number, 250);
+
+    useEffect(() => {
+        const getRoomByNumber = async () => {
+            try {
+                const roomDB = await loadRoomByNumber(number);
+                if (roomDB) {
+                    dispatch({ type: "SET_ROOM", payload: roomDB })
+                }
+            } catch (error) {
+                console.error('Error fetching room:', error);
+            }
+        }
+        getRoomByNumber();
+    }, [debouncedNumber, isDoneWriting])
 
     const handleRoomCard = (field: string, value: any) => {
         switch (field) {

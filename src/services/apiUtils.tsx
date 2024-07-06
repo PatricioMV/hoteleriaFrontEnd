@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -10,6 +10,15 @@ export const loadRooms = async () => {
     console.log('Error fetching Rooms', error);
   }
 };
+
+export const loadRoomByNumber = async (number: number) => {
+  try {
+    const response: AxiosResponse<Room> = await getRoomByNumber(number);
+    return response.data;
+  } catch (error) {
+    console.log('Error loading Room', error);
+  }
+}
 
 export const loadOccupiedRooms = async (from: string, to: string) => {
   try {

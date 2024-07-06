@@ -17,7 +17,7 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   useEffect(() => {
     if (isDoneWriting && debouncedDni) {
-      const getClientById = async () => {
+      const getClientByDni = async () => {
         try {
           const client = await loadClientByDni(parseInt(debouncedDni))
           if (client) {
@@ -25,7 +25,7 @@ const useReservationModal = (onNewReservation: () => void) => {
           }
         } catch (error) { console.error('Error fetching client:', error); }
       }
-      getClientById()
+      getClientByDni();
     }
   }, [debouncedDni, isDoneWriting])
 

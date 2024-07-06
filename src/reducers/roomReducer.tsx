@@ -2,6 +2,7 @@ import { INITIAL_ROOM, Room } from "../models/Models";
 import { createRoom } from "../services/apiUtils";
 
 export type RoomAction =
+    | { type: "SET_ROOM", payload: Room }
     | { type: "SET_NUMBER", payload: number }
     | { type: "SET_TYPE", payload: string }
     | { type: "SET_IS_AVAILABLE", payload: boolean }
@@ -13,6 +14,10 @@ export type RoomAction =
 const roomReducer = (state: Room, action: RoomAction): Room => {
     const { type } = action;
     switch (type) {
+        case "SET_ROOM":
+            return {
+                ...action.payload
+            }
         case "SET_NUMBER":
             return {
                 ...state,
