@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react"
 import { INITIAL_ROOM } from "../models/Models"
 import roomReducer from "../reducers/roomReducer"
 import useDebounce from "./useDebounce";
-import { createRoom, loadRoomByNumber } from "../services/apiUtils";
+import { createRoom, eraseRoom, loadRoomByNumber } from "../services/apiUtils";
 
 const useRoomCard = () => {
     const [room, dispatch] = useReducer(roomReducer, INITIAL_ROOM);
@@ -23,9 +23,9 @@ const useRoomCard = () => {
             }
         }
         getRoomByNumber();
-    }, [isDoneWriting])
+    }, [debouncedNumber, isDoneWriting])
 
-    const handleRoomCard = (field: string, value: any) => {
+    const handleRoomCard = async (field: string, value?: any) => {
         switch (field) {
             case 'number':
                 dispatch({ type: "SET_NUMBER", payload: value });
@@ -41,8 +41,16 @@ const useRoomCard = () => {
                 break;
             case 'post':
                 const { id, ...restRoom } = room;
-                createRoom(room);
+                createRoom(restRoom);
                 dispatch({ type: "RESET_ROOM" });
+                break;
+            case 'delete':
+                if (room.id) {
+                    await eraseRoom(room.id);
+                    dispatch({ type: "RESET_ROOM" });
+                } else {
+                    console.error('No room ID to delete');
+                }
                 break;
         }
     }
