@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -10,6 +10,15 @@ export const loadRooms = async () => {
     console.log('Error fetching Rooms', error);
   }
 };
+
+export const loadOccupiedRooms = async (from: string, to: string) => {
+  try {
+    const response: AxiosResponse<number[]> = await getOccupiedRoomsNumber(from, to);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching occupied Rooms', error);
+  }
+}
 
 export const loadReservations = async (): Promise<Reservation[] | void> => {
   try {
@@ -50,7 +59,7 @@ export const updateReservation = async (reservation: Reservation) => {
 
 export const loadReservationsBetweenDatesById = async (from: string, to: string, roomId: number): Promise<Reservation[] | void> => {
   try {
-    const response: AxiosResponse<Reservation[]> = await getReservationsBetweenDatesById(from, to, roomId);
+    const response: AxiosResponse<Reservation[] | void> = await getReservationsBetweenDatesById(from, to, roomId);
     return response.data;
   } catch (error) {
     console.log('Error fetching Reservations between dates', error);

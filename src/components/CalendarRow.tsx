@@ -12,12 +12,12 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
 
   const fetchReservations = async () => {
     try {
-      const reservations = await loadReservationsBetweenDatesById(
+      const reservations: Reservation[] | void = await loadReservationsBetweenDatesById(
         startDate.format('YYYY-MM-DD'),
         endDate.format('YYYY-MM-DD'),
         room.id
       )
-      if (reservations) {
+      if (Array.isArray(reservations) && reservations?.length > 0) {
         setDays(generateDays(startDate, endDate, reservations));
       } else {
         setDays(generateDays(startDate, endDate, []));
@@ -37,7 +37,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     while (auxDate.isBefore(endDate)) {
       const formattedDate = auxDate.format('YYYY-MM-DD');
       const reservation = reservations.find((r) => auxDate.isBetween(moment(r.checkIn), moment(r.checkOut), null, '[]'));
-      if (reservation) {
+      if (reservation != undefined) {
         days.push({
           date: formattedDate,
           room: room,
@@ -75,10 +75,10 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       <tr key={room.number}>
         <td >{room.number} {room.type}</td>
         {days.map((day) => (
-          <td key={day.date + room.number} colSpan={day.colspan} className={moment().format('YYYY-MM-DD') === day.date ? 'today-header' : 'header'} onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
+          <td key={day.date + room.number} colSpan={day.colspan} className={(moment().format('YYYY-MM-DD') === day.date && !day.isReserved) ? 'today-header' : 'header'} onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
             {day.isReserved ? (
               <div>
-                {day.reservation?.client.firstName}{' '}{day.reservation?.client.lastName}
+                {day.reservation?.client.firstName + " " + day.reservation?.client.lastName}
               </div>
             ) : (
               <p></p>

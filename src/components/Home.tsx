@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Col, Row, Table } from 'react-bootstrap';
 import Modal from 'react-modal';
 import CalendarRow from './CalendarRow';
 import CalendarHeaders from './CalendarHeader';
@@ -9,22 +9,42 @@ import { getEndDate, getYesterday } from '../utils/dateUtils';
 Modal.setAppElement('#root');
 
 const Home: React.FC = () => {
-  const { rooms, loading } = useHotel();
-  const [numDays, setNumDays] = useState<number>(7);
-
-  const handleNumDaysChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedDays = parseInt(event.target.value, 10);
-    setNumDays(selectedDays);
-  };
+  const { rooms, numDays, handleNumDaysChange, loading, handleFilterEmptyChange, handleFilterUnavailableChange, filterUnavailable, filterEmpty } = useHotel();
 
   return (
     <div>
-      <label htmlFor="numDays">Show:</label>
-      <select id="numDays" value={numDays} onChange={handleNumDaysChange}>
-        <option value={7}>7 days</option>
-        <option value={15}>15 days</option>
-        <option value={30}>30 days</option>
-      </select>
+      <Row >
+        <Col>
+          <label htmlFor="numDays">Show:</label>
+          <select id="numDays" value={numDays} onChange={handleNumDaysChange}>
+            <option value={7}>7 days</option>
+            <option value={15}>15 days</option>
+            <option value={30}>30 days</option>
+          </select>
+        </Col>
+        <Col>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ marginRight: '10px' }}>
+              <input
+                type="checkbox"
+                id="filterUnavailable"
+                checked={filterUnavailable}
+                onChange={handleFilterUnavailableChange}
+              />
+              <label htmlFor="filterUnavailable">Filtrar cuartos no disponibles</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="filterEmpty"
+                checked={filterEmpty}
+                onChange={handleFilterEmptyChange}
+              />
+              <label htmlFor="filterEmpty">Quitar cuartos vacíos</label>
+            </div>
+          </div>
+        </Col>
+      </Row>
       <Table striped bordered hover responsive className="no-select" size="sm" >
         <thead>
           <CalendarHeaders numDays={numDays} />
