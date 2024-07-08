@@ -5,6 +5,7 @@ export interface Room {
   id: number;
   number: number;
   type: string;
+  isOccupied: boolean;
   comments?: string;
   available: boolean;
 }
@@ -13,6 +14,7 @@ export const INITIAL_ROOM: Room = {
   id: 0,
   number: 0,
   type: '',
+  isOccupied: false,
   available: true
 }
 

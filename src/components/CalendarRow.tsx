@@ -5,6 +5,7 @@ import moment from 'moment';
 import ReservationModal from './ReservationModal';
 import useNewReservationModal from '../hooks/useReservationModal';
 import ReservationMenu from './ReservationMenu';
+import CalendarDay from './CalendarDay';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
@@ -38,9 +39,13 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       const formattedDate = auxDate.format('YYYY-MM-DD');
       const reservation = reservations.find((r) => auxDate.isBetween(moment(r.checkIn), moment(r.checkOut), null, '[]'));
       if (reservation != undefined) {
+        console.log(room)
         days.push({
           date: formattedDate,
-          room: room,
+          room: {
+            ...room,
+            isOccupied: true,
+          },
           isReserved: true,
           reservation: reservation,
           colspan: reservation.nightsStayed,
@@ -74,17 +79,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     <>
       <tr key={room.number}>
         <td >{room.number} {room.type}</td>
-        {days.map((day) => (
-          <td key={day.date + room.number} colSpan={day.colspan} className={(moment().format('YYYY-MM-DD') === day.date && !day.isReserved) ? 'today-header' : 'header'} onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
-            {day.isReserved ? (
-              <div>
-                {day.reservation?.client.firstName + " " + day.reservation?.client.lastName}
-              </div>
-            ) : (
-              <p></p>
-            )}
-          </td>
-        ))}
+        {days.map((day) => <CalendarDay day={day} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} />)}
       </tr>
 
       <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleChange={handleChange} handleSubmit={handleSubmitAndCloseModal} />
