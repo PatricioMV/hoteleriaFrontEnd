@@ -38,7 +38,7 @@ export const useHotel = () => {
         if (roomsData) {
           let filteredRooms = roomsData;
           if (filterUnavailable) {
-            filteredRooms = filteredRooms.filter(room => room.available);
+            //  filteredRooms = filteredRooms.filter(room => room.available);
           }
           if (filterEmpty) {
             const occupiedRooms = await loadOccupiedRooms(getYesterday().format('YYYY-MM-DD'), getEndDate(numDays).format('YYYY-MM-DD'));

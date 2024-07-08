@@ -5,9 +5,10 @@ import useDebounce from '../hooks/useDebounce';
 
 interface RoomCardProps {
     roomTypes: string[];
+    toggleNewRoomFlag: () => void;
 }
 
-const RoomCard: React.FC<RoomCardProps> = ({ roomTypes }) => {
+const RoomCard: React.FC<RoomCardProps> = ({ roomTypes, toggleNewRoomFlag }) => {
     const { room, handleRoomCard } = useRoomCard();
 
 
@@ -55,17 +56,17 @@ const RoomCard: React.FC<RoomCardProps> = ({ roomTypes }) => {
                                 <Button
                                     variant="primary"
                                     style={{ marginRight: '10px' }}
-                                    onClick={() => handleRoomCard('update')}
+                                    onClick={() => handleRoomCard('update', toggleNewRoomFlag)}
                                 >
                                     Update
                                 </Button>
-                                <Button variant="danger" onClick={() => handleRoomCard('delete')}>
+                                <Button variant="danger" onClick={() => handleRoomCard('delete', toggleNewRoomFlag)}>
                                     Delete
                                 </Button>
                             </Col>
                         </>
                     ) : (
-                        <Button variant="primary" onClick={() => handleRoomCard('post')}>
+                        <Button variant="primary" onClick={() => handleRoomCard('post', toggleNewRoomFlag)}>
                             Submit
                         </Button>
                     )}

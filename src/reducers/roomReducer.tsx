@@ -1,11 +1,13 @@
-import { INITIAL_ROOM, Room } from "../models/Models";
+import { INITIAL_ROOM, Room, RoomSpecifications } from "../models/Models";
 import { createRoom } from "../services/apiUtils";
 
 export type RoomAction =
     | { type: "SET_ROOM", payload: Room }
     | { type: "SET_NUMBER", payload: number }
     | { type: "SET_TYPE", payload: string }
-    | { type: "SET_IS_AVAILABLE", payload: boolean }
+    | { type: "SET_SPECIFICATIONS", payload: RoomSpecifications }
+    | { type: "SET_OCCUPIED", payload: boolean }
+    | { type: "SET_OUT_OF_ORDER", payload: boolean }
     | { type: "SET_COMMENT", payload: string }
     | { type: "POST_ROOM" }
     | { type: "DELETE_ROOM" }
@@ -34,10 +36,20 @@ const roomReducer = (state: Room, action: RoomAction): Room => {
                 ...state,
                 type: action.payload
             }
-        case "SET_IS_AVAILABLE":
+        case "SET_SPECIFICATIONS":
             return {
                 ...state,
-                available: action.payload
+                roomSpecifications: action.payload
+            }
+        case "SET_OCCUPIED":
+            return {
+                ...state,
+                occupied: action.payload
+            }
+        case "SET_OUT_OF_ORDER":
+            return {
+                ...state,
+                outOfOrder: action.payload
             }
         case "SET_COMMENT":
             return {

@@ -5,19 +5,34 @@ export interface Room {
   id: number;
   number: number;
   type: string;
+  roomSpecifications: RoomSpecifications;
   occupied: boolean;
   outOfOrder: boolean;
   comments?: string;
-  available: boolean;
+}
+
+
+export interface RoomSpecifications {
+  id: number;
+  type: string;
+  price: number;
+  rooms: Room[];
+}
+
+export const INITIAL_ROOM_SPECIFICATION: RoomSpecifications = {
+  id: 0,
+  type: '',
+  price: 0,
+  rooms: [],
 }
 
 export const INITIAL_ROOM: Room = {
   id: 0,
   number: 0,
   type: '',
+  roomSpecifications: INITIAL_ROOM_SPECIFICATION,
   occupied: false,
   outOfOrder: false,
-  available: true
 }
 
 export interface Client {

@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from "react"
-import { INITIAL_ROOM } from "../models/Models"
+import { INITIAL_ROOM, RoomSpecifications } from "../models/Models"
 import roomReducer from "../reducers/roomReducer"
 import useDebounce from "./useDebounce";
-import { createRoom, eraseRoom, loadRoomByNumber } from "../services/apiUtils";
+import { createRoom, editRoom, eraseRoom, loadRoomByNumber, loadRoomSpecificationsByType } from "../services/apiUtils";
 
 const useRoomCard = () => {
     const [room, dispatch] = useReducer(roomReducer, INITIAL_ROOM);
@@ -28,25 +28,33 @@ const useRoomCard = () => {
     const handleRoomCard = async (field: string, value?: any) => {
         switch (field) {
             case 'number':
-                dispatch({ type: "SET_NUMBER", payload: value });
+                dispatch({ type: "SET_NUMBER", payload: parseInt(value) });
                 break;
             case 'type':
+                const roomSpecifications = await loadRoomSpecificationsByType(value);
+                dispatch({ type: "SET_SPECIFICATIONS", payload: roomSpecifications! })
                 dispatch({ type: "SET_TYPE", payload: value })
                 break;
             case 'isAvailable':
-                dispatch({ type: "SET_IS_AVAILABLE", payload: value });
+                dispatch({ type: "SET_OUT_OF_ORDER", payload: value });
                 break;
             case 'comment':
                 dispatch({ type: "SET_COMMENT", payload: value });
                 break;
             case 'post':
                 const { id, ...restRoom } = room;
+                value();
                 createRoom(restRoom);
                 dispatch({ type: "RESET_ROOM" });
+                break;
+            case 'update':
+                editRoom(room);
+                value();
                 break;
             case 'delete':
                 if (room.id) {
                     await eraseRoom(room.id);
+                    value();
                     dispatch({ type: "RESET_ROOM" });
                 } else {
                     console.error('No room ID to delete');

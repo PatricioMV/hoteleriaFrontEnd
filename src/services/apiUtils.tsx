@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation } from './api';
-import { Client, Room, Reservation, Payment } from '../models/Models';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom } from './api';
+import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Models';
 
 export const loadRooms = async () => {
   try {
@@ -35,6 +35,15 @@ export const createRoom = async (room: any) => {
     return response.data;
   } catch (error) {
     console.log('Error posting Room', error);
+  }
+}
+
+export const editRoom = async (room: Room) => {
+  try {
+    const response: AxiosResponse<Room> = await putRoom(room);
+    return response.data;
+  } catch (error) {
+    console.log('Error editing Room', error);
   }
 }
 
@@ -143,5 +152,23 @@ export const updateClient = async (client: Client): Promise<Client | void> => {
     return response.data;
   } catch (error) {
     console.log('Error updating Client', error);
+  }
+}
+
+export const loadRoomSpecifications = async () => {
+  try {
+    const response: AxiosResponse<RoomSpecifications[]> = await getRoomSpecifications();
+    return response.data;
+  } catch (error) {
+    console.log('Error loading RoomSpecifications', error);
+  }
+}
+
+export const loadRoomSpecificationsByType = async (type: string) => {
+  try {
+    const response: AxiosResponse<RoomSpecifications> = await getRoomSpecificationsByType(type);
+    return response.data;
+  } catch (error) {
+    console.log('Error loading RoomSpecifications by type', error);
   }
 }
