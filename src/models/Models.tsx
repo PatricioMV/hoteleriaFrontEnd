@@ -5,7 +5,8 @@ export interface Room {
   id: number;
   number: number;
   type: string;
-  isOccupied: boolean;
+  occupied: boolean;
+  outOfOrder: boolean;
   comments?: string;
   available: boolean;
 }
@@ -14,7 +15,8 @@ export const INITIAL_ROOM: Room = {
   id: 0,
   number: 0,
   type: '',
-  isOccupied: false,
+  occupied: false,
+  outOfOrder: false,
   available: true
 }
 

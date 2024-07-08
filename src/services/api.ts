@@ -23,6 +23,7 @@ export const getRoomByNumber = (number: number) => api.get('/rooms/number/' + nu
 export const getOccupiedRoomsNumber = (from: string, to:string) => api.get<number[]>('/rooms/occupiedRoomsBetweenDates?startDate=' + from + '&endDate=' + to);
 export const postRoom = (room: Room) => api.post('/rooms', room);
 export const deleteRoom = (id: number) => api.delete('/rooms/' + id);
+export const switchOccupation = (roomNumber: number) => api.put('/rooms/switchoccupation/' + roomNumber);
 
 
 //Client

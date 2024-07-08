@@ -44,7 +44,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
           date: formattedDate,
           room: {
             ...room,
-            isOccupied: true,
+            occupied: true,
           },
           isReserved: true,
           reservation: reservation,

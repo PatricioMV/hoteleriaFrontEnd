@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation } from './api';
 import { Client, Room, Reservation, Payment } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -35,6 +35,15 @@ export const createRoom = async (room: any) => {
     return response.data;
   } catch (error) {
     console.log('Error posting Room', error);
+  }
+}
+
+export const toggleOccupationStatus = async (roomNumber: number) => {
+  try {
+    const response: AxiosResponse<Room> = await switchOccupation(roomNumber);
+    return response.data;
+  } catch (error) {
+    console.log('Error switching occupation for Room: ' + roomNumber, error);
   }
 }
 
