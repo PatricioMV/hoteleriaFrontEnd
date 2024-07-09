@@ -126,23 +126,22 @@ input[type=number]::-webkit-outer-spin-button {
   border: 1px solid #dddddd;
 }
 
-html, body {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.not-found, .found {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px dotted #000000;
+  background-color: #f8f9fa;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+.not-found {
+  border: 2px dotted #000000;
+  background-color: #f8f9fa;
 }
 
-.footer {
-  margin-top: auto;
-  padding: 20px;
+.found {
+  border: 4px solid #007bff;
+  background-color: #f8f9fa;
 }
 
-.container-fluid {
-  padding: 0;
-}

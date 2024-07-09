@@ -49,8 +49,8 @@ const useReservationModal = (onNewReservation: () => void) => {
     const { room, date, isReserved } = day;
 
     if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
-      dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
       dispatch({ type: "SET_ROOM", payload: room });
+      dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
       setIsDragging(false);
       setReservationModalIsOpen(true);
     }

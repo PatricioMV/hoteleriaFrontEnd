@@ -58,6 +58,8 @@ export interface Reservation {
   client: Client;
   checkIn: string;
   checkOut: string;
+  price: number;
+  debt: number;
   nightsStayed: number;
   room: Room;
 }
@@ -67,6 +69,8 @@ export const INITIAL_RESERVATION: Reservation = {
   client: INTIAL_CLIENT,
   checkIn: '',
   checkOut: '',
+  price: 0,
+  debt: 0,
   nightsStayed: 0,
   room: INITIAL_ROOM
 }

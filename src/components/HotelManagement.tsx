@@ -70,7 +70,7 @@ const HotelManagment = () => {
     }, [roomFlag]);
 
     return (
-        <>
+        <Container>
             <RoomCard roomTypes={roomTypes} toggleNewRoomFlag={toggleNewRoomFlag} />
             <br />
             <Table striped bordered hover>
@@ -163,7 +163,7 @@ const HotelManagment = () => {
                 </tbody>
             </Table>
             <br />
-        </>
+        </Container>
     );
 };
 
