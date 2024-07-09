@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -179,5 +179,14 @@ export const loadRoomSpecificationsByType = async (type: string) => {
     return response.data;
   } catch (error) {
     console.log('Error loading RoomSpecifications by type', error);
+  }
+}
+
+export const eraseRoomSpecification = async (id: number) => {
+  try {
+    const response: AxiosResponse = await deleteRoomSpecifications(id);
+    return response.data;
+  } catch (error) {
+    console.log('Error deleting RoomSpecifications id: ' + id, error);
   }
 }

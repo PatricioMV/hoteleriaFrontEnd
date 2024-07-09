@@ -2,17 +2,17 @@ import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import RoomCard from "./RoomCard";
 import { useEffect, useState } from "react";
-import { createRoomSpecifications, loadRoomSpecifications } from "../services/apiUtils";
+import { createRoomSpecifications, eraseRoomSpecification, loadRoomSpecifications } from "../services/apiUtils";
 import { INITIAL_ROOM_SPECIFICATION, Room, RoomSpecifications } from "../models/Models";
 import { putRoomSpecifications } from "../services/api";
 
-const initialstate: RoomSpecifications[] = []
+const initialstate: RoomSpecifications[] = [];
 
 const HotelManagment = () => {
     const roomTypes = ['SINGLE', 'DOUBLE', 'TRIPLE', 'SUITE'];
     const [roomsSpecifications, setRoomsSpecifications] = useState(initialstate);
-    const [editableRow, setEditableRow] = useState(999);
-    const [formValues, setFormValues] = useState(INITIAL_ROOM_SPECIFICATION);
+    const [editableRow, setEditableRow] = useState<number | null>(null);
+    const [formValues, setFormValues] = useState<RoomSpecifications>(INITIAL_ROOM_SPECIFICATION);
     const [isAddingNew, setIsAddingNew] = useState(false);
     const [roomFlag, waveRoomFlag] = useState(false);
 
@@ -20,7 +20,16 @@ const HotelManagment = () => {
         waveRoomFlag(!roomFlag);
     }
 
+    const resetForm = () => {
+        setFormValues(INITIAL_ROOM_SPECIFICATION);
+        setEditableRow(null);
+        setIsAddingNew(false);
+    };
+
     const handleEdit = (index: number, roomSpecification: RoomSpecifications) => {
+        if (isAddingNew) {
+            resetForm();
+        }
         setEditableRow(index);
         setFormValues(roomSpecification);
     };
@@ -32,12 +41,18 @@ const HotelManagment = () => {
 
     const handleSubmit = async (type: string) => {
         if (type === "put") {
-            console.log("Updated values:", formValues);
             await putRoomSpecifications(formValues);
-            setFormValues(INITIAL_ROOM_SPECIFICATION);
-            setEditableRow(999);
-        } if (type === "post") {
+        } else if (type === "post") {
             await createRoomSpecifications(formValues);
+        } else if (type === "delete") {
+            await eraseRoomSpecification(formValues.id);
+        }
+        resetForm();
+        if (type === "newType") {
+            if (editableRow !== null) {
+                resetForm();
+            }
+            setIsAddingNew(true);
         }
         toggleNewRoomFlag();
     };
@@ -50,9 +65,9 @@ const HotelManagment = () => {
             } catch (error) {
                 console.error("Error fetching room specifications:", error);
             }
-        }
+        };
         fetchRoomSpecifications();
-    }, [roomFlag])
+    }, [roomFlag]);
 
     return (
         <>
@@ -103,14 +118,17 @@ const HotelManagment = () => {
                             <td>{roomSpecification.rooms.length}</td>
                             <td>
                                 {editableRow === index ? (
-                                    <Button variant="success" onClick={() => handleSubmit('put')}>Submit</Button>
+                                    <>
+                                        <Button variant="success" onClick={() => handleSubmit('put')}>Submit</Button>
+                                        <Button variant="danger" onClick={() => handleSubmit('delete')}>Delete</Button>
+                                    </>
                                 ) : (
                                     <Button variant="primary" onClick={() => handleEdit(index, roomSpecification)}>Edit</Button>
                                 )}
                             </td>
                         </tr>
                     ))}
-                    {isAddingNew ? (
+                    {isAddingNew && (
                         <tr>
                             <td>
                                 <Form.Control
@@ -132,11 +150,13 @@ const HotelManagment = () => {
                             <td>
                                 <Button variant="success" onClick={() => handleSubmit('post')}>Submit</Button>
                             </td>
-                        </tr>) : (
+                        </tr>
+                    )}
+                    {!isAddingNew && (
                         <tr>
                             <td colSpan={6}></td>
                             <td>
-                                <Button onClick={() => setIsAddingNew(true)}> New Type</Button>
+                                <Button onClick={() => handleSubmit('newType')}>New Type</Button>
                             </td>
                         </tr>
                     )}
@@ -144,7 +164,7 @@ const HotelManagment = () => {
             </Table>
             <br />
         </>
-    )
-}
+    );
+};
 
 export default HotelManagment;

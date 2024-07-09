@@ -38,3 +38,4 @@ export const getRoomSpecifications = () => api.get('/roomspecifications');
 export const getRoomSpecificationsByType = (type: string) => api.get('/roomspecifications/type/' + type );
 export const postRoomSpecifications = (roomSpecifications: RoomSpecifications) => api.post('/roomspecifications', roomSpecifications);
 export const putRoomSpecifications = (roomSpecifications: RoomSpecifications) => api.put('/roomspecifications', roomSpecifications);
+export const deleteRoomSpecifications = (id: number) => api.delete('/roomspecifications/' + id);
