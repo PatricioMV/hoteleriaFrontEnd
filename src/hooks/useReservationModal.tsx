@@ -1,5 +1,6 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
-import { ReservationAction, Day, Reservation, INITIAL_RESERVATION } from "../models/Models";
+import { ReservationAction, Day, Reservation } from "../models/Interfaces";
+import { INITIAL_RESERVATION } from "../models/models";
 import { createClient, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";

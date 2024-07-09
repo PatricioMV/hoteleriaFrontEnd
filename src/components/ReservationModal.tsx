@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row } from 'react-bootstrap';
 import moment from 'moment';
 import useNewReservationModal from '../hooks/useReservationModal';
-import { Room, Client, Reservation } from '../models/Models';
+import { Room, Client, Reservation } from '../models/Interfaces';
 
 interface ReservationModalProps {
     modalIsOpen: boolean;

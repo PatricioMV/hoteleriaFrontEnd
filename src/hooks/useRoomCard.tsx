@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react"
-import { INITIAL_ROOM, RoomSpecifications } from "../models/Models"
+import { INITIAL_ROOM } from "../models/models";
 import roomReducer from "../reducers/roomReducer"
 import useDebounce from "./useDebounce";
 import { createRoom, editRoom, eraseRoom, loadRoomByNumber, loadRoomSpecificationsByType } from "../services/apiUtils";

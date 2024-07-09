@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications } from './api';
-import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Models';
+import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
 
 export const loadRooms = async () => {
   try {

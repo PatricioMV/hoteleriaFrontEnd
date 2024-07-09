@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Reservation, Day, Room, CalendarRowProps } from '../models/Models';
+import { Reservation, Day, Room, CalendarRowProps } from '../models/Interfaces';
 import { loadReservationsBetweenDatesById, updateClient } from '../services/apiUtils';
 import moment from 'moment';
 import ReservationModal from './ReservationModal';
 import useNewReservationModal from '../hooks/useReservationModal';
-import ReservationMenu from './ReservationMenu';
 import CalendarDay from './CalendarDay';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {

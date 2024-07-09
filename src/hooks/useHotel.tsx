@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loadOccupiedRooms, loadRooms } from '../services/apiUtils';
-import { Room } from '../models/Models';
+import { Room } from '../models/Interfaces';
 import { getEndDate, getYesterday } from '../utils/dateUtils';
 
 export const useHotel = () => {

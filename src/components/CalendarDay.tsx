@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Day, Room } from '../models/Models';
+import { Day, Room } from '../models/Interfaces';
 import moment from 'moment';
 import { toggleOccupationStatus } from '../services/apiUtils';
 

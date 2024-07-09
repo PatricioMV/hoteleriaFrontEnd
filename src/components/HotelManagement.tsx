@@ -3,7 +3,8 @@ import Form from "react-bootstrap/Form";
 import RoomCard from "./RoomCard";
 import { useEffect, useState } from "react";
 import { createRoomSpecifications, eraseRoomSpecification, loadRoomSpecifications } from "../services/apiUtils";
-import { INITIAL_ROOM_SPECIFICATION, Room, RoomSpecifications } from "../models/Models";
+import { Room, RoomSpecifications } from "../models/Interfaces";
+import { INITIAL_ROOM_SPECIFICATION } from "../models/models";
 import { putRoomSpecifications } from "../services/api";
 
 const initialstate: RoomSpecifications[] = [];
@@ -112,10 +113,10 @@ const HotelManagment = () => {
                                     roomSpecification.price
                                 )}
                             </td>
-                            <td>{roomSpecification.rooms.length}</td>
-                            <td>{roomSpecification.rooms.filter((rs) => rs.outOfOrder).length}</td>
-                            <td>{roomSpecification.rooms.filter((rs) => rs.occupied).length}</td>
-                            <td>{roomSpecification.rooms.length}</td>
+                            <td>{roomSpecification.rooms!.length}</td>
+                            <td>{roomSpecification.rooms!.filter((rs) => rs.outOfOrder).length}</td>
+                            <td>{roomSpecification.rooms!.filter((rs) => rs.occupied).length}</td>
+                            <td>{roomSpecification.rooms!.length}</td>
                             <td>
                                 {editableRow === index ? (
                                     <>

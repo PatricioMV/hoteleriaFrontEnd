@@ -1,5 +1,6 @@
 import moment from "moment";
-import { ReservationAction, INITIAL_RESERVATION, Reservation, INTIAL_CLIENT } from "../models/Models";
+import { ReservationAction, Reservation } from "../models/Interfaces";
+import { INITIAL_RESERVATION, INITIAL_CLIENT } from "../models/models";
 import { createReservation } from "../services/apiUtils";
 
 const reservationReducer = (state: Reservation, action: ReservationAction): Reservation => {
@@ -18,7 +19,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
             };
         case "SET_CHECK_OUT":
             const nightsStayed = moment(action.payload).diff(moment(state.checkIn), 'days');
-            const debt = nightsStayed * state.room.roomSpecifications.price;
+            const debt = nightsStayed * state.room!.roomSpecifications.price;
             return {
                 ...state,
                 checkOut: action.payload,
@@ -40,7 +41,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
             return {
                 ...state,
                 client: {
-                    ...INTIAL_CLIENT,
+                    ...INITIAL_CLIENT,
                     dni: action.payload,
                 },
             }

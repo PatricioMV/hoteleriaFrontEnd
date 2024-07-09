@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Models';
+import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
 
 const api = axios.create({
   baseURL: 'http://localhost:8080/', // Change this configuration if necessary 

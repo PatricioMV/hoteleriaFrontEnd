@@ -1,4 +1,5 @@
-import { INITIAL_ROOM, Room, RoomSpecifications } from "../models/Models";
+import { Room, RoomSpecifications } from "../models/Interfaces";
+import { INITIAL_ROOM } from "../models/models";
 import { createRoom } from "../services/apiUtils";
 
 export type RoomAction =
