@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Models';
 
 export const loadRooms = async () => {
@@ -152,6 +152,15 @@ export const updateClient = async (client: Client): Promise<Client | void> => {
     return response.data;
   } catch (error) {
     console.log('Error updating Client', error);
+  }
+}
+
+export const createRoomSpecifications = async (roomSpecification: any) => {
+  try {
+    const response: AxiosResponse = await postRoomSpecifications(roomSpecification);
+    return response.data;
+  } catch (error) {
+    console.log('Error POSTING RoomSpecifications', error);
   }
 }
 

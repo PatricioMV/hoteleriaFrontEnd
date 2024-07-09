@@ -2,8 +2,9 @@ import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import RoomCard from "./RoomCard";
 import { useEffect, useState } from "react";
-import { loadRoomSpecifications } from "../services/apiUtils";
+import { createRoomSpecifications, loadRoomSpecifications } from "../services/apiUtils";
 import { INITIAL_ROOM_SPECIFICATION, Room, RoomSpecifications } from "../models/Models";
+import { putRoomSpecifications } from "../services/api";
 
 const initialstate: RoomSpecifications[] = []
 
@@ -12,10 +13,11 @@ const HotelManagment = () => {
     const [roomsSpecifications, setRoomsSpecifications] = useState(initialstate);
     const [editableRow, setEditableRow] = useState(999);
     const [formValues, setFormValues] = useState(INITIAL_ROOM_SPECIFICATION);
-    const [newRoomFlag, setNewRoomFlag] = useState(false);
+    const [isAddingNew, setIsAddingNew] = useState(false);
+    const [roomFlag, waveRoomFlag] = useState(false);
 
     const toggleNewRoomFlag = () => {
-        setNewRoomFlag(!newRoomFlag);
+        waveRoomFlag(!roomFlag);
     }
 
     const handleEdit = (index: number, roomSpecification: RoomSpecifications) => {
@@ -28,10 +30,16 @@ const HotelManagment = () => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = (index: any) => {
-        console.log("Updated values:", formValues);
-        // Aquí deberías manejar la lógica para guardar los cambios
-        setEditableRow(999);
+    const handleSubmit = async (type: string) => {
+        if (type === "put") {
+            console.log("Updated values:", formValues);
+            await putRoomSpecifications(formValues);
+            setFormValues(INITIAL_ROOM_SPECIFICATION);
+            setEditableRow(999);
+        } if (type === "post") {
+            await createRoomSpecifications(formValues);
+        }
+        toggleNewRoomFlag();
     };
 
     useEffect(() => {
@@ -44,7 +52,7 @@ const HotelManagment = () => {
             }
         }
         fetchRoomSpecifications();
-    }, [newRoomFlag])
+    }, [roomFlag])
 
     return (
         <>
@@ -95,13 +103,43 @@ const HotelManagment = () => {
                             <td>{roomSpecification.rooms.length}</td>
                             <td>
                                 {editableRow === index ? (
-                                    <Button variant="success" onClick={() => handleSubmit(index)}>Submit</Button>
+                                    <Button variant="success" onClick={() => handleSubmit('put')}>Submit</Button>
                                 ) : (
                                     <Button variant="primary" onClick={() => handleEdit(index, roomSpecification)}>Edit</Button>
                                 )}
                             </td>
                         </tr>
                     ))}
+                    {isAddingNew ? (
+                        <tr>
+                            <td>
+                                <Form.Control
+                                    type="text"
+                                    name="type"
+                                    value={formValues.type}
+                                    onChange={handleChange}
+                                />
+                            </td>
+                            <td>
+                                <Form.Control
+                                    type="text"
+                                    name="price"
+                                    value={formValues.price}
+                                    onChange={handleChange}
+                                />
+                            </td>
+                            <td colSpan={4}></td>
+                            <td>
+                                <Button variant="success" onClick={() => handleSubmit('post')}>Submit</Button>
+                            </td>
+                        </tr>) : (
+                        <tr>
+                            <td colSpan={6}></td>
+                            <td>
+                                <Button onClick={() => setIsAddingNew(true)}> New Type</Button>
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
             </Table>
             <br />
