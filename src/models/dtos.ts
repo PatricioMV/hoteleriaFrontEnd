@@ -5,6 +5,7 @@ export interface ClientDTO {
     dni: string;
     email: string;
     phoneNumber: number;
+    address: string;
   }
   
   export interface RoomDTO {
@@ -63,6 +64,7 @@ export const INITIAL_CLIENT_DTO: ClientDTO = {
     dni: '',
     email: '',
     phoneNumber: 0,
+    address: ''
 };
 
 export const INITIAL_RESERVATION_DTO: ReservationDTO = {

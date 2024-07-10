@@ -2,7 +2,7 @@ import moment from "moment";
 import { Reservation, Client, Room } from "../models/Interfaces";
 import { INITIAL_RESERVATION, INITIAL_CLIENT } from "../models/models";
 import { createReservation } from "../services/apiUtils";
-import { ClientDTO, INITIAL_CLIENT_DTO, INITIAL_RESERVATION_DTO, ReservationDTO, RoomDTO } from "../models/dtos";
+import { ClientDTO, INITIAL_CLIENT_DTO, INITIAL_RESERVATION_DTO, PaymentDTO, ReservationDTO, RoomDTO } from "../models/dtos";
 
 export type ReservationAction =
     | { type: "SET_RESERVATION", payload: any }
@@ -11,12 +11,17 @@ export type ReservationAction =
     | { type: "SET_CHECK_OUT", payload: string }
     | { type: "SET_PRICE", payload: number }
     | { type: "SET_DEBT", payload: number }
+
     | { type: "SET_ROOM", payload: RoomDTO }
+    | { type: "SET_PAYMENTS", payload: number }
+
+
     | { type: "SET_CLIENT_FIRST_NAME", payload: string }
     | { type: "SET_CLIENT_LAST_NAME", payload: string }
     | { type: "SET_CLIENT_DNI", payload: string }
     | { type: "SET_CLIENT_EMAIL", payload: string }
     | { type: "SET_CLIENT_PHONE_NUMBER", payload: number }
+    //SET_ADDRESS
     | { type: "RESET_RESERVATION" }
 
 const reservationReducer = (state: ReservationDTO, action: ReservationAction): ReservationDTO => {
@@ -47,6 +52,19 @@ const reservationReducer = (state: ReservationDTO, action: ReservationAction): R
                 ...state,
                 room: action.payload
             }
+        case "SET_PAYMENTS":
+            return {
+                ...state,
+                payments: [
+                    ...state.payments,
+                    {
+                        id: state.payments.length,
+                        paymentDate: moment().format('YYYY-MM-DD'),
+                        amount: action.payload,
+                        reservationId: state.id
+                    }
+                ]
+            };
         case "SET_CLIENT":
             console.log(action.payload)
             return {

@@ -162,9 +162,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                                             </Form.Group>
                                         </Col>
                                         <Col xs="auto">
-                                            <Button onClick={togglePaymentsModalIsOpen}>
-                                                Assign payment
-                                            </Button>
+                                            <Form.Control type="number" placeholder='Payment' onChange={(e) => handleChange("payment", e.target.value)} />
                                         </Col>
                                     </Row>
                                 </Container>

@@ -23,6 +23,7 @@ export const INITIAL_CLIENT: Client = {
     dni: '',
     email: '',
     phoneNumber: 0,
+    address: '',
 }
 
 export const INITIAL_RESERVATION: Reservation = {

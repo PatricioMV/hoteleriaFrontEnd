@@ -87,6 +87,9 @@ const useReservationModal = (onNewReservation: () => void) => {
       case 'checkOut':
         dispatch({ type: "SET_CHECK_OUT", payload: value });
         break;
+      case 'payment':
+        dispatch({ type: "SET_PAYMENTS", payload: value });
+        break;
       default:
         break;
     }
@@ -128,6 +131,10 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
     if (type === 'PUT') {
       await putClient(reservation.client);
+
+      console.log(reservation.payments)
+
+
       const formattedReservation = {
         ...reservation,
         checkIn: moment(checkIn).format('YYYY-MM-DD'),

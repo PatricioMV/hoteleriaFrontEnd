@@ -9,6 +9,7 @@ export const convertClientToDTO = (client: Client): ClientDTO => {
         dni: client.dni,
         email: client.email,
         phoneNumber: client.phoneNumber,
+        address: client.address,
     };
 };
 
@@ -20,5 +21,6 @@ export const convertDTOToClient = (clientDTO: ClientDTO): Client => {
         dni: clientDTO.dni,
         email: clientDTO.email,
         phoneNumber: clientDTO.phoneNumber,
+        address: clientDTO.address,
     };
 };
