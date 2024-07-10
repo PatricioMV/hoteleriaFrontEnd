@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
+import { PaymentDTO } from '../models/dtos';
 
 const api = axios.create({
   baseURL: 'http://localhost:8080/', // Change this configuration if necessary 
@@ -17,6 +18,7 @@ export const getReservationsBetweenDatesById = (from: string, to: string, roomId
 //Payment
 export const getPayments = () => api.get('/payments');
 export const getPaymentsByReservationId = (id: number): Promise<AxiosResponse<Payment[]>> => api.get('/payments/' + id);
+export const postPayment = (payment: PaymentDTO) => api.post('/payments', payment);
 
 //Rooms
 export const getRooms = () => api.get('/rooms');

@@ -1,6 +1,6 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
 import { Day, Reservation } from "../models/Interfaces";
-import { createClient, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
+import { createClient, createPayment, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
@@ -132,14 +132,16 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
     if (type === 'PUT') {
       await putClient(reservation.client);
-
-      console.log(reservation.payments)
-
-
+      const hasNewPayment = reservation.payments[reservation.payments.length - 1].amount > 0 ? true : false;
+      if (hasNewPayment) {
+        const { id, ...paymentWithoutId } = reservation.payments[reservation.payments.length - 1]
+        await createPayment(paymentWithoutId);
+      }
       const formattedReservation = {
         ...reservation,
         checkIn: moment(checkIn).format('YYYY-MM-DD'),
         checkOut: moment(checkOut).format('YYYY-MM-DD'),
+        debt: reservation.debt - reservation.payments[reservation.payments.length - 1].amount,
       }
       await updateReservation(formattedReservation);
     }

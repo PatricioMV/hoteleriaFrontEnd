@@ -3,6 +3,7 @@ import { Reservation, Client, Room } from "../models/Interfaces";
 import { INITIAL_RESERVATION, INITIAL_CLIENT } from "../models/models";
 import { createReservation } from "../services/apiUtils";
 import { ClientDTO, INITIAL_CLIENT_DTO, INITIAL_RESERVATION_DTO, PaymentDTO, ReservationDTO, RoomDTO } from "../models/dtos";
+import { convertReservationToDTO } from "../converters/reservationConverter";
 
 export type ReservationAction =
     | { type: "SET_RESERVATION", payload: any }
@@ -55,10 +56,17 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
         case "SET_PAYMENTS":
             return {
                 ...state,
-
+                payments: [
+                    ...state.payments,
+                    {
+                        id: 0,
+                        paymentDate: moment().format('YYYY-MM-DD'),
+                        amount: action.payload,
+                        reservation: convertReservationToDTO(state),
+                    }
+                ]
             };
         case "SET_CLIENT":
-            console.log(action.payload)
             return {
                 ...state,
                 client: action.payload,

@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
+import { PaymentDTO } from '../models/dtos';
 
 export const loadRooms = async () => {
   try {
@@ -209,6 +210,16 @@ export const loadPaymentsByReservationId = async (id: number): Promise<Payment[]
     return response.data;
   } catch (error) {
     console.log('Error loading payments by reservation id: ' + id, error);
+    throw error;
+  }
+}
+
+export const createPayment = async (payment: any): Promise<Payment> => {
+  try {
+    const response: AxiosResponse<Payment> = await postPayment(payment);
+    return response.data;
+  } catch (error) {
+    console.log('Error creating payment', error);
     throw error;
   }
 }

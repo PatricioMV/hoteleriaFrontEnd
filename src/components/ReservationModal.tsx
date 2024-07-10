@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import moment from 'moment';
 import useNewReservationModal from '../hooks/useReservationModal';
 import { Room, Client, Reservation } from '../models/Interfaces';
@@ -21,7 +21,9 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
     const priceOrDebtText = newReservation ? 'Price:' : 'Debt:'
     const clientFound = client.id === 0 ? false : true;
     const { togglePaymentsModalIsOpen } = PaymentsModal();
+    const [key, setKey] = useState<string>('clientInfo');
 
+    console.log(reservation)
 
     return (
         <Modal show={modalIsOpen} onHide={closeModal} dialogClassName="custom-modal" size='xl'>
@@ -29,147 +31,185 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                 <Modal.Title >{modalTitle}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                    <Row>
-                        <Col className={`m-1 ${clientFound ? 'found' : 'not-found'}`}>
-                            <Row className="p-1">
-                                <h6>Client Information</h6>
-                                <Form.Group controlId="dni">
-                                    <FloatingLabel controlId="floatingDNI" label="DNI*">
-                                        <Form.Control
-                                            type="number"
-                                            placeholder="Enter DNI*"
-                                            value={client.dni}
-                                            onChange={(e) => handleChange("dni", e.target.value)}
-                                            className="no-spin"
-                                            autoFocus
-                                        />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            </Row>
-                            <Row className="p-1">
-                                <Col>
-                                    <Form.Group controlId="firstName">
-                                        <FloatingLabel controlId="floatingFirstName" label="First Name*">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="First Name*"
-                                                value={client.firstName}
-                                                onChange={(e) => handleChange("firstName", e.target.value)}
-                                                required
-                                            />
-                                        </FloatingLabel>
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group controlId="lastName">
-                                        <FloatingLabel controlId="floatingLastName" label="Last Name*">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Last Name*"
-                                                value={client.lastName}
-                                                onChange={(e) => handleChange("lastName", e.target.value)}
-                                                required
-                                            />
-                                        </FloatingLabel>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row className="p-1">
-                                <Form.Group controlId="phone">
-                                    <FloatingLabel controlId="floatingPhoneNumber" label="Phone Number">
-                                        <Form.Control
-                                            type="number"
-                                            placeholder="Phone Number"
-                                            value={client.phoneNumber}
-                                            onChange={(e) => handleChange("phoneNumber", e.target.value)}
-                                        />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            </Row>
-                            <Row className="p-1">
-                                <Form.Group controlId="email">
-                                    <FloatingLabel controlId="floatingEmail" label="Email">
-                                        <Form.Control
-                                            type="email"
-                                            placeholder="Email"
-                                            value={client.email}
-                                            onChange={(e) => handleChange("email", e.target.value)}
-                                        />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            </Row>
-                        </Col>
-                        <Col className="m-1 p-1">
+                <Tabs activeKey={key} onSelect={(k) => k && setKey(k)}>
+                    <Tab eventKey="reservationInfo" title="Reservation Information">
+                        <Form>
                             <Row>
-                                <h6>Room Information</h6>
-                                <Col>
-                                    <Form.Group controlId="room">
-                                        <Form.Control type="number" value={room.number} readOnly />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group controlId="roomType">
-                                        <Form.Control type="text" value={room.roomSpecifications.type} readOnly />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Form.Group controlId="checkIn" className="pt-1">
-                                        <Form.Label>Check-In:</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            value={checkIn}
-                                            onChange={(e) => handleChange("checkIn", e.target.value)}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Col>
-                                    <Form.Group controlId="checkOut" className="pt-1">
-                                        <Form.Label>Check-Out:</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            value={checkOut}
-                                            onChange={(e) => handleChange("checkOut", e.target.value)}
-                                        />
-                                    </Form.Group>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Form.Group controlId="comment" className="pt-2">
-                                    <FloatingLabel controlId="Comment" label="Comment">
-                                        <Form.Control type="text" />
-                                    </FloatingLabel>
-                                </Form.Group>
-                            </Row>
-                            {newReservation ? (<Row >
-                                <Form.Group controlId="debt">
-                                    <Form.Label column sm="auto">Price:</Form.Label>
-                                    <Col>
-                                        <Form.Control type="number" readOnly disabled value={reservation.debt} />
-                                    </Col>
-                                </Form.Group>
-                            </Row>) :
-                                <Container>
-                                    <Row className="align-items-center pt-3">
+                                <Col className={`m-1 ${clientFound ? 'found' : 'not-found'}`}>
+                                    <Row className="p-1">
+                                        <h6>Client Information</h6>
+                                        <Form.Group controlId="dni">
+                                            <FloatingLabel controlId="floatingDNI" label="DNI*">
+                                                <Form.Control
+                                                    type="number"
+                                                    placeholder="Enter DNI*"
+                                                    value={client.dni}
+                                                    onChange={(e) => handleChange("dni", e.target.value)}
+                                                    className="no-spin"
+                                                    autoFocus
+                                                />
+                                            </FloatingLabel>
+                                        </Form.Group>
+                                    </Row>
+                                    <Row className="p-1">
                                         <Col>
-                                            <Form.Group as={Row} controlId="debt" className="align-items-center">
-                                                <Form.Label column sm="auto">Debt:</Form.Label>
-                                                <Col>
-                                                    <Form.Control type="number" readOnly disabled value={reservation.debt} />
-                                                </Col>
+                                            <Form.Group controlId="firstName">
+                                                <FloatingLabel controlId="floatingFirstName" label="First Name*">
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="First Name*"
+                                                        value={client.firstName}
+                                                        onChange={(e) => handleChange("firstName", e.target.value)}
+                                                        required
+                                                    />
+                                                </FloatingLabel>
                                             </Form.Group>
                                         </Col>
-                                        <Col xs="auto">
-                                            <Form.Control type="number" placeholder='Payment' onChange={(e) => handleChange("payment", e.target.value)} />
+                                        <Col>
+                                            <Form.Group controlId="lastName">
+                                                <FloatingLabel controlId="floatingLastName" label="Last Name*">
+                                                    <Form.Control
+                                                        type="text"
+                                                        placeholder="Last Name*"
+                                                        value={client.lastName}
+                                                        onChange={(e) => handleChange("lastName", e.target.value)}
+                                                        required
+                                                    />
+                                                </FloatingLabel>
+                                            </Form.Group>
                                         </Col>
                                     </Row>
-                                </Container>
+                                    <Row className="p-1">
+                                        <Form.Group controlId="phone">
+                                            <FloatingLabel controlId="floatingPhoneNumber" label="Phone Number">
+                                                <Form.Control
+                                                    type="number"
+                                                    placeholder="Phone Number"
+                                                    value={client.phoneNumber}
+                                                    onChange={(e) => handleChange("phoneNumber", e.target.value)}
+                                                />
+                                            </FloatingLabel>
+                                        </Form.Group>
+                                    </Row>
+                                    <Row className="p-1">
+                                        <Form.Group controlId="email">
+                                            <FloatingLabel controlId="floatingEmail" label="Email">
+                                                <Form.Control
+                                                    type="email"
+                                                    placeholder="Email"
+                                                    value={client.email}
+                                                    onChange={(e) => handleChange("email", e.target.value)}
+                                                />
+                                            </FloatingLabel>
+                                        </Form.Group>
+                                    </Row>
+                                </Col>
+                                <Col className="m-1 p-1">
+                                    <Row>
+                                        <h6>Room Information</h6>
+                                        <Col>
+                                            <Form.Group controlId="room">
+                                                <Form.Control type="number" value={room.number} readOnly />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Form.Group controlId="roomType">
+                                                <Form.Control type="text" value={room.roomSpecifications.type} readOnly />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <Form.Group controlId="checkIn" className="pt-1">
+                                                <Form.Label>Check-In:</Form.Label>
+                                                <Form.Control
+                                                    type="date"
+                                                    value={checkIn}
+                                                    onChange={(e) => handleChange("checkIn", e.target.value)}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col>
+                                            <Form.Group controlId="checkOut" className="pt-1">
+                                                <Form.Label>Check-Out:</Form.Label>
+                                                <Form.Control
+                                                    type="date"
+                                                    value={checkOut}
+                                                    onChange={(e) => handleChange("checkOut", e.target.value)}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Form.Group controlId="comment" className="pt-2">
+                                            <FloatingLabel controlId="Comment" label="Comment">
+                                                <Form.Control type="text" />
+                                            </FloatingLabel>
+                                        </Form.Group>
+                                    </Row>
+                                    {newReservation ? (<Row >
+                                        <Form.Group controlId="debt">
+                                            <Form.Label column sm="auto">Price:</Form.Label>
+                                            <Col>
+                                                <Form.Control type="number" readOnly disabled value={reservation.debt} />
+                                            </Col>
+                                        </Form.Group>
+                                    </Row>) :
+                                        <Container>
+                                            <Row className="align-items-center pt-3">
+                                                <Col>
+                                                    <Form.Group as={Row} controlId="debt" className="align-items-center">
+                                                        <Form.Label column sm="auto">Debt:</Form.Label>
+                                                        <Col>
+                                                            <Form.Control type="number" readOnly disabled value={reservation.debt} />
+                                                        </Col>
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col xs="auto">
+                                                    <Form.Control type="number" placeholder='Payment' onChange={(e) => handleChange("payment", e.target.value)} />
+                                                </Col>
+                                            </Row>
+                                        </Container>
+                                    }
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Tab>
+                    <Tab eventKey="paymentsInfo" title="Payments">
+                        <Table>
+                            <thead>
+                                <th>Name</th>
+                                <th>Last name</th>
+                                <th>Phone</th>
+                                <th>Check-In</th>
+                                <th>Check-Out</th>
+                                <th>Nights stayed</th>
+                                <th>Paid</th>
+                                <th>Debt</th>
+                                <th>Room</th>
+                            </thead>
+                            {
+                                reservation.payments.map(payment =>
+                                    <tr>
+                                        <td>{reservation.client.firstName}</td>
+                                        <td>{reservation.client.lastName}</td>
+                                        <td>{reservation.client.phoneNumber}</td>
+                                        <td>{reservation.checkIn}</td>
+                                        <td>{reservation.checkOut}</td>
+                                        <td>{reservation.nightsStayed}</td>
+                                        <td>{payment.amount}</td>
+                                        <td>{reservation.debt}</td>
+                                        <td>{reservation.room.number}</td>
+                                    </tr>
+                                )
                             }
-                        </Col>
-                    </Row>
-                </Form>
+                        </Table>
+                    </Tab>
+                    <Tab eventKey="commentsInfo" title="Comments">
+
+                    </Tab>
+                </Tabs>
+
             </Modal.Body>
             <Modal.Footer>
                 {newReservation ? <Button onClick={() => handleSubmit('POST')}> Create Reservation </Button> :
