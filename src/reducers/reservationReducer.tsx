@@ -1,9 +1,25 @@
 import moment from "moment";
-import { ReservationAction, Reservation } from "../models/Interfaces";
+import { Reservation, Client, Room } from "../models/Interfaces";
 import { INITIAL_RESERVATION, INITIAL_CLIENT } from "../models/models";
 import { createReservation } from "../services/apiUtils";
+import { ClientDTO, INITIAL_CLIENT_DTO, INITIAL_RESERVATION_DTO, ReservationDTO, RoomDTO } from "../models/dtos";
 
-const reservationReducer = (state: Reservation, action: ReservationAction): Reservation => {
+export type ReservationAction =
+    | { type: "SET_RESERVATION", payload: any }
+    | { type: "SET_CLIENT", payload: ClientDTO }
+    | { type: "SET_CHECK_IN", payload: string }
+    | { type: "SET_CHECK_OUT", payload: string }
+    | { type: "SET_PRICE", payload: number }
+    | { type: "SET_DEBT", payload: number }
+    | { type: "SET_ROOM", payload: RoomDTO }
+    | { type: "SET_CLIENT_FIRST_NAME", payload: string }
+    | { type: "SET_CLIENT_LAST_NAME", payload: string }
+    | { type: "SET_CLIENT_DNI", payload: string }
+    | { type: "SET_CLIENT_EMAIL", payload: string }
+    | { type: "SET_CLIENT_PHONE_NUMBER", payload: number }
+    | { type: "RESET_RESERVATION" }
+
+const reservationReducer = (state: ReservationDTO, action: ReservationAction): ReservationDTO => {
     const { type } = action;
     switch (type) {
         case "SET_RESERVATION":
@@ -19,7 +35,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
             };
         case "SET_CHECK_OUT":
             const nightsStayed = moment(action.payload).diff(moment(state.checkIn), 'days');
-            const debt = nightsStayed * state.room!.roomSpecifications.price;
+            const debt = nightsStayed * state.room.roomSpecifications.price;
             return {
                 ...state,
                 checkOut: action.payload,
@@ -41,7 +57,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
             return {
                 ...state,
                 client: {
-                    ...INITIAL_CLIENT,
+                    ...INITIAL_CLIENT_DTO,
                     dni: action.payload,
                 },
             }
@@ -61,7 +77,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
                     lastName: action.payload,
                 }
             }
-        case "SET_CLIENT_MAIL":
+        case "SET_CLIENT_EMAIL":
             return {
                 ...state,
                 client: {
@@ -79,7 +95,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
             }
         case "RESET_RESERVATION":
             return {
-                ...INITIAL_RESERVATION
+                ...INITIAL_RESERVATION_DTO
             }
         default:
             return state;

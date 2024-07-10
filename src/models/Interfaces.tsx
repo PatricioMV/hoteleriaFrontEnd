@@ -1,5 +1,14 @@
 import moment from 'moment';
 
+export interface Client {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  dni: string;
+  email: string,
+  phoneNumber: number,
+}
+
 export interface Room {
   id: number;
   number: number;
@@ -17,14 +26,6 @@ export interface RoomSpecifications {
   rooms: Room[];
 }
 
-export interface Client {
-  id?: number;
-  firstName: string;
-  lastName: string;
-  dni: string;
-  email: string,
-  phoneNumber: number,
-}
 
 export interface Reservation {
   id: number;
@@ -50,7 +51,7 @@ export interface Payment {
   id: number;
   paymentDate: string;
   amount: number;
-  reservation?: Reservation;
+  reservation: Reservation;
 }
 
 export interface CalendarRowProps {
@@ -85,16 +86,3 @@ export interface FetchingResponse {
   reservations?: Reservation[];
   payment?: Payment[];
 }
-
-export type ReservationAction =
-  | { type: "SET_RESERVATION", payload: any }
-  | { type: "SET_CHECK_IN", payload: string }
-  | { type: "SET_CHECK_OUT", payload: string }
-  | { type: "SET_CLIENT", payload: Client }
-  | { type: "SET_ROOM", payload: Room }
-  | { type: "SET_CLIENT_DNI", payload: string }
-  | { type: "SET_CLIENT_FIRST_NAME", payload: string }
-  | { type: "SET_CLIENT_LAST_NAME", payload: string }
-  | { type: "SET_CLIENT_MAIL", payload: string }
-  | { type: "SET_CLIENT_PHONE_NUMBER", payload: number }
-  | { type: "RESET_RESERVATION" }

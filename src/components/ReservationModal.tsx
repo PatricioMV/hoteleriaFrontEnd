@@ -3,11 +3,13 @@ import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row } fr
 import moment from 'moment';
 import useNewReservationModal from '../hooks/useReservationModal';
 import { Room, Client, Reservation } from '../models/Interfaces';
+import PaymentsModal from './PaymentsModal';
+import { ReservationDTO } from '../models/dtos';
 
 interface ReservationModalProps {
     modalIsOpen: boolean;
     closeModal: () => void;
-    reservation: Reservation;
+    reservation: ReservationDTO;
     handleChange: (value: any, field: string) => void;
     handleSubmit: (type: string) => void;
 }
@@ -18,6 +20,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
     const priceOrDebtText = newReservation ? 'Price:' : 'Debt:'
     const clientFound = client.id === 0 ? false : true;
+    const { togglePaymentsModalIsOpen } = PaymentsModal();
+
 
     return (
         <Modal show={modalIsOpen} onHide={closeModal} dialogClassName="custom-modal" size='xl'>
@@ -106,7 +110,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                                 </Col>
                                 <Col>
                                     <Form.Group controlId="roomType">
-                                        <Form.Control type="text" value={room.type} readOnly />
+                                        <Form.Control type="text" value={room.roomSpecifications.type} readOnly />
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -147,24 +151,23 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                                     </Col>
                                 </Form.Group>
                             </Row>) :
-                                <Row>
-                                    <Col>
-                                        <Form.Group controlId="debt">
-                                            <Form.Label column sm="auto">Debt:</Form.Label>
-                                            <Col>
-                                                <Form.Control type="number" readOnly disabled value={reservation.debt} />
-                                            </Col>
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group controlId="payment">
-                                            <Form.Label column sm="auto">Payment:</Form.Label>
-                                            <Col>
-                                                <Form.Control type="number" />
-                                            </Col>
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
+                                <Container>
+                                    <Row className="align-items-center pt-3">
+                                        <Col>
+                                            <Form.Group as={Row} controlId="debt" className="align-items-center">
+                                                <Form.Label column sm="auto">Debt:</Form.Label>
+                                                <Col>
+                                                    <Form.Control type="number" readOnly disabled value={reservation.debt} />
+                                                </Col>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Button onClick={togglePaymentsModalIsOpen}>
+                                                Assign payment
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Container>
                             }
                         </Col>
                     </Row>

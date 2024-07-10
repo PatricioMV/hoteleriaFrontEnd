@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
 
 export const loadRooms = async () => {
@@ -11,12 +11,13 @@ export const loadRooms = async () => {
   }
 };
 
-export const loadRoomByNumber = async (number: number) => {
+export const loadRoomByNumber = async (number: number): Promise<Room> => {
   try {
     const response: AxiosResponse<Room> = await getRoomByNumber(number);
     return response.data;
   } catch (error) {
     console.log('Error loading Room', error);
+    throw error;
   }
 }
 
@@ -74,12 +75,13 @@ export const loadReservations = async (): Promise<Reservation[] | void> => {
   }
 };
 
-export const loadReservationsById = async (id: number): Promise<Reservation | void> => {
+export const loadReservationsById = async (id: number): Promise<Reservation> => {
   try {
     const response: AxiosResponse<Reservation> = await getReservationById(id);
     return response.data;
   } catch (error) {
     console.log('Error fetching Reservation by id', error);
+    throw error;
   }
 }
 
@@ -172,6 +174,16 @@ export const loadRoomSpecifications = async () => {
     console.log('Error loading RoomSpecifications', error);
   }
 }
+
+export const loadRoomSpecificationsById = async (id: number): Promise<RoomSpecifications> => {
+  try {
+    const response: AxiosResponse<RoomSpecifications> = await getRoomSpecificationsById(id);
+    return response.data;
+  } catch (error) {
+    console.log('Error loading RoomSpecification by id', error);
+    throw error; // Lanza el error para que el llamador pueda manejarlo
+  }
+};
 
 export const loadRoomSpecificationsByType = async (type: string) => {
   try {

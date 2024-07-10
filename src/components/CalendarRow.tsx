@@ -72,7 +72,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     setNewReservationFlag(!newReservationFlag);
   };
 
-  const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, reservationMenuIsOpen } = useNewReservationModal(handleNewReservation);
+  const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit } = useNewReservationModal(handleNewReservation);
 
   return (
     <>

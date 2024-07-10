@@ -1,20 +1,22 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
-import { ReservationAction, Day, Reservation } from "../models/Interfaces";
-import { INITIAL_RESERVATION } from "../models/models";
+import { Day, Reservation } from "../models/Interfaces";
 import { createClient, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow, isSameOrBefore } from "../utils/dateUtils";
 import { putClient } from "../services/api";
+import { INITIAL_RESERVATION_DTO, ReservationDTO } from "../models/dtos";
+import { convertClientToDTO } from "../converters/clientConverter";
+import { convertRoomToDTO } from "../converters/roomConverter";
+import { convertDTOToReservation } from "../converters/reservationConverter";
 
 const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [reservationModalIsOpen, setReservationModalIsOpen] = useState<boolean>(false);
-  const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
+  const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION_DTO);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
-  const [reservationMenuIsOpen, setReservationMenuIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (isDoneWriting && debouncedDni) {
@@ -22,7 +24,7 @@ const useReservationModal = (onNewReservation: () => void) => {
         try {
           const client = await loadClientByDni(parseInt(debouncedDni))
           if (client) {
-            dispatch({ type: 'SET_CLIENT', payload: client });
+            dispatch({ type: 'SET_CLIENT', payload: convertClientToDTO(client) });
           }
         } catch (error) { console.error('Error fetching client:', error); }
       }
@@ -50,7 +52,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     const { room, date, isReserved } = day;
 
     if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
-      dispatch({ type: "SET_ROOM", payload: room });
+      dispatch({ type: "SET_ROOM", payload: convertRoomToDTO(room) });
       dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
       setIsDragging(false);
       setReservationModalIsOpen(true);
@@ -74,7 +76,7 @@ const useReservationModal = (onNewReservation: () => void) => {
         dispatch({ type: 'SET_CLIENT_LAST_NAME', payload: value });
         break;
       case 'email':
-        dispatch({ type: 'SET_CLIENT_MAIL', payload: value });
+        dispatch({ type: 'SET_CLIENT_EMAIL', payload: value });
         break;
       case 'phoneNumber':
         dispatch({ type: 'SET_CLIENT_PHONE_NUMBER', payload: value });
@@ -94,13 +96,13 @@ const useReservationModal = (onNewReservation: () => void) => {
     const newClient = await createClient(client);
     console.log(newClient)
     if (newClient) {
-      dispatch({ type: "SET_CLIENT", payload: newClient });
+      dispatch({ type: "SET_CLIENT", payload: convertClientToDTO(newClient) });
       return newClient!.id
     }
     return 0;
   };
 
-  const formatReservation = (reservation: Reservation) => {
+  const formatReservation = (reservation: ReservationDTO) => {
     const isNewClient = reservation.client.id == 0 ? true : false;
     const { id, ...rest } = reservation;
     let formattedReservation = {
@@ -131,7 +133,7 @@ const useReservationModal = (onNewReservation: () => void) => {
         checkIn: moment(checkIn).format('YYYY-MM-DD'),
         checkOut: moment(checkOut).format('YYYY-MM-DD'),
       }
-      await updateReservation(formattedReservation);
+      await updateReservation(await convertDTOToReservation(formattedReservation));
     }
     if (type === 'DELETE') {
       try { await eraseReservation(reservation.id); }
@@ -143,10 +145,10 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const closeReservationModal = () => {
     setReservationModalIsOpen(false);
-    dispatch({ type: "RESET_RESERVATION" })
+    dispatch({ type: "RESET_RESERVATION" });
   };
 
-  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, reservationMenuIsOpen }
+  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit }
 }
 
 export default useReservationModal;
