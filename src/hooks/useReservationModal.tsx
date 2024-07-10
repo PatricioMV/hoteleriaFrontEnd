@@ -9,12 +9,13 @@ import { putClient } from "../services/api";
 import { INITIAL_RESERVATION_DTO, ReservationDTO } from "../models/dtos";
 import { convertClientToDTO } from "../converters/clientConverter";
 import { convertRoomToDTO } from "../converters/roomConverter";
-import { convertDTOToReservation } from "../converters/reservationConverter";
+import { convertDTOToReservation, convertReservationToDTO } from "../converters/reservationConverter";
+import { INITIAL_RESERVATION } from "../models/models";
 
 const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [reservationModalIsOpen, setReservationModalIsOpen] = useState<boolean>(false);
-  const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION_DTO);
+  const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
 
@@ -24,7 +25,7 @@ const useReservationModal = (onNewReservation: () => void) => {
         try {
           const client = await loadClientByDni(parseInt(debouncedDni))
           if (client) {
-            dispatch({ type: 'SET_CLIENT', payload: convertClientToDTO(client) });
+            dispatch({ type: 'SET_CLIENT', payload: client });
           }
         } catch (error) { console.error('Error fetching client:', error); }
       }
@@ -52,7 +53,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     const { room, date, isReserved } = day;
 
     if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
-      dispatch({ type: "SET_ROOM", payload: convertRoomToDTO(room) });
+      dispatch({ type: "SET_ROOM", payload: room });
       dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
       setIsDragging(false);
       setReservationModalIsOpen(true);
@@ -126,7 +127,7 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const handleSubmit = async (type: string) => {
     if (type === 'POST') {
-      const formattedReservation = formatReservation(reservation);
+      const formattedReservation = formatReservation(convertReservationToDTO(reservation));
       await createReservation(formattedReservation)
     }
     if (type === 'PUT') {
@@ -140,7 +141,7 @@ const useReservationModal = (onNewReservation: () => void) => {
         checkIn: moment(checkIn).format('YYYY-MM-DD'),
         checkOut: moment(checkOut).format('YYYY-MM-DD'),
       }
-      await updateReservation(await convertDTOToReservation(formattedReservation));
+      await updateReservation(formattedReservation);
     }
     if (type === 'DELETE') {
       try { await eraseReservation(reservation.id); }

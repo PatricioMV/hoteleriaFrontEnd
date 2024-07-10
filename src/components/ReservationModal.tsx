@@ -9,7 +9,7 @@ import { ReservationDTO } from '../models/dtos';
 interface ReservationModalProps {
     modalIsOpen: boolean;
     closeModal: () => void;
-    reservation: ReservationDTO;
+    reservation: Reservation;
     handleChange: (value: any, field: string) => void;
     handleSubmit: (type: string) => void;
 }

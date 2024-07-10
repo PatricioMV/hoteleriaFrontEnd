@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { PaymentDTO } from './dtos';
 
 export interface Client {
   id?: number;
@@ -38,7 +39,7 @@ export interface Reservation {
   debt: number;
   nightsStayed: number;
   room: Room;
-  payments: Payment[];
+  payments: PaymentDTO[];
 }
 
 export interface Payment {

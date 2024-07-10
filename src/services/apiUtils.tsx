@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
 
 export const loadRooms = async () => {
@@ -200,5 +200,15 @@ export const eraseRoomSpecification = async (id: number) => {
     return response.data;
   } catch (error) {
     console.log('Error deleting RoomSpecifications id: ' + id, error);
+  }
+}
+
+export const loadPaymentsByReservationId = async (id: number): Promise<Payment[]> => {
+  try {
+    const response: AxiosResponse<Payment[]> = await getPaymentsByReservationId(id);
+    return response.data;
+  } catch (error) {
+    console.log('Error loading payments by reservation id: ' + id, error);
+    throw error;
   }
 }

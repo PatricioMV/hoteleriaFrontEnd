@@ -1,20 +1,21 @@
 import { PaymentDTO } from "../models/dtos";
 import { Payment } from "../models/Interfaces";
 import { loadReservations, loadReservationsById } from "../services/apiUtils";
+import { convertListOfReservationsToDTO, convertReservationToDTO } from "./reservationConverter";
 
 export const convertPaymentToDTO = (payment: Payment): PaymentDTO => {
     return {
         id: payment.id,
         paymentDate: payment.paymentDate,
         amount: payment.amount,
-        reservationId: payment.reservation.id
+        reservation: convertReservationToDTO(payment.reservation)
     }
 };
 
-export const convertListOfPaymentsIntoDTOs = (paymentsList: Payment[]): PaymentDTO[] => {
+export const convertListOfPaymentsIntoDTO = (paymentsList: Payment[]): PaymentDTO[] => {
     const paymentsDTOList: PaymentDTO[] = [];
     for (const payment of paymentsList) {
-        paymentsDTOList.push(convertPaymentToDTO(payment))
+        paymentsDTOList.push(convertPaymentToDTO(payment));
     }
     return paymentsDTOList;
 }
@@ -24,7 +25,7 @@ export const convertDTOToPayment = async (paymentDTO: PaymentDTO): Promise<Payme
         id: paymentDTO.id,
         paymentDate: paymentDTO.paymentDate,
         amount: paymentDTO.amount,
-        reservation: await loadReservationsById(paymentDTO.reservationId)
+        reservation: await loadReservationsById(paymentDTO.reservation.id)
     }
 }
 export const convertListOfPaymentsDTOIntoPayments = async (paymentsDTOList: PaymentDTO[]): Promise<Payment[]> => {

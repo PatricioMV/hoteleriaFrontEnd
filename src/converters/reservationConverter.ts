@@ -1,8 +1,8 @@
 import { ReservationDTO } from "../models/dtos";
-import { Reservation } from "../models/Interfaces";
-import { loadRoomByNumber } from "../services/apiUtils";
+import { Payment, Reservation } from "../models/Interfaces";
+import { loadPaymentsByReservationId, loadRoomByNumber } from "../services/apiUtils";
 import { convertClientToDTO } from "./clientConverter";
-import { convertListOfPaymentsDTOIntoPayments, convertListOfPaymentsIntoDTOs } from "./paymentConverter";
+import { convertListOfPaymentsDTOIntoPayments, convertListOfPaymentsIntoDTO, convertPaymentToDTO } from "./paymentConverter";
 import { convertRoomToDTO } from "./roomConverter";
 
 export const convertReservationToDTO = (reservation: Reservation): ReservationDTO => {
@@ -15,11 +15,17 @@ export const convertReservationToDTO = (reservation: Reservation): ReservationDT
         debt: reservation.debt,
         nightsStayed: reservation.nightsStayed,
         room: convertRoomToDTO(reservation.room),
-        payments: convertListOfPaymentsIntoDTOs(reservation.payments)
+        //payments: convertListOfPaymentsIntoDTO(reservation.payments)
     };
 };
 
+export const convertListOfReservationsToDTO = (listOfReservation: Reservation[]): ReservationDTO[] => {
+    return listOfReservation.map(reservation => convertReservationToDTO(reservation));
+};
+
 export const convertDTOToReservation = async (reservationDTO: ReservationDTO): Promise<Reservation> => {
+    const payments: Payment[] = await loadPaymentsByReservationId(reservationDTO.id)
+    console.log(payments)
     return {
         id: reservationDTO.id,
         client: reservationDTO.client,
@@ -29,6 +35,11 @@ export const convertDTOToReservation = async (reservationDTO: ReservationDTO): P
         debt: reservationDTO.debt,
         room: await loadRoomByNumber(reservationDTO.room.number),
         nightsStayed: reservationDTO.nightsStayed,
-        payments: await convertListOfPaymentsDTOIntoPayments(reservationDTO.payments),
+        payments: convertListOfPaymentsIntoDTO(payments),
     };
+};
+
+export const convertListOfReservationsDTOToReservations = async (reservationsDTOList: ReservationDTO[]): Promise<Reservation[]> => {
+    const reservationsPromises = reservationsDTOList.map(convertDTOToReservation);
+    return await Promise.all(reservationsPromises);
 };

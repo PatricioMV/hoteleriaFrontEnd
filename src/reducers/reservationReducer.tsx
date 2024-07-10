@@ -6,13 +6,13 @@ import { ClientDTO, INITIAL_CLIENT_DTO, INITIAL_RESERVATION_DTO, PaymentDTO, Res
 
 export type ReservationAction =
     | { type: "SET_RESERVATION", payload: any }
-    | { type: "SET_CLIENT", payload: ClientDTO }
+    | { type: "SET_CLIENT", payload: Client }
     | { type: "SET_CHECK_IN", payload: string }
     | { type: "SET_CHECK_OUT", payload: string }
     | { type: "SET_PRICE", payload: number }
     | { type: "SET_DEBT", payload: number }
 
-    | { type: "SET_ROOM", payload: RoomDTO }
+    | { type: "SET_ROOM", payload: Room }
     | { type: "SET_PAYMENTS", payload: number }
 
 
@@ -24,7 +24,7 @@ export type ReservationAction =
     //SET_ADDRESS
     | { type: "RESET_RESERVATION" }
 
-const reservationReducer = (state: ReservationDTO, action: ReservationAction): ReservationDTO => {
+const reservationReducer = (state: Reservation, action: ReservationAction): Reservation => {
     const { type } = action;
     switch (type) {
         case "SET_RESERVATION":
@@ -55,15 +55,7 @@ const reservationReducer = (state: ReservationDTO, action: ReservationAction): R
         case "SET_PAYMENTS":
             return {
                 ...state,
-                payments: [
-                    ...state.payments,
-                    {
-                        id: state.payments.length,
-                        paymentDate: moment().format('YYYY-MM-DD'),
-                        amount: action.payload,
-                        reservationId: state.id
-                    }
-                ]
+
             };
         case "SET_CLIENT":
             console.log(action.payload)
@@ -113,7 +105,7 @@ const reservationReducer = (state: ReservationDTO, action: ReservationAction): R
             }
         case "RESET_RESERVATION":
             return {
-                ...INITIAL_RESERVATION_DTO
+                ...INITIAL_RESERVATION
             }
         default:
             return state;

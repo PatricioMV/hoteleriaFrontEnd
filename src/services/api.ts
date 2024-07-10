@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
 
 const api = axios.create({
@@ -16,6 +16,7 @@ export const getReservationsBetweenDatesById = (from: string, to: string, roomId
 
 //Payment
 export const getPayments = () => api.get('/payments');
+export const getPaymentsByReservationId = (id: number): Promise<AxiosResponse<Payment[]>> => api.get('/payments/' + id);
 
 //Rooms
 export const getRooms = () => api.get('/rooms');
