@@ -14,6 +14,7 @@ export const putReservation = (reservation: Reservation) => api.put('/reservatio
 export const putNewComment = (newComment: Comment, reservationId: number) => api.put('/reservations/newcomment/' + reservationId, newComment);
 export const deleteReservation = (id: number) => api.delete('/reservations/' + id);
 
+export const getCommentsByReservationId = (id: number) => api.get('/reservations/'+id+'/comments');
 export const getReservationsBetweenDatesById = (from: string, to: string, roomId: number) => api.get<Reservation[]>('/reservations/inbetween?startDate=' + from + '&endDate=' + to + '&roomId=' + roomId);
 
 //Payment
@@ -44,3 +45,6 @@ export const getRoomSpecificationsByType = (type: string) => api.get('/roomspeci
 export const postRoomSpecifications = (roomSpecifications: RoomSpecifications) => api.post('/roomspecifications', roomSpecifications);
 export const putRoomSpecifications = (roomSpecifications: RoomSpecifications) => api.put('/roomspecifications', roomSpecifications);
 export const deleteRoomSpecifications = (id: number) => api.delete('/roomspecifications/' + id);
+
+//Comments
+export const deleteComment = (id: number) => api.delete("/comments/" + id);

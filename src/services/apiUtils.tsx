@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment, putNewComment } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment, putNewComment, deleteComment, getCommentsByReservationId } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
 import { PaymentDTO } from '../models/dtos';
 
@@ -125,6 +125,16 @@ export const loadReservationsBetweenDatesById = async (from: string, to: string,
   }
 };
 
+export const loadCommentsByReservationId = async (id: number): Promise<Comment[]> => {
+  try {
+    const response: AxiosResponse<Comment[]> = await getCommentsByReservationId(id);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching comments');
+    throw error;
+  }
+}
+
 export const eraseReservation = async (id: number) => {
   try {
     const response: AxiosResponse = await deleteReservation(id);
@@ -231,6 +241,16 @@ export const createPayment = async (payment: any): Promise<Payment> => {
     return response.data;
   } catch (error) {
     console.log('Error creating payment', error);
+    throw error;
+  }
+}
+
+export const eraseComment = async (id: number): Promise<String> => {
+  try {
+    const response: AxiosResponse<String> = await deleteComment(id);
+    return response.data;
+  } catch (error) {
+    console.log('error deleting comment with id: ' + id, error);
     throw error;
   }
 }
