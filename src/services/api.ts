@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
+import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
 import { PaymentDTO } from '../models/dtos';
 
 const api = axios.create({
@@ -11,6 +11,7 @@ export const getReservations = () => api.get<Reservation[]>('/reservations');
 export const getReservationById = (id: number) => api.get<Reservation>('/reservations/' + id);
 export const postReservation = (reservation: Reservation) => api.post('/reservations', reservation);
 export const putReservation = (reservation: Reservation) => api.put('/reservations', reservation);
+export const putNewComment = (newComment: Comment, reservationId: number) => api.put('/reservations/newcomment/' + reservationId, newComment);
 export const deleteReservation = (id: number) => api.delete('/reservations/' + id);
 
 export const getReservationsBetweenDatesById = (from: string, to: string, roomId: number) => api.get<Reservation[]>('/reservations/inbetween?startDate=' + from + '&endDate=' + to + '&roomId=' + roomId);

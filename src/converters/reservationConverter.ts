@@ -36,6 +36,7 @@ export const convertDTOToReservation = async (reservationDTO: ReservationDTO): P
         room: await loadRoomByNumber(reservationDTO.room.number),
         nightsStayed: reservationDTO.nightsStayed,
         payments: convertListOfPaymentsIntoDTO(payments),
+        comments: [],
     };
 };
 

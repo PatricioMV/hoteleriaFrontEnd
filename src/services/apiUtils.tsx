@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment } from './api';
-import { Client, Room, Reservation, Payment, RoomSpecifications } from '../models/Interfaces';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment, putNewComment } from './api';
+import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
 import { PaymentDTO } from '../models/dtos';
 
 export const loadRooms = async () => {
@@ -102,6 +102,17 @@ export const updateReservation = async (reservation: Reservation) => {
     return response.data;
   } catch (error) {
     console.log('Error PUTTING Reservation', error);
+  }
+}
+
+export const addNewCommentToReservation = async (newComment: Comment, reservationId: number): Promise<Reservation> => {
+  try {
+    console.log(reservationId)
+    const response: AxiosResponse<Reservation> = await putNewComment(newComment, reservationId);
+    return response.data;
+  } catch (error) {
+    console.log('Error PUTTING new comment on Reservation', error);
+    throw error;
   }
 }
 

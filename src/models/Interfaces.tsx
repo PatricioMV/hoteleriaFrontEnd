@@ -40,6 +40,15 @@ export interface Reservation {
   nightsStayed: number;
   room: Room;
   payments: PaymentDTO[];
+  comments: Comment[];
+}
+
+export interface Comment {
+  text: string,
+  timestamp: string //.format('YYYY-MM-DDTHH:mm:ss')
+  reservation: {
+    id: number
+  }
 }
 
 export interface Payment {

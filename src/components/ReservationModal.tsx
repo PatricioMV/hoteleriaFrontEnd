@@ -6,6 +6,7 @@ import { Room, Client, Reservation } from '../models/Interfaces';
 import PaymentsModal from './PaymentsModal';
 import { ReservationDTO } from '../models/dtos';
 import PaymentsTable from './PaymentsTable';
+import ReservationComments from './ReservationComments';
 
 interface ReservationModalProps {
     modalIsOpen: boolean;
@@ -175,24 +176,24 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                                 </Col>
                             </Row>
                         </Form>
+                        <Modal.Footer>
+                            {newReservation ? <Button onClick={() => handleSubmit('POST')}> Create Reservation </Button> :
+                                <Col className='button-container'>
+                                    <Button className='Delete-Button' onClick={() => handleSubmit('DELETE')}>Delete</Button>
+                                    <Button className='Update-Button' onClick={() => handleSubmit('PUT')}>Update</Button>
+                                </Col>}
+
+                        </Modal.Footer>
                     </Tab>
                     <Tab eventKey="paymentsInfo" title="Payments">
-                        <PaymentsTable reservation={reservation}></PaymentsTable>
+                        <PaymentsTable reservation={reservation} />
                     </Tab>
                     <Tab eventKey="commentsInfo" title="Comments">
-
+                        <ReservationComments comments={reservation.comments} reservation={reservation} />
                     </Tab>
                 </Tabs>
 
             </Modal.Body>
-            <Modal.Footer>
-                {newReservation ? <Button onClick={() => handleSubmit('POST')}> Create Reservation </Button> :
-                    <Col className='button-container'>
-                        <Button className='Delete-Button' onClick={() => handleSubmit('DELETE')}>Delete</Button>
-                        <Button className='Update-Button' onClick={() => handleSubmit('PUT')}>Update</Button>
-                    </Col>}
-
-            </Modal.Footer>
         </Modal>
 
     );
