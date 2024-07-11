@@ -36,7 +36,7 @@ export const switchOccupation = (roomNumber: number) => api.put('/rooms/switchoc
 export const getClientById = (id: number) => api.get<Client>('/clients/id=' + id);
 export const getClientByDni = (dni: number) => api.get<Client>('/clients/' + dni);
 export const postClient = (client: Client) => api.post('/clients', client);
-export const putClient = (client: Client) => api.put('/clients', client);
+export const putClient = (client: any) => api.put('/clients', client);
 
 //Rooms Specifications
 export const getRoomSpecifications = () => api.get('/roomspecifications');

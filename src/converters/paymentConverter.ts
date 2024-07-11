@@ -21,7 +21,7 @@ export const convertListOfPaymentsIntoDTO = (paymentsList: Payment[]): PaymentDT
     return paymentsDTOList;
 }
 
-export const convertDTOToPayment = async (paymentDTO: PaymentDTO): Promise<Payment> => {
+/*export const convertDTOToPayment = async (paymentDTO: PaymentDTO): Promise<Payment> => {
     return {
         id: paymentDTO.id,
         paymentDate: paymentDTO.paymentDate,
@@ -29,9 +29,10 @@ export const convertDTOToPayment = async (paymentDTO: PaymentDTO): Promise<Payme
         reservation: await loadReservationsById(paymentDTO.reservation.id),
         debtOnPayment: paymentDTO.debtOnPayment,
     }
-}
+}*/
+/*
 export const convertListOfPaymentsDTOIntoPayments = async (paymentsDTOList: PaymentDTO[]): Promise<Payment[]> => {
     const paymentPromises = paymentsDTOList.map(paymentDTO => convertDTOToPayment(paymentDTO));
     const paymentList = await Promise.all(paymentPromises);
     return paymentList as Payment[];
-};
+};*/

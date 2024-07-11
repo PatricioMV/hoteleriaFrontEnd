@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Col } from 'react-bootstrap';
 import Home from '../components/Home';
-import Payments from '../components/Payments';
 import Reservations from '../components/Reservations';
 import HotelManagment from './HotelManagement';
 

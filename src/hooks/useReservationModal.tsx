@@ -1,21 +1,21 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
-import { Day, Reservation } from "../models/Interfaces";
+import { Day } from "../models/Interfaces";
 import { createClient, createPayment, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow, isSameOrBefore } from "../utils/dateUtils";
 import { putClient } from "../services/api";
-import { INITIAL_RESERVATION_DTO, ReservationDTO } from "../models/dtos";
+import { INITIAL_PAYMENT_DTO, ReservationDTO } from "../models/dtos";
 import { convertClientToDTO } from "../converters/clientConverter";
-import { convertRoomToDTO } from "../converters/roomConverter";
-import { convertDTOToReservation, convertReservationToDTO } from "../converters/reservationConverter";
-import { INITIAL_RESERVATION } from "../models/models";
+import { convertReservationToDTO } from "../converters/reservationConverter";
+import { INITIAL_PAYMENT, INITIAL_RESERVATION } from "../models/models";
 
 const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [reservationModalIsOpen, setReservationModalIsOpen] = useState<boolean>(false);
   const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
+  const [newPayment, setNewPayment] = useState(INITIAL_PAYMENT_DTO);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
 
@@ -89,7 +89,13 @@ const useReservationModal = (onNewReservation: () => void) => {
         dispatch({ type: "SET_CHECK_OUT", payload: value });
         break;
       case 'payment':
-        dispatch({ type: "SET_PAYMENTS", payload: value });
+        //dispatch({ type: "SET_PAYMENTS", payload: value });
+        setNewPayment({
+          paymentDate: moment().format('YYYY-MM-DD'),
+          amount: value,
+          reservation: convertReservationToDTO(reservation),
+          debtOnPayment: reservation.debt - value,
+        })
         break;
       default:
         break;
@@ -132,16 +138,18 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
     if (type === 'PUT') {
       await putClient(reservation.client);
-      const hasNewPayment = reservation.payments[reservation.payments.length - 1].amount > 0 ? true : false;
-      if (hasNewPayment) {
-        const { id, ...paymentWithoutId } = reservation.payments[reservation.payments.length - 1]
-        await createPayment(paymentWithoutId);
-      }
-      const formattedReservation = {
+      const hasNewPayment = newPayment.amount > 0;
+      let formattedReservation = {
         ...reservation,
         checkIn: moment(checkIn).format('YYYY-MM-DD'),
         checkOut: moment(checkOut).format('YYYY-MM-DD'),
-        debt: reservation.debt - reservation.payments[reservation.payments.length - 1].amount,
+      }
+      if (hasNewPayment) {
+        await createPayment(newPayment);
+        formattedReservation = {
+          ...formattedReservation,
+          debt: reservation.debt - newPayment.amount,
+        }
       }
       await updateReservation(formattedReservation);
     }

@@ -35,11 +35,11 @@ export interface ClientDTO {
   }
   
   export interface PaymentDTO {
-    id: number;
+    id?: number;
     paymentDate: string;
     amount: number;
-    reservation: ReservationDTO;
     debtOnPayment: number;
+    reservation: ReservationDTO;
   }
   
   export const INITIAL_ROOM_SPECIFICATIONS_DTO: RoomSpecificationsDTO = {
@@ -64,7 +64,7 @@ export const INITIAL_CLIENT_DTO: ClientDTO = {
     dni: '',
     email: '',
     phoneNumber: 0,
-    address: ''
+    address: '',
 };
 
 export const INITIAL_RESERVATION_DTO: ReservationDTO = {

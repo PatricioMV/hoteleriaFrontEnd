@@ -69,26 +69,34 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
                     {
                         renderedComments.map((comment, index) =>
                             <tr key={index} onClick={() => console.log(comment.id)}>
-                                <td>{comment.text}</td>
-                                <td className="d-flex align-items-center">
-                                    <Form.Check aria-label="done" className="me-2" />
-                                    <span className="me-2">Done</span>
-                                    <Button variant="danger" className="p-2 d-flex align-items-center justify-content-center" onClick={() => deleteComment(comment.id!)}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill me-1" viewBox="0 0 16 16">
+                                <td className="comment-column">{comment.text}</td>
+                                <td className="d-flex align-items-center justify-content-center comment-button-column" >
+                                    <Button
+                                        variant="danger"
+                                        className="d-flex align-items-center justify-content-center Delete-Button"
+                                        size="lg"
+                                        onClick={() => deleteComment(comment.id!)}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                        >
                                             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
                                         </svg>
                                     </Button>
-
                                 </td>
                             </tr>
+
 
 
                         )
                     }
                     {Array.from({ length: Math.max(0, 7 - renderedComments.length) }).map((_, index) => (
                         <tr key={renderedComments.length + index}>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td className="comment-column">&nbsp;</td>
+                            <td className="comment-button-column">&nbsp;</td>
                         </tr>
                     ))}
                 </tbody>

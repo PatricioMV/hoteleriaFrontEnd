@@ -2,7 +2,7 @@ import { ReservationDTO } from "../models/dtos";
 import { Payment, Reservation } from "../models/Interfaces";
 import { loadPaymentsByReservationId, loadRoomByNumber } from "../services/apiUtils";
 import { convertClientToDTO } from "./clientConverter";
-import { convertListOfPaymentsDTOIntoPayments, convertListOfPaymentsIntoDTO, convertPaymentToDTO } from "./paymentConverter";
+import {  convertListOfPaymentsIntoDTO } from "./paymentConverter";
 import { convertRoomToDTO } from "./roomConverter";
 
 export const convertReservationToDTO = (reservation: Reservation): ReservationDTO => {
