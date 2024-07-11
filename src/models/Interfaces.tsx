@@ -47,6 +47,7 @@ export interface Payment {
   paymentDate: string;
   amount: number;
   reservation: Reservation;
+  debtOnPayment: number;
 }
 
 export interface Day {

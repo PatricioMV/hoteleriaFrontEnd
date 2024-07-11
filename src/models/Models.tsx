@@ -43,4 +43,5 @@ export const INITIAL_PAYMENT: Payment = {
     paymentDate: '',
     amount: 0,
     reservation: INITIAL_RESERVATION,
+    debtOnPayment: 0,
 }

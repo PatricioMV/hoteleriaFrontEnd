@@ -8,7 +8,8 @@ export const convertPaymentToDTO = (payment: Payment): PaymentDTO => {
         id: payment.id,
         paymentDate: payment.paymentDate,
         amount: payment.amount,
-        reservation: convertReservationToDTO(payment.reservation)
+        reservation: convertReservationToDTO(payment.reservation),
+        debtOnPayment: payment.debtOnPayment,
     }
 };
 
@@ -25,7 +26,8 @@ export const convertDTOToPayment = async (paymentDTO: PaymentDTO): Promise<Payme
         id: paymentDTO.id,
         paymentDate: paymentDTO.paymentDate,
         amount: paymentDTO.amount,
-        reservation: await loadReservationsById(paymentDTO.reservation.id)
+        reservation: await loadReservationsById(paymentDTO.reservation.id),
+        debtOnPayment: paymentDTO.debtOnPayment,
     }
 }
 export const convertListOfPaymentsDTOIntoPayments = async (paymentsDTOList: PaymentDTO[]): Promise<Payment[]> => {

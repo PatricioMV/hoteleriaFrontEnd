@@ -63,6 +63,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
                         paymentDate: moment().format('YYYY-MM-DD'),
                         amount: action.payload,
                         reservation: convertReservationToDTO(state),
+                        debtOnPayment: state.debt - action.payload,
                     }
                 ]
             };

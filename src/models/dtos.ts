@@ -39,6 +39,7 @@ export interface ClientDTO {
     paymentDate: string;
     amount: number;
     reservation: ReservationDTO;
+    debtOnPayment: number;
   }
   
   export const INITIAL_ROOM_SPECIFICATIONS_DTO: RoomSpecificationsDTO = {
@@ -82,4 +83,5 @@ export const INITIAL_PAYMENT_DTO: PaymentDTO = {
     paymentDate: '',
     amount: 0,
     reservation: INITIAL_RESERVATION_DTO,
+    debtOnPayment: 0,
 };

@@ -5,6 +5,7 @@ import useNewReservationModal from '../hooks/useReservationModal';
 import { Room, Client, Reservation } from '../models/Interfaces';
 import PaymentsModal from './PaymentsModal';
 import { ReservationDTO } from '../models/dtos';
+import PaymentsTable from './PaymentsTable';
 
 interface ReservationModalProps {
     modalIsOpen: boolean;
@@ -176,34 +177,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                         </Form>
                     </Tab>
                     <Tab eventKey="paymentsInfo" title="Payments">
-                        <Table>
-                            <thead>
-                                <th>Name</th>
-                                <th>Last name</th>
-                                <th>Phone</th>
-                                <th>Check-In</th>
-                                <th>Check-Out</th>
-                                <th>Nights stayed</th>
-                                <th>Paid</th>
-                                <th>Debt</th>
-                                <th>Room</th>
-                            </thead>
-                            {
-                                reservation.payments.map(payment =>
-                                    <tr>
-                                        <td>{reservation.client.firstName}</td>
-                                        <td>{reservation.client.lastName}</td>
-                                        <td>{reservation.client.phoneNumber}</td>
-                                        <td>{reservation.checkIn}</td>
-                                        <td>{reservation.checkOut}</td>
-                                        <td>{reservation.nightsStayed}</td>
-                                        <td>{payment.amount}</td>
-                                        <td>{reservation.debt}</td>
-                                        <td>{reservation.room.number}</td>
-                                    </tr>
-                                )
-                            }
-                        </Table>
+                        <PaymentsTable reservation={reservation}></PaymentsTable>
                     </Tab>
                     <Tab eventKey="commentsInfo" title="Comments">
 
