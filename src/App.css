@@ -152,3 +152,12 @@ input[type=number]::-webkit-outer-spin-button {
 .comment-button-column{
   width: auto;
 }
+
+
+.room-out-of-order {
+  background-color: #000000; /* Color de fondo para indicar que está fuera de servicio */
+  color: #a52632; /* Color de texto para indicar que está fuera de servicio */
+  cursor: not-allowed; /* Cursor para indicar que no es clicable */
+  pointer-events: none; /* Deshabilita cualquier interacción */
+  opacity: 0.6; /* Hace la fila más translúcida para indicar que está deshabilitada */
+}

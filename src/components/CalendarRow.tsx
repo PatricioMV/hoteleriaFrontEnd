@@ -71,8 +71,8 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
 
   return (
     <>
-      <tr key={room.number}>
-        <td >{room.number} {room.type}</td>
+      <tr key={room.number} className={room.outOfOrder ? "room-out-of-order" : "room"} >
+        <td className={room.outOfOrder ? "room-out-of-order" : "room"}>{room.number} {room.type}</td>
         {days.map((day) => <CalendarDay day={day} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} />)}
       </tr>
 

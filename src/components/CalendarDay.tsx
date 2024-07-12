@@ -18,8 +18,12 @@ const CalendarDay: React.FC<any> = ({
     switchOccupationStatus(day);
   }, [day.room.occupied]);
 
+  console.log(day.room.outOfOrder)
+
+  const className = day.room.outOfOrder ? 'room-out-of-order' : (moment().format('YYYY-MM-DD') === day.date && !day.isReserved) ? 'today-header' : 'header';
+
   return (
-    <td key={day.date + day.room.number} colSpan={day.colspan} className={(moment().format('YYYY-MM-DD') === day.date && !day.isReserved) ? 'today-header' : 'header'} onMouseDown={() => handleMouseDown(day)} onMouseUp={() => handleMouseUp(day)}>
+    <td key={day.date + day.room.number} colSpan={day.colspan} className={className} onMouseDown={(e) => handleMouseDown(e, day)} onMouseUp={(e) => handleMouseUp(e, day)}>
       {day.isReserved ? (
         <div>
           {day.reservation?.client.firstName + " " + day.reservation?.client.lastName}

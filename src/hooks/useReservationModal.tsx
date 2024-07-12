@@ -33,23 +33,28 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
   }, [debouncedDni, isDoneWriting])
 
-  const handleMouseDown = useCallback(async (day: Day) => {
+  const handleMouseDown = useCallback(async (e: any, day: Day) => {
     const { room, date, isReserved } = day;
-    if (!isReserved && !isDateBeforeToday(day.date)) {
-      setIsDragging(true);
-      dispatch({ type: "SET_CHECK_IN", payload: date });
-    } else if (day.reservation != undefined) {
-      try {
-        const reservation = await loadReservationsById(day.reservation!.id);
-        dispatch({ type: "SET_RESERVATION", payload: reservation });
-        setReservationModalIsOpen(true);
-      } catch (error) {
-        console.error('Error fetching reservation:', error);
+    if (e.button == 0) {
+      console.log(e.button)
+      if (!isReserved && !isDateBeforeToday(day.date)) {
+        setIsDragging(true);
+        dispatch({ type: "SET_CHECK_IN", payload: date });
+      } else if (day.reservation != undefined) {
+        try {
+          const reservation = await loadReservationsById(day.reservation!.id);
+          dispatch({ type: "SET_RESERVATION", payload: reservation });
+          setReservationModalIsOpen(true);
+        } catch (error) {
+          console.error('Error fetching reservation:', error);
+        }
       }
     }
+
+
   }, []);
 
-  const handleMouseUp = useCallback((day: Day) => {
+  const handleMouseUp = useCallback((e: any, day: Day) => {
     const { room, date, isReserved } = day;
 
     if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
