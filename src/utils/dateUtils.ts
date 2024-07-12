@@ -65,3 +65,9 @@ export const generateHeadersDays = (amountOfDates: number): CalendarHeaderDays[]
     }
     return days;
 };
+
+export const isDateBeforeToday = (date: string) => {
+    const now = moment().startOf('day');   
+    const dateToCheck = moment(date).startOf('day');  
+    return dateToCheck.isBefore(now);
+}

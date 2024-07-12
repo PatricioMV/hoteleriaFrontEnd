@@ -4,7 +4,7 @@ import { createClient, createPayment, createReservation, eraseReservation, loadC
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
-import { getTomorrow, isSameOrBefore } from "../utils/dateUtils";
+import { getTomorrow, isDateBeforeToday, isSameOrBefore } from "../utils/dateUtils";
 import { putClient } from "../services/api";
 import { INITIAL_PAYMENT_DTO, ReservationDTO } from "../models/dtos";
 import { convertClientToDTO } from "../converters/clientConverter";
@@ -35,7 +35,7 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const handleMouseDown = useCallback(async (day: Day) => {
     const { room, date, isReserved } = day;
-    if (!isReserved) {
+    if (!isReserved && !isDateBeforeToday(day.date)) {
       setIsDragging(true);
       dispatch({ type: "SET_CHECK_IN", payload: date });
     } else if (day.reservation != undefined) {
@@ -95,7 +95,6 @@ const useReservationModal = (onNewReservation: () => void) => {
         dispatch({ type: "SET_CHECK_OUT", payload: value });
         break;
       case 'payment':
-        //dispatch({ type: "SET_PAYMENTS", payload: value });
         setNewPayment({
           paymentDate: moment().format('YYYY-MM-DD'),
           amount: value,
@@ -108,15 +107,15 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
   };
 
-  const postClient = async () => {
-    const newClient = await createClient(client);
-    console.log(newClient)
-    if (newClient) {
-      dispatch({ type: "SET_CLIENT", payload: convertClientToDTO(newClient) });
-      return newClient!.id
-    }
-    return 0;
-  };
+  /* const postClient = async () => {
+     const newClient = await createClient(client);
+     console.log(newClient)
+     if (newClient) {
+       dispatch({ type: "SET_CLIENT", payload: convertClientToDTO(newClient) });
+       return newClient!.id
+     }
+     return 0;
+   };*/
 
   const formatReservation = (reservation: ReservationDTO) => {
     const isNewClient = reservation.client.id == 0 ? true : false;
