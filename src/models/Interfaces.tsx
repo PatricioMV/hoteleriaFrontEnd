@@ -44,7 +44,7 @@ export interface Reservation {
 }
 
 export interface Comment {
-  id?: number
+  id?: number,
   text: string,
   timestamp: string //.format('YYYY-MM-DDTHH:mm:ss')
   reservation: {

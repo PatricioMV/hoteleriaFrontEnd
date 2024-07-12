@@ -63,11 +63,6 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
     return days;
   };
 
-  const handleSubmitAndCloseModal = async (type: string) => {
-    handleSubmit(type);
-    closeReservationModal();
-  };
-
   const handleNewReservation = () => {
     setNewReservationFlag(!newReservationFlag);
   };
@@ -81,7 +76,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
         {days.map((day) => <CalendarDay day={day} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} />)}
       </tr>
 
-      <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleChange={handleChange} handleSubmit={handleSubmitAndCloseModal} />
+      <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleChange={handleChange} handleSubmit={handleSubmit} />
 
     </>
   );

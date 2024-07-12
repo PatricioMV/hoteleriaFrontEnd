@@ -1,5 +1,5 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
-import { Day } from "../models/Interfaces";
+import { Day, Reservation } from "../models/Interfaces";
 import { createClient, createPayment, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
@@ -64,6 +64,12 @@ const useReservationModal = (onNewReservation: () => void) => {
       dispatch({ type: "RESET_RESERVATION" });
     }
   }, [isDragging]);
+
+  const selectReservation = (reservation: Reservation) => {
+    console.log(reservation);
+    dispatch({ type: "SET_RESERVATION", payload: reservation });
+    setReservationModalIsOpen(true);
+  }
 
   const handleChange = (field: string, value: any) => {
     switch (field) {
@@ -157,7 +163,9 @@ const useReservationModal = (onNewReservation: () => void) => {
       try { await eraseReservation(reservation.id); }
       catch (error) { console.log('error deleting reservation' + error) }
     }
+
     onNewReservation();
+    closeReservationModal();
   };
 
 
@@ -166,7 +174,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     dispatch({ type: "RESET_RESERVATION" });
   };
 
-  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit }
+  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation }
 }
 
 export default useReservationModal;

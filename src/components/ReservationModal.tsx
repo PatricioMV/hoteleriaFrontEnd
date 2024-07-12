@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row, Tab, Table, Tabs } from 'react-bootstrap';
-import moment from 'moment';
-import useNewReservationModal from '../hooks/useReservationModal';
-import { Room, Client, Reservation } from '../models/Interfaces';
-import PaymentsModal from './PaymentsModal';
-import { ReservationDTO } from '../models/dtos';
+import { Reservation } from '../models/Interfaces';
 import PaymentsTable from './PaymentsTable';
 import ReservationComments from './ReservationComments';
 
@@ -22,13 +18,15 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
     const priceOrDebtText = newReservation ? 'Price:' : 'Debt:'
     const clientFound = client.id === 0 ? false : true;
-    const { togglePaymentsModalIsOpen } = PaymentsModal();
-    const [key, setKey] = useState<string>('clientInfo');
+    const [key, setKey] = useState<string>('reservationInfo');
 
-    console.log(reservation)
+    const closeModalAndResetKey = () => {
+        closeModal();
+        setKey('reservationInfo');
+    }
 
     return (
-        <Modal show={modalIsOpen} onHide={closeModal} dialogClassName="custom-modal" size='xl'>
+        <Modal show={modalIsOpen} onHide={closeModalAndResetKey} dialogClassName="custom-modal" size='xl'>
             <Modal.Header closeButton >
                 <Modal.Title >{modalTitle}</Modal.Title>
             </Modal.Header>
