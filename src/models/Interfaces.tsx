@@ -78,6 +78,7 @@ export interface CalendarRowProps {
   room: Room;
   startDate: moment.Moment;
   endDate: moment.Moment;
+  forceCalendarRender: () => void;
 }
 
 export interface FetchingResponse {

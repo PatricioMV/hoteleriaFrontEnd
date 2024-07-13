@@ -9,7 +9,7 @@ import { getEndDate, getYesterday } from '../utils/dateUtils';
 Modal.setAppElement('#root');
 
 const Home: React.FC = () => {
-  const { rooms, numDays, handleNumDaysChange, loading, handleFilterEmptyChange, handleFilterUnavailableChange, filterUnavailable, filterEmpty } = useHotel();
+  const { rooms, numDays, handleNumDaysChange, loading, handleFilterEmptyChange, handleFilterUnavailableChange, filterUnavailable, filterEmpty, forceCalendarRender } = useHotel();
 
   return (
     <div>
@@ -55,6 +55,7 @@ const Home: React.FC = () => {
               room={room}
               startDate={getYesterday()}
               endDate={getEndDate(numDays)}
+              forceCalendarRender={forceCalendarRender}
             />
           ))}
         </tbody>

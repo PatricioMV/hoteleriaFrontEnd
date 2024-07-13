@@ -16,10 +16,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ menuRef, x, y, show, closeCon
 
 
     return (
-        <div ref={menuRef} style={{ top: y, left: x, position: 'absolute', zIndex: 1000, backgroundColor: 'white', boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)' }}>
+        <div ref={menuRef} style={{ top: y, left: x, position: 'absolute', zIndex: 1000, backgroundColor: 'white', boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)' }} className="context-menu" onMouseLeave={closeContextMenu}>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
                 {options.map((option: any, index: number) => (
-                    <li key={index} style={{ padding: '8px', cursor: 'pointer', borderBottom: '1px solid #ddd' }} onClick={() => option.action()}>
+                    <li key={index} onClick={() => option.action()}>
                         {option.label}
                     </li>
                 ))}

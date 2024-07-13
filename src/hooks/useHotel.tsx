@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { loadOccupiedRooms, loadRooms } from '../services/apiUtils';
 import { Room } from '../models/Interfaces';
 import { getEndDate, getYesterday } from '../utils/dateUtils';
@@ -9,6 +9,11 @@ export const useHotel = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [filterUnavailable, setFilterUnavailable] = useState(false);
   const [filterEmpty, setFilterEmpty] = useState(false);
+  const [renderFlag, setRenderFlag] = useState(false);
+
+  const forceCalendarRender = () => {
+    setRenderFlag(prevFlag => !prevFlag);
+  };
 
   const handleNumDaysChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedDays = parseInt(event.target.value, 10);
@@ -47,16 +52,16 @@ export const useHotel = () => {
           }
           setRooms(filteredRooms);
         }
-      } catch (err) {
-        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRooms();
-  }, [filterEmpty, filterUnavailable]);
+  }, [filterEmpty, filterUnavailable, renderFlag]);
 
 
-  return { rooms, numDays, handleNumDaysChange, loading, handleFilterEmptyChange, handleFilterUnavailableChange, filterUnavailable, filterEmpty };
+  return { rooms, numDays, handleNumDaysChange, loading, handleFilterEmptyChange, handleFilterUnavailableChange, filterUnavailable, filterEmpty, forceCalendarRender };
 };

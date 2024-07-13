@@ -8,7 +8,7 @@ import CalendarDay from './CalendarDay';
 import useContextMenu from '../hooks/useContextMenu';
 import ContextMenu from './ContextMenu';
 
-const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
+const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate, forceCalendarRender }) => {
   const [days, setDays] = useState<Day[]>([]);
   const [newReservationFlag, setNewReservationFlag] = useState<boolean>(false);
 
@@ -43,7 +43,6 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       const formattedDate = auxDate.format('YYYY-MM-DD');
       const reservation = reservations.find((r) => auxDate.isBetween(moment(r.checkIn), moment(r.checkOut), null, '[]'));
       if (reservation != undefined) {
-        console.log(room)
         days.push({
           date: formattedDate,
           room: {
@@ -73,7 +72,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
   };
 
   const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit } = useNewReservationModal(handleNewReservation);
-  const { menuRef, isVisible, menuPosition, handleContextMenu, closeContextMenu, options } = useContextMenu(handleNewReservation);
+  const { menuRef, isVisible, menuPosition, handleContextMenu, closeContextMenu, options } = useContextMenu(forceCalendarRender);
   return (
     <>
       <tr key={room.number} className={room.outOfOrder ? "room-out-of-order" : "room"} >

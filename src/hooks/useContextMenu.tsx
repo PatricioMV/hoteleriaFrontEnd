@@ -1,23 +1,28 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Day, Reservation, ReservationState, Room } from '../models/Interfaces';
 import { INITIAL_RESERVATION, INITIAL_ROOM } from '../models/models';
-import { updateReservation } from '../services/apiUtils';
+import { editRoom, updateReservation } from '../services/apiUtils';
 
-const useContextMenu = (handleNewReservation: () => void) => {
+const useContextMenu = (forceCalendarRender: () => void) => {
     const [isVisible, setIsVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef<HTMLDivElement>(null);
     const reservationRef = useRef<Reservation>(INITIAL_RESERVATION);
-    const [room, setRoom] = useState<Room>(INITIAL_ROOM);
+    const roomRef = useRef<Room>(INITIAL_ROOM);
 
 
     const roomOptions = [
         {
             label: 'Room out of order',
             action: () => {
-                console.log('Option 1 selected');
-                setRoom(INITIAL_ROOM);
-                closeContextMenu();
+                const updatedRoom = { ...roomRef.current, outOfOrder: true }
+                editRoom(updatedRoom).then(() => {
+                    forceCalendarRender();
+                    roomRef.current = INITIAL_ROOM;
+                    closeContextMenu();
+                }).catch((error) => {
+                    console.error('Error updating reservation:', error);
+                });
             },
         },
     ];
@@ -34,10 +39,9 @@ const useContextMenu = (handleNewReservation: () => void) => {
                     updateReservation(updatedReservation)
                         .then(() => {
                             reservationRef.current = INITIAL_RESERVATION;
-                            handleNewReservation();
+                            forceCalendarRender();
                             closeContextMenu();
-                        })
-                        .catch((error) => {
+                        }).catch((error) => {
                             console.error('Error updating reservation:', error);
                         });
                 },
@@ -48,8 +52,8 @@ const useContextMenu = (handleNewReservation: () => void) => {
     const handleContextMenu = useCallback((event: any, room: Room, day?: Day) => {
         event.preventDefault();
         if (day === undefined) {
+            roomRef.current = room;
             setOptions(roomOptions);
-            setRoom(room);
         } else {
             if (day.reservation?.state === "Checked-out") return;
             reservationRef.current = day.reservation!
