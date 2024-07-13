@@ -161,3 +161,7 @@ input[type=number]::-webkit-outer-spin-button {
   pointer-events: none; /* Deshabilita cualquier interacción */
   opacity: 0.6; /* Hace la fila más translúcida para indicar que está deshabilitada */
 }
+
+.dropdown-menu {
+  position: static !important; /* Necesario para que el menú se posicione correctamente */
+}

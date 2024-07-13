@@ -47,6 +47,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
                 checkOut: action.payload,
                 nightsStayed: nightsStayed,
                 debt: debt,
+                price: debt,
             };
         case "SET_ROOM":
             return {

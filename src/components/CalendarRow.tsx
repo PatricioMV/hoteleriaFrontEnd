@@ -5,10 +5,13 @@ import moment from 'moment';
 import ReservationModal from './ReservationModal';
 import useNewReservationModal from '../hooks/useReservationModal';
 import CalendarDay from './CalendarDay';
+import useContextMenu from '../hooks/useContextMenu';
+import ContextMenu from './ContextMenu';
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) => {
   const [days, setDays] = useState<Day[]>([]);
   const [newReservationFlag, setNewReservationFlag] = useState<boolean>(false);
+
 
   const fetchReservations = async () => {
     try {
@@ -26,6 +29,8 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
       setDays(generateDays(startDate, endDate, []));
     }
   };
+
+
 
   useEffect(() => {
     fetchReservations();
@@ -68,16 +73,16 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate }) =
   };
 
   const { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit } = useNewReservationModal(handleNewReservation);
-
+  const { menuRef, isVisible, menuPosition, handleContextMenu, closeContextMenu, options } = useContextMenu(handleNewReservation);
   return (
     <>
       <tr key={room.number} className={room.outOfOrder ? "room-out-of-order" : "room"} >
-        <td className={room.outOfOrder ? "room-out-of-order" : "room"}>{room.number} {room.type}</td>
-        {days.map((day) => <CalendarDay day={day} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} />)}
+        <td className={room.outOfOrder ? "room-out-of-order" : "room"} onContextMenu={(e) => handleContextMenu(e, room)}>{room.number} {room.type}</td>
+        {days.map((day) => <CalendarDay day={day} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} handleContextMenu={handleContextMenu} />)}
       </tr>
 
       <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleChange={handleChange} handleSubmit={handleSubmit} />
-
+      <ContextMenu menuRef={menuRef} x={menuPosition.x} y={menuPosition.y} show={isVisible} closeContextMenu={closeContextMenu} options={options} />
     </>
   );
 };

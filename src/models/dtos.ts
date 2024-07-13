@@ -1,3 +1,5 @@
+import { ReservationState } from "./Interfaces";
+
 export interface ClientDTO {
     id?: number;
     firstName: string;
@@ -31,6 +33,7 @@ export interface ClientDTO {
     price: number;
     debt: number;
     nightsStayed: number;
+    state: ReservationState;
     room: RoomDTO;
   }
   
@@ -76,6 +79,7 @@ export const INITIAL_RESERVATION_DTO: ReservationDTO = {
     debt: 0,
     room: INITIAL_ROOM_DTO,
     nightsStayed: 0,
+    state: "No-show",
 };
 
 export const INITIAL_PAYMENT_DTO: PaymentDTO = {

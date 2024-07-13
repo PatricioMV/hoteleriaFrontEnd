@@ -38,6 +38,7 @@ export interface Reservation {
   price: number;
   debt: number;
   nightsStayed: number;
+  state: ReservationState;
   room: Room;
   payments: PaymentDTO[];
   comments: Comment[];
@@ -59,6 +60,11 @@ export interface Payment {
   reservation: Reservation;
   debtOnPayment: number;
 }
+
+export type ReservationState =
+  | 'No-show'
+  | 'Checked-in'
+  | 'Checked-out'
 
 export interface Day {
   date: string;

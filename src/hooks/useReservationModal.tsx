@@ -15,6 +15,7 @@ const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [reservationModalIsOpen, setReservationModalIsOpen] = useState<boolean>(false);
   const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
+  console.log(INITIAL_RESERVATION.state)
   const [newPayment, setNewPayment] = useState(INITIAL_PAYMENT_DTO);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
@@ -56,7 +57,6 @@ const useReservationModal = (onNewReservation: () => void) => {
 
   const handleMouseUp = useCallback((e: any, day: Day) => {
     const { room, date, isReserved } = day;
-
     if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
       dispatch({ type: "SET_ROOM", payload: room });
       dispatch({ type: "SET_CHECK_OUT", payload: getTomorrow(date) });
@@ -144,6 +144,7 @@ const useReservationModal = (onNewReservation: () => void) => {
   const handleSubmit = async (type: string) => {
     if (type === 'POST') {
       const formattedReservation = formatReservation(convertReservationToDTO(reservation));
+      console.log(formattedReservation)
       await createReservation(formattedReservation)
     }
     if (type === 'PUT') {

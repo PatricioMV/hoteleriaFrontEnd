@@ -34,6 +34,7 @@ export const INITIAL_RESERVATION: Reservation = {
     price: 0,
     debt: 0,
     nightsStayed: 0,
+    state: 'No-show',
     room: INITIAL_ROOM,
     payments: [],
     comments: [],
