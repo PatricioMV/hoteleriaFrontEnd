@@ -16,8 +16,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ menuRef, x, y, show, closeCon
 
 
     return (
-        <div ref={menuRef} style={{ top: y, left: x, position: 'absolute', zIndex: 1000, backgroundColor: 'white', boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)' }} className="context-menu" onMouseLeave={closeContextMenu}>
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
+        <div ref={menuRef} style={{ top: y, left: x }} className="context-menu" onMouseLeave={closeContextMenu}>
+            <ul>
                 {options.map((option: any, index: number) => (
                     <li key={index} onClick={() => option.action()}>
                         {option.label}

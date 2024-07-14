@@ -13,8 +13,8 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <Row >
-        <Col>
+      <Row className='calendar-options'>
+        <Col md={6}>
           <label htmlFor="numDays">Show:</label>
           <select id="numDays" value={numDays} onChange={handleNumDaysChange}>
             <option value={7}>7 days</option>
@@ -22,16 +22,16 @@ const Home: React.FC = () => {
             <option value={30}>30 days</option>
           </select>
         </Col>
-        <Col>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ marginRight: '10px' }}>
+        <Col md={6} className="d-flex justify-content-end">
+          <div className="checkbox-group">
+            <div>
               <input
                 type="checkbox"
                 id="filterUnavailable"
                 checked={filterUnavailable}
                 onChange={handleFilterUnavailableChange}
               />
-              <label htmlFor="filterUnavailable">Filtrar cuartos no disponibles</label>
+              <label htmlFor="filterUnavailable" className='no-select'>Filter out-of-service rooms</label>
             </div>
             <div>
               <input
@@ -40,12 +40,13 @@ const Home: React.FC = () => {
                 checked={filterEmpty}
                 onChange={handleFilterEmptyChange}
               />
-              <label htmlFor="filterEmpty">Quitar cuartos vacíos</label>
+              <label htmlFor="filterEmpty" className='no-select'>Filter empty rooms</label>
             </div>
           </div>
         </Col>
       </Row>
-      <Table striped bordered hover responsive className="no-select" size="sm" >
+
+      <Table striped bordered hover responsive className="no-select calendar-table" size="sm" >
         <thead>
           <CalendarHeaders numDays={numDays} />
         </thead>

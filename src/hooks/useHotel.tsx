@@ -22,8 +22,6 @@ export const useHotel = () => {
 
   const handleFilterUnavailableChange = (event: any) => {
     setFilterUnavailable(event.target.checked);
-    console.log(filterUnavailable)
-    // Lógica adicional para filtrar cuartos no disponibles
   };
 
   const handleFilterEmptyChange = (event: any) => {
@@ -42,14 +40,19 @@ export const useHotel = () => {
         const roomsData = await loadRooms();
         if (roomsData) {
           let filteredRooms = roomsData;
+
+          // Aplicar el filtro de cuartos fuera de servicio
           if (filterUnavailable) {
-            //  filteredRooms = filteredRooms.filter(room => room.available);
+            filteredRooms = filteredRooms.filter(r => !r.outOfOrder);
           }
+
+          // Aplicar el filtro de cuartos desocupados
           if (filterEmpty) {
             const occupiedRooms = await loadOccupiedRooms(getYesterday().format('YYYY-MM-DD'), getEndDate(numDays).format('YYYY-MM-DD'));
             const occupiedRoomNumbers = new Set(occupiedRooms);
             filteredRooms = filteredRooms.filter(room => occupiedRoomNumbers.has(room.number));
           }
+
           setRooms(filteredRooms);
         }
       } catch (error) {
@@ -60,7 +63,8 @@ export const useHotel = () => {
     };
 
     fetchRooms();
-  }, [filterEmpty, filterUnavailable, renderFlag]);
+  }, [filterEmpty, filterUnavailable, renderFlag, numDays]); // Añadido numDays en las dependencias
+
 
 
   return { rooms, numDays, handleNumDaysChange, loading, handleFilterEmptyChange, handleFilterUnavailableChange, filterUnavailable, filterEmpty, forceCalendarRender };

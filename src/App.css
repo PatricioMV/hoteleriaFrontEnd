@@ -3,45 +3,85 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border: 1px solid rgb(0, 0, 0);
-  margin: 20px 0 20px 0;
-  width: 100%;
 }
 
-.table th,
-.table td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+body {
+  background-color: #cad2db7e; /* Cambia el color de fondo según tu preferencia */
+  margin: 0; /* Asegura que no haya margen adicional */
+  font-family: Arial, sans-serif; /* Define la fuente para todo el cuerpo */
 }
+
+.calendar-options {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.calendar-options label {
+  margin-right: 10px;
+}
+
+.calendar-options select,
+.calendar-options input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.calendar-options select {
+  background-color: #495057;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.calendar-options input[type="checkbox"] + label {
+  margin-left: 5px;
+}
+
+.calendar-options .no-select {
+  user-select: none;
+}
+
+.calendar-options .checkbox-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.calendar-options .checkbox-group > div {
+  margin-right: 15px;
+}
+
+.calendar-options .checkbox-group > div:last-child {
+  margin-right: 0;
+}
+
 
 .calendar-cell,
-.header,
-.today-header {
+.calendar-header,
+.today-calendar-header,
+.today-calendar-day,
+.calendar-day {
   min-width: 100px;
-  /* Ajusta según tus necesidades */
   max-width: 200px;
-  /* Ajusta según tus necesidades */
 }
 
-.today-row {
-  background-color: #c00010;
-  color: red;
+.today-calendar-header,
+.today-calendar-day {
+  background-color: rgba(65, 131, 207, 0.2) !important; /* Fondo azul claro */
 }
 
-.header {
-  background-color: lightgray;
+.today-calendar-day:hover,
+.calendar-day:hover {
+  cursor: pointer;
 }
 
-.today-header {
-  background-color: rgba(65, 131, 207, 0.692) !important;
-  font-weight: bold;
-}
-
-.fixed-bottom {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+.today-calendar-header:hover {
+  background-color: rgba(65, 131, 207, 0.4) !important; /* Fondo azul más intenso al pasar el ratón */
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -153,15 +193,6 @@ input[type=number]::-webkit-outer-spin-button {
   width: auto;
 }
 
-
-.room-out-of-order {
-  background-color: #000000; /* Color de fondo para indicar que está fuera de servicio */
-  color: #a52632; /* Color de texto para indicar que está fuera de servicio */
-  cursor: not-allowed; /* Cursor para indicar que no es clicable */
-  pointer-events: none; /* Deshabilita cualquier interacción */
-  opacity: 0.6; /* Hace la fila más translúcida para indicar que está deshabilitada */
-}
-
 .dropdown-menu {
   position: static !important; /* Necesario para que el menú se posicione correctamente */
 }
@@ -169,23 +200,25 @@ input[type=number]::-webkit-outer-spin-button {
 .context-menu {
   position: absolute;
   z-index: 1000;
-  background-color: white;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   border-radius: 8px;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 .context-menu ul {
+  background-color: #343a40;
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
 .context-menu li {
-  padding: 12px 20px;
+  padding: 11px 16px;
   cursor: pointer;
   border-bottom: 1px solid #ddd;
   transition: background-color 0.3s ease;
+  color: white; 
 }
 
 .context-menu li:last-child {
@@ -193,6 +226,108 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .context-menu li:hover {
-  background-color: #f1f1f1;
+  background-color: #5f666d; 
+  color: white;
 }
 
+/* Estilos generales para la tabla */
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.calendar-table th, .calendar-table td {
+  border: 1px solid #284664;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.calendar-table th {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.calendar-table tr.room-out-of-order td {
+  background-color: #f8d7da;
+  color: #6d3823bb;
+  font-weight: bold;
+  cursor: not-allowed; 
+  pointer-events: none; 
+  opacity: 0.6; 
+}
+
+.room-out-of-order {
+  background-color: #000000; 
+}
+
+.no-select {
+  user-select: none;
+}
+
+.Checked-in {
+  background-color: #3ea867a9 !important; /* Color de fondo */
+  color: #3c4443 !important; /* Color del texto */
+}
+
+.Checked-in:hover {
+  background-color: #3ea867c9; /* Color de fondo al pasar el mouse */ /* Levantar ligeramente al pasar el mouse */
+}
+
+.Checked-in div {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente */
+  font-size: 14px; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+}
+
+.Checked-out {
+  background-color: #7f856da9 !important; /* Color de fondo */
+  color: #3c4443 !important; /* Color del texto */
+}
+
+.Checked-out:hover {
+  background-color: #bfff00c4; /* Color de fondo al pasar el mouse */ /* Levantar ligeramente al pasar el mouse */
+}
+
+.Checked-out div {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente */
+  font-size: 14px; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+}
+
+
+/*  reservations-table  */
+.reservations-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+}
+
+.reservations-table th, .reservations-table td {
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.reservations-table th {
+  background-color: #495057;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.reservations-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.reservations-table tr:hover {
+  background-color: #d3d3d3;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.no-select {
+  user-select: none;
+}

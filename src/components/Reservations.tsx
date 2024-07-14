@@ -23,20 +23,19 @@ const Reservations: React.FC = () => {
       });
   }, [reservationModifiedFlag]);
 
-
+  console.log(reservations[0])
   const { reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation } = useReservationModal(toggleReservationModifiedFlag);
   return (
     <div>
-      <h1>Reservations</h1>
-      <Table striped bordered hover responsive >
+      <Table striped bordered hover responsive className="no-select reservations-table" size="sm" >
         <thead>
           <tr>
-            <th>id</th><th>Client</th><th>Check-In</th><th>Check-Out</th><th>Nights stayed</th><th>Room</th>
+            <th>Client</th><th>Check-In</th><th>Check-Out</th><th>Nights stayed</th><th>Price</th><th>Debt</th><th>Room</th>
           </tr>
         </thead>
         {reservations.map(reservation => (
           <tr onClick={() => selectReservation(reservation)}>
-            <td>{reservation.id}</td><td>{reservation.client.firstName + " " + reservation.client.lastName}</td><td>{reservation.checkIn}</td><td>{reservation.checkOut}</td><td>{reservation.nightsStayed}</td><td>{reservation.room.number}</td>
+            <td>{reservation.client.firstName + " " + reservation.client.lastName}</td><td>{reservation.checkIn}</td><td>{reservation.checkOut}</td><td>{reservation.nightsStayed}</td><td>{reservation.price}</td><td>{reservation.debt}</td><td>{reservation.room.number}</td>
           </tr>
         ))}
       </Table>

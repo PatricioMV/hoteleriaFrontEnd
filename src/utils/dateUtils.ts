@@ -56,10 +56,10 @@ export const generateHeadersDays = (amountOfDates: number): CalendarHeaderDays[]
     const cutoffDate = moment(yesterday).add(amountOfDates, 'days');
     while (yesterday.isBefore(cutoffDate)) {
         if (yesterday.isSame(today)) { // Fijarse si es necesario que tenga algo difente el dia {today}
-            days.push({ date: yesterday.format('DD/MM'), class: "today-header" });
+            days.push({ date: yesterday.format('DD/MM'), class: "today-calendar-header" });
             yesterday.add(1, 'days');
         } else {
-            days.push({ date: yesterday.format('DD/MM'), class: 'header' });
+            days.push({ date: yesterday.format('DD/MM'), class: 'calendar-header' });
             yesterday.add(1, 'days');
         }
     }

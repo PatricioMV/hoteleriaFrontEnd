@@ -76,7 +76,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate, for
   return (
     <>
       <tr key={room.number} className={room.outOfOrder ? "room-out-of-order" : "room"} >
-        <td className={room.outOfOrder ? "room-out-of-order" : "room"} onContextMenu={(e) => handleContextMenu(e, room)}>{room.number} {room.type}</td>
+        <td className={room.outOfOrder ? "room-info-out-of-order" : "room-info"} onContextMenu={(e) => handleContextMenu(e, room)}>{room.number} {room.type}</td>
         {days.map((day) => <CalendarDay day={day} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp} handleContextMenu={handleContextMenu} />)}
       </tr>
 
