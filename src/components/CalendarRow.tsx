@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Reservation, Day, Room, CalendarRowProps } from '../models/Interfaces';
-import { loadReservationsBetweenDatesById, updateClient } from '../services/apiUtils';
+import { Reservation, Day, CalendarRowProps } from '../models/Interfaces';
+import { loadReservationsBetweenDatesById } from '../services/apiUtils';
 import moment from 'moment';
 import ReservationModal from './ReservationModal';
 import useNewReservationModal from '../hooks/useReservationModal';
@@ -12,27 +12,23 @@ const CalendarRow: React.FC<CalendarRowProps> = ({ room, startDate, endDate, for
   const [days, setDays] = useState<Day[]>([]);
   const [newReservationFlag, setNewReservationFlag] = useState<boolean>(false);
 
-
-  const fetchReservations = async () => {
-    try {
-      const reservations: Reservation[] | void = await loadReservationsBetweenDatesById(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-        room.id
-      )
-      if (Array.isArray(reservations) && reservations?.length > 0) {
-        setDays(generateDays(startDate, endDate, reservations));
-      } else {
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const reservations: Reservation[] | void = await loadReservationsBetweenDatesById(
+          startDate.format('YYYY-MM-DD'),
+          endDate.format('YYYY-MM-DD'),
+          room.id
+        )
+        if (Array.isArray(reservations) && reservations?.length > 0) {
+          setDays(generateDays(startDate, endDate, reservations));
+        } else {
+          setDays(generateDays(startDate, endDate, []));
+        }
+      } catch (error) {
         setDays(generateDays(startDate, endDate, []));
       }
-    } catch (error) {
-      setDays(generateDays(startDate, endDate, []));
-    }
-  };
-
-
-
-  useEffect(() => {
+    };
     fetchReservations();
   }, [room.id, startDate, endDate, newReservationFlag]);
 

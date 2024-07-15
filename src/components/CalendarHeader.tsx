@@ -1,19 +1,9 @@
-import moment from 'moment';
 import React from 'react';
-import { generateHeadersDays, getYesterday } from '../utils/dateUtils';
-
-interface CalendarHeadersProps {
-  numDays: number;
-}
-
-export interface CalendarHeaderDays {
-  date: string;
-  class: string;
-}
-
+import { generateHeadersDays } from '../utils/dateUtils';
+import { CalendarHeaderDays, CalendarHeadersProps } from '../models/Interfaces';
 
 const CalendarHeaders: React.FC<CalendarHeadersProps> = ({ numDays }) => {
-  const headersDays = generateHeadersDays(numDays);
+  const headersDays: CalendarHeaderDays[] = generateHeadersDays(numDays);
   return (
     <tr>
       <th>Room:</th>

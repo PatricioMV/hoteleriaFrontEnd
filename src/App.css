@@ -11,6 +11,8 @@ body {
   font-family: Arial, sans-serif; /* Define la fuente para todo el cuerpo */
 }
 
+/* Calendar Options CSS*/
+
 .calendar-options {
   padding: 12px;
   margin-bottom: 10px;
@@ -58,6 +60,34 @@ body {
 
 .calendar-options .checkbox-group > div:last-child {
   margin-right: 0;
+}
+
+/* Calendar CSS*/
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.calendar-table th, .calendar-table td {
+  border: 1px solid #284664;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.calendar-table th {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.calendar-table tr.room-out-of-order td {
+  background-color: #f8d7da;
+  color: #6d3823bb;
+  font-weight: bold;
+  cursor: not-allowed; 
+  pointer-events: none; 
+  opacity: 0.6; 
 }
 
 
@@ -228,33 +258,6 @@ input[type=number]::-webkit-outer-spin-button {
 .context-menu li:hover {
   background-color: #5f666d; 
   color: white;
-}
-
-/* Estilos generales para la tabla */
-.calendar-table {
-  width: 100%;
-  border-collapse: collapse;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
-.calendar-table th, .calendar-table td {
-  border: 1px solid #284664;
-  padding: 0.75rem;
-  text-align: center;
-}
-
-.calendar-table th {
-  background-color: #f8f9fa;
-  color: #495057;
-}
-
-.calendar-table tr.room-out-of-order td {
-  background-color: #f8d7da;
-  color: #6d3823bb;
-  font-weight: bold;
-  cursor: not-allowed; 
-  pointer-events: none; 
-  opacity: 0.6; 
 }
 
 .room-out-of-order {

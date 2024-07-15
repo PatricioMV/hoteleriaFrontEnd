@@ -1,5 +1,31 @@
 import moment, { Moment } from "moment";
-import { CalendarHeaderDays } from "../components/CalendarHeader";
+import { CalendarHeaderDays } from "../models/Interfaces";
+
+
+export const getYesterday = () => {
+    return moment().subtract(1, 'days')
+}
+
+export const getEndDate = (num: number) => {
+    return moment().add(num - 1, 'days');
+}
+
+export const generateHeadersDays = (amountOfDates: number): CalendarHeaderDays[] => {
+    const days: CalendarHeaderDays[] = [];
+    const today = moment();
+    const yesterday = getYesterday();
+    const cutoffDate = moment(yesterday).add(amountOfDates, 'days');
+    while (yesterday.isBefore(cutoffDate)) {
+        if (yesterday.isSame(today)) { // Fijarse si es necesario que tenga algo difente el dia {today}
+            days.push({ date: yesterday.format('DD/MM'), class: "today-calendar-header" });
+            yesterday.add(1, 'days');
+        } else {
+            days.push({ date: yesterday.format('DD/MM'), class: 'calendar-header' });
+            yesterday.add(1, 'days');
+        }
+    }
+    return days;
+};
 
 
 export const getTomorrow = (date: string) => {
@@ -36,35 +62,9 @@ export const getDatesInRange = (startDate: Moment, endDate: Moment): string[] =>
 
 // Otras funciones relacionadas con fechas...
 
-
-export const getYesterday = () => {
-    return moment().subtract(1, 'days')
-}
-
-export const getEndDate = (num: number) => {
-    return moment().add(num - 1, 'days');
-}
-
 export const isSameOrBefore = (dateOne: string, dateTwo: string) => {
     return moment(dateOne).isSameOrBefore(moment(dateTwo));
 }
-
-export const generateHeadersDays = (amountOfDates: number): CalendarHeaderDays[] => {
-    const days: CalendarHeaderDays[] = [];
-    const today = moment();
-    const yesterday = getYesterday();
-    const cutoffDate = moment(yesterday).add(amountOfDates, 'days');
-    while (yesterday.isBefore(cutoffDate)) {
-        if (yesterday.isSame(today)) { // Fijarse si es necesario que tenga algo difente el dia {today}
-            days.push({ date: yesterday.format('DD/MM'), class: "today-calendar-header" });
-            yesterday.add(1, 'days');
-        } else {
-            days.push({ date: yesterday.format('DD/MM'), class: 'calendar-header' });
-            yesterday.add(1, 'days');
-        }
-    }
-    return days;
-};
 
 export const isDateBeforeToday = (date: string) => {
     const now = moment().startOf('day');   

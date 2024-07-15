@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { loadOccupiedRooms, loadRooms } from '../services/apiUtils';
 import { Room } from '../models/Interfaces';
 import { getEndDate, getYesterday } from '../utils/dateUtils';
@@ -20,13 +20,12 @@ export const useHotel = () => {
     setNumDays(selectedDays);
   };
 
-  const handleFilterUnavailableChange = (event: any) => {
+  const handleFilterUnavailableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterUnavailable(event.target.checked);
   };
 
-  const handleFilterEmptyChange = (event: any) => {
+  const handleFilterEmptyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterEmpty(event.target.checked);
-    // Lógica adicional para quitar cuartos vacíos
   };
 
   const handleLoading = (loading: boolean) => {
@@ -40,19 +39,14 @@ export const useHotel = () => {
         const roomsData = await loadRooms();
         if (roomsData) {
           let filteredRooms = roomsData;
-
-          // Aplicar el filtro de cuartos fuera de servicio
           if (filterUnavailable) {
             filteredRooms = filteredRooms.filter(r => !r.outOfOrder);
           }
-
-          // Aplicar el filtro de cuartos desocupados
           if (filterEmpty) {
             const occupiedRooms = await loadOccupiedRooms(getYesterday().format('YYYY-MM-DD'), getEndDate(numDays).format('YYYY-MM-DD'));
             const occupiedRoomNumbers = new Set(occupiedRooms);
             filteredRooms = filteredRooms.filter(room => occupiedRoomNumbers.has(room.number));
           }
-
           setRooms(filteredRooms);
         }
       } catch (error) {
@@ -63,7 +57,7 @@ export const useHotel = () => {
     };
 
     fetchRooms();
-  }, [filterEmpty, filterUnavailable, renderFlag, numDays]); // Añadido numDays en las dependencias
+  }, [filterEmpty, filterUnavailable, renderFlag, numDays]);
 
 
 

@@ -74,6 +74,30 @@ export interface Day {
   colspan: number;
 }
 
+export interface CalendarOptionsProps {
+  numDays: number;
+  handleNumDaysChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  filterUnavailable: boolean;
+  handleFilterUnavailableChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  filterEmpty: boolean;
+  handleFilterEmptyChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface CalendarProps {
+  numDays: number;
+  rooms: Room[];
+  forceCalendarRender: () => void;
+}
+
+export interface CalendarHeadersProps {
+  numDays: number;
+}
+
+export interface CalendarHeaderDays {
+  date: string;
+  class: string;
+}
+
 export interface CalendarRowProps {
   room: Room;
   startDate: moment.Moment;
