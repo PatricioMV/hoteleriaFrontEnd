@@ -89,7 +89,6 @@ export const loadReservationsById = async (id: number): Promise<Reservation> => 
 
 export const createReservation = async (reservation: any) => {
   try {
-    console.log(reservation.checkIn)
     const response: AxiosResponse<Reservation> = await postReservation(reservation);
     return response.data;
   } catch (error) {

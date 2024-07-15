@@ -1,70 +1,67 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Day, Reservation, ReservationState, Room } from '../models/Interfaces';
+import { ContextMenuOptions, Day, Reservation, Room } from '../models/Interfaces';
 import { INITIAL_RESERVATION, INITIAL_ROOM } from '../models/models';
 import { editRoom, updateReservation } from '../services/apiUtils';
 
 const useContextMenu = (forceCalendarRender: () => void) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const menuRef = useRef<HTMLDivElement>(null);
     const reservationRef = useRef<Reservation>(INITIAL_RESERVATION);
+    const [options, setOptions] = useState<ContextMenuOptions[]>([]);
     const roomRef = useRef<Room>(INITIAL_ROOM);
 
-
-    const roomOptions = [
+    const roomOptions: ContextMenuOptions[] = [
         {
             label: 'Room out of order',
-            action: () => {
-                const updatedRoom = { ...roomRef.current, outOfOrder: true }
-                editRoom(updatedRoom).then(() => {
+            action: async () => {
+                try {
+                    const updatedRoom = { ...roomRef.current, outOfOrder: true };
+                    await editRoom(updatedRoom);
                     forceCalendarRender();
                     roomRef.current = INITIAL_ROOM;
                     closeContextMenu();
-                }).catch((error) => {
-                    console.error('Error updating reservation:', error);
-                });
+                } catch (error) {
+                    console.error('Error updating room:', error);
+                }
             },
         },
     ];
 
-    const [options, setOptions] = useState(roomOptions)
-
-    const updateReservationOptions = (reservation: Reservation) => {
-        return [
-            {
-                label: reservation.status === 'No-show' ? 'Check-in' : 'Check-out',
-                action: () => {
+    const updateReservationOptions = (reservation: Reservation): ContextMenuOptions[] => [
+        {
+            label: reservation.status === 'No-show' ? 'Check-in' : 'Check-out',
+            action: async () => {
+                try {
                     const updatedState = reservation.status === 'No-show' ? 'Checked-in' : 'Checked-out';
                     const updatedReservation: Reservation = { ...reservationRef.current, status: updatedState };
-                    updateReservation(updatedReservation)
-                        .then(() => {
-                            reservationRef.current = INITIAL_RESERVATION;
-                            forceCalendarRender();
-                            closeContextMenu();
-                        }).catch((error) => {
-                            console.error('Error updating reservation:', error);
-                        });
-                },
-            }
-        ];
-    }
+                    await updateReservation(updatedReservation);
+                    reservationRef.current = INITIAL_RESERVATION;
+                    forceCalendarRender();
+                    closeContextMenu();
+                } catch (error) {
+                    console.error('Error updating reservation:', error);
+                }
+            },
+        },
+    ];
 
-    const handleContextMenu = useCallback((event: any, room: Room, day?: Day) => {
+    const handleContextMenu = useCallback((event: React.MouseEvent, room: Room, day?: Day) => {
         event.preventDefault();
-        if (day === undefined) {
+        if (!day) {
             roomRef.current = room;
             setOptions(roomOptions);
         } else {
-            if (day.reservation?.status === "Checked-out") return;
-            reservationRef.current = day.reservation!
+            if (day.reservation?.status === 'Checked-out') return;
+            reservationRef.current = day.reservation!;
             setOptions(updateReservationOptions(day.reservation!));
         }
         setMenuPosition({ x: event.pageX, y: event.pageY });
         setIsVisible(true);
     }, [roomOptions]);
 
-    const handleClickOutside = useCallback((event: any) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
+    const handleClickOutside = useCallback((event: MouseEvent) => {
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
             setIsVisible(false);
         }
     }, []);
@@ -84,4 +81,7 @@ const useContextMenu = (forceCalendarRender: () => void) => {
 };
 
 export default useContextMenu;
+
+
+
 

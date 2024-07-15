@@ -24,7 +24,7 @@ const CalendarDay: React.FC<any> = ({
   const className = `${day.room.outOfOrder ? 'room-out-of-order' : (moment().format('YYYY-MM-DD') === day.date && !day.isReserved) ? 'today-calendar-day' : 'calendar-day'}${day.isReserved == true ? " " + day.reservation.state : ''}`;
 
   return (
-    <td key={day.date + day.room.number} colSpan={day.colspan} className={className} onMouseDown={(e) => handleMouseDown(e, day)} onMouseUp={(e) => handleMouseUp(e, day)}>
+    <td key={day.date + day.room.number} colSpan={day.colspan} className={className} onMouseDown={(e) => handleMouseDown(e, day)} onMouseUp={(e) => handleMouseUp(day)}>
       {day.isReserved ? (
         <div onContextMenu={(e) => handleContextMenu(e, day.room, day)} className={day.reservation.status}>
           {day.reservation?.client.firstName + " " + day.reservation?.client.lastName}

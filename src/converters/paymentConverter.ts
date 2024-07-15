@@ -9,7 +9,7 @@ export const convertPaymentToDTO = (payment: Payment): PaymentDTO => {
         paymentDate: payment.paymentDate,
         amount: payment.amount,
         reservation: convertReservationToDTO(payment.reservation),
-        debtOnPayment: payment.debtOnPayment,
+        debt: payment.debtOnPayment,
     }
 };
 

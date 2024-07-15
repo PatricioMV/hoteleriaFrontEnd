@@ -1,5 +1,5 @@
 import moment, { Moment } from "moment";
-import { CalendarHeaderDays } from "../models/Interfaces";
+import { CalendarHeaderDays, Day, Reservation, Room } from "../models/Interfaces";
 
 
 export const getYesterday = () => {
@@ -27,12 +27,54 @@ export const generateHeadersDays = (amountOfDates: number): CalendarHeaderDays[]
     return days;
 };
 
+export const generateCalendarDays = ( room: Room, startDate: moment.Moment, endDate: moment.Moment, reservations: Reservation[]): Day[] => {
+    const days: Day[] = [];
+    let auxDate = startDate.clone();
+    while (auxDate.isBefore(endDate)) {
+      const formattedDate = auxDate.format('YYYY-MM-DD');
+      const reservation = reservations.find((r) => auxDate.isBetween(moment(r.checkIn), moment(r.checkOut), null, '[]'));
+      if (reservation != undefined) {
+        days.push({
+          date: formattedDate,
+          room: {
+            ...room,
+            occupied: true,
+          },
+          isReserved: true,
+          reservation: reservation,
+          colspan: reservation.nightsStayed,
+        });
+        auxDate.add(reservation.nightsStayed, 'days');
+      } else {
+        days.push({
+          date: formattedDate,
+          room: room,
+          isReserved: false,
+          colspan: 1,
+        });
+        auxDate.add(1, 'days');
+      }
+    }
+    return days;
+  };
 
 export const getTomorrow = (date: string) => {
     const today = moment(date);
     const tomorrow = today.clone().add(1, 'day');
     return tomorrow.format('YYYY-MM-DD');
 }
+
+export const isSameOrBefore = (dateOne: string, dateTwo: string) => {
+    return moment(dateOne).isSameOrBefore(moment(dateTwo));
+}
+
+export const isDateBeforeToday = (date: string) => {
+    const now = moment().startOf('day');   
+    const dateToCheck = moment(date).startOf('day');  
+    return dateToCheck.isBefore(now);
+}
+
+//De aca a abajo no se uso
 
 export const formatDateDB = (date: Moment): string => {
     return date.format('YYYY-MM-DD');
@@ -62,12 +104,4 @@ export const getDatesInRange = (startDate: Moment, endDate: Moment): string[] =>
 
 // Otras funciones relacionadas con fechas...
 
-export const isSameOrBefore = (dateOne: string, dateTwo: string) => {
-    return moment(dateOne).isSameOrBefore(moment(dateTwo));
-}
 
-export const isDateBeforeToday = (date: string) => {
-    const now = moment().startOf('day');   
-    const dateToCheck = moment(date).startOf('day');  
-    return dateToCheck.isBefore(now);
-}

@@ -33,7 +33,7 @@ const PaymentsTable: React.FC<PaymentsTableProps> = ({ reservation }) => {
                             <td>{reservation.checkOut}</td>
                             <td>{reservation.nightsStayed}</td>
                             <td>{payment.amount}</td>
-                            <td>{payment.debtOnPayment}</td>
+                            <td>{payment.debt}</td>
                             <td>{reservation.room.number}</td>
                         </tr>
                     </tbody>

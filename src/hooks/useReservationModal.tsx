@@ -1,15 +1,14 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
 import { Day, Reservation } from "../models/Interfaces";
-import { createClient, createPayment, createReservation, eraseReservation, loadClientByDni, loadClientsById, loadReservationsById, updateReservation } from "../services/apiUtils";
+import { createPayment, createReservation, eraseReservation, loadClientByDni, loadReservationsById, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow, isDateBeforeToday, isSameOrBefore } from "../utils/dateUtils";
 import { putClient } from "../services/api";
 import { INITIAL_PAYMENT_DTO, ReservationDTO } from "../models/dtos";
-import { convertClientToDTO } from "../converters/clientConverter";
 import { convertReservationToDTO } from "../converters/reservationConverter";
-import { INITIAL_PAYMENT, INITIAL_RESERVATION } from "../models/models";
+import { INITIAL_RESERVATION } from "../models/models";
 
 const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -33,10 +32,9 @@ const useReservationModal = (onNewReservation: () => void) => {
     }
   }, [debouncedDni, isDoneWriting])
 
-  const handleMouseDown = useCallback(async (e: any, day: Day) => {
-    const { room, date, isReserved } = day;
+  const handleMouseDown = useCallback(async (e: React.MouseEvent<HTMLDivElement>, day: Day) => {
+    const { date, isReserved } = day;
     if (e.button == 0) {
-      console.log(e.button)
       if (!isReserved && !isDateBeforeToday(day.date)) {
         setIsDragging(true);
         dispatch({ type: "SET_CHECK_IN", payload: date });
@@ -50,11 +48,9 @@ const useReservationModal = (onNewReservation: () => void) => {
         }
       }
     }
-
-
   }, []);
 
-  const handleMouseUp = useCallback((e: any, day: Day) => {
+  const handleMouseUp = useCallback((day: Day) => {
     const { room, date, isReserved } = day;
     if (isDragging && !isReserved && isSameOrBefore(checkIn, date)) {
       dispatch({ type: "SET_ROOM", payload: room });
@@ -70,7 +66,6 @@ const useReservationModal = (onNewReservation: () => void) => {
   }, [isDragging]);
 
   const selectReservation = (reservation: Reservation) => {
-    console.log(reservation);
     dispatch({ type: "SET_RESERVATION", payload: reservation });
     setReservationModalIsOpen(true);
   }
@@ -103,7 +98,7 @@ const useReservationModal = (onNewReservation: () => void) => {
           paymentDate: moment().format('YYYY-MM-DD'),
           amount: value,
           reservation: convertReservationToDTO(reservation),
-          debtOnPayment: reservation.debt - value,
+          debt: reservation.debt - value,
         })
         break;
       default:
@@ -133,7 +128,6 @@ const useReservationModal = (onNewReservation: () => void) => {
   const handleSubmit = async (type: string) => {
     if (type === 'POST') {
       const formattedReservation = formatReservation(convertReservationToDTO(reservation));
-      console.log(formattedReservation)
       await createReservation(formattedReservation)
     }
     if (type === 'PUT') {
@@ -157,7 +151,6 @@ const useReservationModal = (onNewReservation: () => void) => {
       try { await eraseReservation(reservation.id); }
       catch (error) { console.log('error deleting reservation' + error) }
     }
-
     onNewReservation();
     closeReservationModal();
   };

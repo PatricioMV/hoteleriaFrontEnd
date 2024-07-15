@@ -25,7 +25,6 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
     const rows = renderedComments || [];
     const emptyRows = 7 - rows.length;
 
-
     useEffect(() => {
         const fetchComments = async () => {
             try {
@@ -35,7 +34,7 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
                 console.error("Error fetching comments:", error);
             }
         }
-        fetchComments();
+        if (reservation.id != 0) fetchComments();
     }, [reloadCommentFlag])
 
     const postComment = async () => {

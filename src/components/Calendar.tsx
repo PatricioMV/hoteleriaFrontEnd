@@ -12,6 +12,7 @@ const Calendar: React.FC<CalendarProps> = ({ numDays, rooms, forceCalendarRender
         <tbody>
             {rooms.map((room) => (
                 <CalendarRow
+                    key={room.id}
                     room={room}
                     startDate={getYesterday()}
                     endDate={getEndDate(numDays)}

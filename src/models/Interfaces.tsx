@@ -105,6 +105,11 @@ export interface CalendarRowProps {
   forceCalendarRender: () => void;
 }
 
+export interface ContextMenuOptions {
+  label: string;
+  action: () => void;
+}
+
 export interface FetchingResponse {
   error?: Error;
   rooms?: Room[];
