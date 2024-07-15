@@ -14,12 +14,12 @@ export interface Client {
 export interface Room {
   id: number;
   number: number;
+  type: string;
   occupied: boolean;
   outOfOrder: boolean;
   comments?: string;
   roomSpecifications: RoomSpecifications;
 
-  type: string;
 }
 
 export interface RoomSpecifications {
@@ -38,7 +38,7 @@ export interface Reservation {
   price: number;
   debt: number;
   nightsStayed: number;
-  state: ReservationState;
+  status: ReservationState;
   room: Room;
   payments: PaymentDTO[];
   comments: Comment[];

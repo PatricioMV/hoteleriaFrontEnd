@@ -32,10 +32,10 @@ const useContextMenu = (forceCalendarRender: () => void) => {
     const updateReservationOptions = (reservation: Reservation) => {
         return [
             {
-                label: reservation.state === 'No-show' ? 'Check-in' : 'Check-out',
+                label: reservation.status === 'No-show' ? 'Check-in' : 'Check-out',
                 action: () => {
-                    const updatedState = reservation.state === 'No-show' ? 'Checked-in' : 'Checked-out';
-                    const updatedReservation: Reservation = { ...reservationRef.current, state: updatedState };
+                    const updatedState = reservation.status === 'No-show' ? 'Checked-in' : 'Checked-out';
+                    const updatedReservation: Reservation = { ...reservationRef.current, status: updatedState };
                     updateReservation(updatedReservation)
                         .then(() => {
                             reservationRef.current = INITIAL_RESERVATION;
@@ -55,7 +55,7 @@ const useContextMenu = (forceCalendarRender: () => void) => {
             roomRef.current = room;
             setOptions(roomOptions);
         } else {
-            if (day.reservation?.state === "Checked-out") return;
+            if (day.reservation?.status === "Checked-out") return;
             reservationRef.current = day.reservation!
             setOptions(updateReservationOptions(day.reservation!));
         }

@@ -3,12 +3,13 @@ import { getRooms, getReservations, postReservation, getReservationsBetweenDates
 import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
 import { PaymentDTO } from '../models/dtos';
 
-export const loadRooms = async () => {
+export const loadRooms = async (): Promise<Room[]> => {
   try {
     const response: AxiosResponse<Room[]> = await getRooms();
     return response.data;
   } catch (error) {
     console.log('Error fetching Rooms', error);
+    throw error;
   }
 };
 

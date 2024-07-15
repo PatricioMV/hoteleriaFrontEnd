@@ -15,7 +15,6 @@ const useReservationModal = (onNewReservation: () => void) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [reservationModalIsOpen, setReservationModalIsOpen] = useState<boolean>(false);
   const [reservation, dispatch] = useReducer(reservationReducer, INITIAL_RESERVATION);
-  console.log(INITIAL_RESERVATION.state)
   const [newPayment, setNewPayment] = useState(INITIAL_PAYMENT_DTO);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
@@ -111,16 +110,6 @@ const useReservationModal = (onNewReservation: () => void) => {
         break;
     }
   };
-
-  /* const postClient = async () => {
-     const newClient = await createClient(client);
-     console.log(newClient)
-     if (newClient) {
-       dispatch({ type: "SET_CLIENT", payload: convertClientToDTO(newClient) });
-       return newClient!.id
-     }
-     return 0;
-   };*/
 
   const formatReservation = (reservation: ReservationDTO) => {
     const isNewClient = reservation.client.id == 0 ? true : false;
