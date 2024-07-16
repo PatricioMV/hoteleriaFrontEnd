@@ -3,11 +3,11 @@ import { getReservations } from '../services/api';
 import { Table } from 'react-bootstrap';
 import useReservationModal from '../hooks/useReservationModal';
 import ReservationModal from './ReservationModal';
+import { Reservation } from '../models/Interfaces';
 
 const Reservations: React.FC = () => {
-  const [reservations, setReservations] = useState<any[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [reservationModifiedFlag, setReservationModifiedFlag] = useState(false);
-  //El handleSubmit en calendarRow es diferente.
 
   const toggleReservationModifiedFlag = () => {
     setReservationModifiedFlag(!reservationModifiedFlag);
@@ -22,8 +22,6 @@ const Reservations: React.FC = () => {
         console.error("Error fetching reservations", error);
       });
   }, [reservationModifiedFlag]);
-
-  console.log(reservations[0])  //CONSOLE LOG ACA BORRAR
 
   const { reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation } = useReservationModal(toggleReservationModifiedFlag);
   return (

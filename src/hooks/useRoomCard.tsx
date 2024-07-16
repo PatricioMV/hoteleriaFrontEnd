@@ -28,7 +28,7 @@ const useRoomCard = () => {
     const handleRoomCard = async (field: string, value?: any) => {
         switch (field) {
             case 'number':
-                dispatch({ type: "SET_NUMBER", payload: parseInt(value) });
+                dispatch({ type: "SET_NUMBER", payload: value });
                 break;
             case 'type':
                 const roomSpecifications = await loadRoomSpecificationsByType(value);
@@ -43,18 +43,18 @@ const useRoomCard = () => {
                 break;
             case 'post':
                 const { id, ...restRoom } = room;
-                value();
-                createRoom(restRoom);
+                await createRoom(restRoom);
+                await value();
                 dispatch({ type: "RESET_ROOM" });
                 break;
             case 'update':
-                editRoom(room);
-                value();
+                await editRoom(room);
+                await value();
                 break;
             case 'delete':
                 if (room.id) {
                     await eraseRoom(room.id);
-                    value();
+                    await value();
                     dispatch({ type: "RESET_ROOM" });
                 } else {
                     console.error('No room ID to delete');

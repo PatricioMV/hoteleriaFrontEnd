@@ -117,6 +117,21 @@ export interface CalendarDayProps {
   handleContextMenu: (event: React.MouseEvent, room: Room, day?: Day) => void;
 }
 
+export interface RoomCardProps {
+  roomTypes: string[];
+  toggleNewRoomFlag: () => void;
+}
+
+export interface RoomTableProps {
+  roomsSpecifications: RoomSpecifications[];
+  editableRow: number | null;
+  formValues: RoomSpecifications;
+  handleChange: (e: any) => void; //QUE EVENTO ES
+  handleSubmit: (type: string) => void;
+  handleEdit: (index: number, roomSpecification: RoomSpecifications) => void;
+  isAddingNew: boolean;
+}
+
 export interface FetchingResponse {
   error?: Error;
   rooms?: Room[];
