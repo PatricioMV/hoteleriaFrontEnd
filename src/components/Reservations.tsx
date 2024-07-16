@@ -23,7 +23,8 @@ const Reservations: React.FC = () => {
       });
   }, [reservationModifiedFlag]);
 
-  console.log(reservations[0])
+  console.log(reservations[0])  //CONSOLE LOG ACA BORRAR
+
   const { reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation } = useReservationModal(toggleReservationModifiedFlag);
   return (
     <div>
@@ -34,7 +35,7 @@ const Reservations: React.FC = () => {
           </tr>
         </thead>
         {reservations.map(reservation => (
-          <tr onClick={() => selectReservation(reservation)}>
+          <tr onClick={() => selectReservation(reservation)} key={reservation.id}>
             <td>{reservation.client.firstName + " " + reservation.client.lastName}</td><td>{reservation.checkIn}</td><td>{reservation.checkOut}</td><td>{reservation.nightsStayed}</td><td>{reservation.price}</td><td>{reservation.debt}</td><td>{reservation.room.number}</td>
           </tr>
         ))}

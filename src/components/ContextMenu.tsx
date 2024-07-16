@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { ReservationState } from '../models/Interfaces';
+import React from 'react';
 
 interface ContextMenuProps {
     menuRef: any;
@@ -13,7 +11,6 @@ interface ContextMenuProps {
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ menuRef, x, y, show, closeContextMenu, options }) => {
     if (!show) return null;
-
 
     return (
         <div ref={menuRef} style={{ top: y, left: x }} className="context-menu" onMouseLeave={closeContextMenu}>

@@ -41,6 +41,7 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
             };
         case "SET_CHECK_OUT":
             const nightsStayed = moment(action.payload).diff(moment(state.checkIn), 'days');
+            if (nightsStayed <= 0) return { ...state };
             const debt = nightsStayed * state.room.roomSpecifications.price;
             return {
                 ...state,
@@ -55,6 +56,8 @@ const reservationReducer = (state: Reservation, action: ReservationAction): Rese
                 room: action.payload
             }
         case "SET_PAYMENTS":
+            const debtAfterPaying = state.debt - action.payload;
+            if (debtAfterPaying <= 0) return { ...state };
             return {
                 ...state,
                 payments: [

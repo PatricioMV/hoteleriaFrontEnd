@@ -114,6 +114,51 @@ body {
   background-color: rgba(65, 131, 207, 0.4) !important; /* Fondo azul más intenso al pasar el ratón */
 }
 
+.room-out-of-order {
+  background-color: #000000; 
+}
+
+.no-select {
+  user-select: none;
+}
+
+.Checked-in {
+  background-color: rgba(61, 168, 102, 0.663) !important; /* Color de fondo */
+  color: #3c4443 !important; /* Color del texto */
+  background: linear-gradient(45deg, rgba(61, 168, 102, 0.663), rgba(255,255,255,0.5));
+}
+
+.Checked-in:hover {
+  background-color: #3ea867c9; /* Color de fondo al pasar el mouse */ /* Levantar ligeramente al pasar el mouse */
+}
+
+.Checked-in div {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente */
+  font-size: 14px; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+}
+
+.Checked-out {
+  background-color: #7f856da9 !important; /* Color de fondo */
+  color: #3c4443 !important; /* Color del texto */
+}
+
+.Checked-out:hover {
+  background-color: #bfff00c4; /* Color de fondo al pasar el mouse */ /* Levantar ligeramente al pasar el mouse */
+}
+
+.Checked-out div {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente */
+  font-size: 14px; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+}
+
+.debtor {
+  background: linear-gradient(45deg, rgba(255,0,0,0.5), rgba(255,255,255,0.5));
+}
+
+/* CSS for Reservation Modal */
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -259,45 +304,6 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #5f666d; 
   color: white;
 }
-
-.room-out-of-order {
-  background-color: #000000; 
-}
-
-.no-select {
-  user-select: none;
-}
-
-.Checked-in {
-  background-color: #3ea867a9 !important; /* Color de fondo */
-  color: #3c4443 !important; /* Color del texto */
-}
-
-.Checked-in:hover {
-  background-color: #3ea867c9; /* Color de fondo al pasar el mouse */ /* Levantar ligeramente al pasar el mouse */
-}
-
-.Checked-in div {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente */
-  font-size: 14px; /* Tamaño de fuente */
-  font-weight: 600; /* Negrita */
-}
-
-.Checked-out {
-  background-color: #7f856da9 !important; /* Color de fondo */
-  color: #3c4443 !important; /* Color del texto */
-}
-
-.Checked-out:hover {
-  background-color: #bfff00c4; /* Color de fondo al pasar el mouse */ /* Levantar ligeramente al pasar el mouse */
-}
-
-.Checked-out div {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente */
-  font-size: 14px; /* Tamaño de fuente */
-  font-weight: 600; /* Negrita */
-}
-
 
 /*  reservations-table  */
 .reservations-table {

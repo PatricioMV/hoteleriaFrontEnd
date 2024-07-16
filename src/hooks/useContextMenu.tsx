@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ContextMenuOptions, Day, Reservation, Room } from '../models/Interfaces';
 import { INITIAL_RESERVATION, INITIAL_ROOM } from '../models/models';
-import { editRoom, updateReservation } from '../services/apiUtils';
+import { editRoom, toggleOccupationStatus, updateReservation } from '../services/apiUtils';
 
 const useContextMenu = (forceCalendarRender: () => void) => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -36,6 +36,7 @@ const useContextMenu = (forceCalendarRender: () => void) => {
                     const updatedState = reservation.status === 'No-show' ? 'Checked-in' : 'Checked-out';
                     const updatedReservation: Reservation = { ...reservationRef.current, status: updatedState };
                     await updateReservation(updatedReservation);
+                    await toggleOccupationStatus(reservation.room.number);
                     reservationRef.current = INITIAL_RESERVATION;
                     forceCalendarRender();
                     closeContextMenu();

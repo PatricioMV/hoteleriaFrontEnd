@@ -110,6 +110,13 @@ export interface ContextMenuOptions {
   action: () => void;
 }
 
+export interface CalendarDayProps {
+  day: Day;
+  handleMouseDown: (e: React.MouseEvent<HTMLDivElement>, day: Day) => void;
+  handleMouseUp: (day: Day) => void;
+  handleContextMenu: (event: React.MouseEvent, room: Room, day?: Day) => void;
+}
+
 export interface FetchingResponse {
   error?: Error;
   rooms?: Room[];
