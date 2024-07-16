@@ -1,29 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
+import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { addNewCommentToReservation, eraseComment, loadCommentsByReservationId } from "../services/apiUtils";
 import moment from 'moment';
-import { Comment, Reservation } from "../models/Interfaces";
-import { INITIAL_RESERVATION } from "../models/models";
-
-interface ReservationCommentsProps {
-    comments: Comment[];
-    reservation: Reservation;
-}
-
-const INITIAL_COMMENT: Comment = {
-    text: '',
-    timestamp: '',
-    reservation: INITIAL_RESERVATION
-}
+import { Comment, ReservationCommentsProps } from "../models/Interfaces";
+import { INITIAL_COMMENT } from "../models/models";
 
 const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, reservation }) => {
     const [renderedComments, setRenderedComments] = useState(comments);
     const [newComment, setNewComment] = useState(INITIAL_COMMENT);
     const [reloadCommentFlag, setReloadCommentFlag] = useState(false);
     const timestamp = moment().format('YYYY-MM-DDTHH:mm:ss');
-    const rows = renderedComments || [];
-    const emptyRows = 7 - rows.length;
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -87,9 +74,6 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
                                     </Button>
                                 </td>
                             </tr>
-
-
-
                         )
                     }
                     {Array.from({ length: Math.max(0, 7 - renderedComments.length) }).map((_, index) => (

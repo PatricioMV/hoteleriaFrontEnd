@@ -1,22 +1,13 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row, Tab, Table, Tabs } from 'react-bootstrap';
-import { Reservation } from '../models/Interfaces';
+import { ReservationModalProps } from '../models/Interfaces';
 import PaymentsTable from './PaymentsTable';
 import ReservationComments from './ReservationComments';
-
-interface ReservationModalProps {
-    modalIsOpen: boolean;
-    closeModal: () => void;
-    reservation: Reservation;
-    handleChange: (value: any, field: string) => void;
-    handleSubmit: (type: string) => void;
-}
 
 const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeModal, reservation, handleChange, handleSubmit }) => {
     const { checkIn, checkOut, client, room } = reservation;
     const newReservation = reservation.id === 0 ? true : false;
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
-    const priceOrDebtText = newReservation ? 'Price:' : 'Debt:'
     const clientFound = client.id === 0 ? false : true;
     const [key, setKey] = useState<string>('reservationInfo');
 
@@ -180,7 +171,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                                     <Button className='Delete-Button' onClick={() => handleSubmit('DELETE')}>Delete</Button>
                                     <Button className='Update-Button' onClick={() => handleSubmit('PUT')}>Update</Button>
                                 </Col>}
-
                         </Modal.Footer>
                     </Tab>
                     <Tab eventKey="paymentsInfo" title="Payments">
@@ -190,10 +180,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                         <ReservationComments comments={reservation.comments} reservation={reservation} />
                     </Tab>
                 </Tabs>
-
             </Modal.Body>
         </Modal>
-
     );
 };
 

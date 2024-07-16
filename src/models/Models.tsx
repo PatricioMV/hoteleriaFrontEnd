@@ -1,4 +1,4 @@
-import { Client, ContextMenuOptions, Payment, Reservation, Room, RoomSpecifications } from "./Interfaces";
+import { Client, Comment, ContextMenuOptions, Payment, Reservation, Room, RoomSpecifications } from "./Interfaces";
 
 export const INITIAL_ROOM_SPECIFICATION: RoomSpecifications = {
     id: 0,
@@ -46,6 +46,12 @@ export const INITIAL_PAYMENT: Payment = {
     amount: 0,
     reservation: INITIAL_RESERVATION,
     debtOnPayment: 0,
+}
+
+export const INITIAL_COMMENT: Comment = {
+    text: '',
+    timestamp: '',
+    reservation: INITIAL_RESERVATION
 }
 
 export const INITIAL_CONTEXT_MENU_OPTION: ContextMenuOptions = {

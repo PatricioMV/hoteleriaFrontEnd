@@ -1,9 +1,8 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Col } from 'react-bootstrap';
 import Home from '../components/Home';
 import Reservations from '../components/Reservations';
-import HotelManagment from './HotelManagement';
+import HotelManagement from './HotelManagement';
 
 function Header() {
   return (
@@ -34,7 +33,7 @@ function Header() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/reservations" element={<Reservations />} />
-            <Route path="/hotel" element={<HotelManagment />} />
+            <Route path="/hotel" element={<HotelManagement />} />
           </Routes>
         </Container>
       </Router>

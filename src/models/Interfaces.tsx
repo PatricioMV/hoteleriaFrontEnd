@@ -98,6 +98,19 @@ export interface CalendarHeaderDays {
   class: string;
 }
 
+export interface ReservationModalProps {
+  modalIsOpen: boolean;
+  closeModal: () => void;
+  reservation: Reservation;
+  handleChange: (value: any, field: string) => void;
+  handleSubmit: (type: string) => void;
+}
+
+export interface ReservationCommentsProps {
+  comments: Comment[];
+  reservation: Reservation;
+}
+
 export interface CalendarRowProps {
   room: Room;
   startDate: moment.Moment;
@@ -126,7 +139,7 @@ export interface RoomTableProps {
   roomsSpecifications: RoomSpecifications[];
   editableRow: number | null;
   formValues: RoomSpecifications;
-  handleChange: (e: any) => void; //QUE EVENTO ES
+  handleChange: (e: any) => void;
   handleSubmit: (type: string) => void;
   handleEdit: (index: number, roomSpecification: RoomSpecifications) => void;
   isAddingNew: boolean;

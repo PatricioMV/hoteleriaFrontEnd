@@ -16,7 +16,6 @@ export const convertReservationToDTO = (reservation: Reservation): ReservationDT
         nightsStayed: reservation.nightsStayed,
         status: reservation.status,
         room: convertRoomToDTO(reservation.room),
-        //payments: convertListOfPaymentsIntoDTO(reservation.payments)
     };
 };
 
@@ -26,7 +25,6 @@ export const convertListOfReservationsToDTO = (listOfReservation: Reservation[])
 
 export const convertDTOToReservation = async (reservationDTO: ReservationDTO): Promise<Reservation> => {
     const payments: Payment[] = await loadPaymentsByReservationId(reservationDTO.id)
-    console.log(payments)
     return {
         id: reservationDTO.id,
         client: reservationDTO.client,
