@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment, putNewComment, deleteComment, getCommentsByReservationId } from './api';
+import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment, putNewComment, deleteComment, getCommentsByReservationId, putRoomSpecifications } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
 
 export const loadRooms = async (): Promise<Room[]> => {
@@ -35,8 +35,9 @@ export const createRoom = async (room: any) => {
   try {
     const response: AxiosResponse<Room> = await postRoom(room);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error posting Room', error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -44,8 +45,9 @@ export const editRoom = async (room: Room) => {
   try {
     const response: AxiosResponse<Room> = await putRoom(room);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error editing Room', error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -188,6 +190,15 @@ export const createRoomSpecifications = async (roomSpecification: any) => {
     return response.data;
   } catch (error: any) {
     console.log('Error POSTING RoomSpecifications', error);
+    throw new Error(error.response.data);
+  }
+}
+
+export const updateRoomSpecifications = async (roomSpecifications: RoomSpecifications) => {
+  try {
+    const response: AxiosResponse<RoomSpecifications> = await putRoomSpecifications(roomSpecifications);
+    return response.data;
+  } catch (error: any) {
     throw new Error(error.response.data);
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
+import { Card, Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
 import useRoomCard from '../hooks/useRoomCard';
 import { RoomCardProps } from '../models/Interfaces';
 
 const RoomCard: React.FC<RoomCardProps> = ({ roomTypes, toggleNewRoomFlag }) => {
-    const { room, handleRoomCard } = useRoomCard();
+    const { room, handleRoomCard, alert, resetAlert } = useRoomCard();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,6 +17,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ roomTypes, toggleNewRoomFlag }) => 
 
     return (
         <Container fluid={true} className="card-premium">
+            {alert && (
+                <Alert className="fixed-alert" variant={alert.variant} onClose={() => resetAlert()} dismissible>
+                    {alert.text}
+                </Alert>
+            )}
             <Card.Title className="card-premium-title">Room:</Card.Title>
             <form onSubmit={handleSubmit}>
                 <Row>
@@ -32,7 +37,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ roomTypes, toggleNewRoomFlag }) => 
                                 }
                             }}
                             min={1}
-                            required
+
                             className="card-premium-control"
                         />
                     </Col>
