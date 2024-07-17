@@ -1,11 +1,10 @@
 import { useReducer, useState, useEffect, useCallback } from "react";
-import { Day, Reservation } from "../models/Interfaces";
-import { createPayment, createReservation, eraseReservation, loadClientByDni, loadReservationsById, updateReservation } from "../services/apiUtils";
+import { AlertProps, Day, Reservation } from "../models/Interfaces";
+import { createPayment, createReservation, eraseReservation, loadClientByDni, loadReservationsById, updateClient, updateReservation } from "../services/apiUtils";
 import reservationReducer from "../reducers/reservationReducer";
 import useDebounce from "./useDebounce";
 import moment from "moment";
 import { getTomorrow, isDateBeforeToday, isSameOrBefore } from "../utils/dateUtils";
-import { putClient } from "../services/api";
 import { INITIAL_PAYMENT_DTO, ReservationDTO } from "../models/dtos";
 import { convertReservationToDTO } from "../converters/reservationConverter";
 import { INITIAL_RESERVATION } from "../models/models";
@@ -17,6 +16,7 @@ const useReservationModal = (onNewReservation: () => void) => {
   const [newPayment, setNewPayment] = useState(INITIAL_PAYMENT_DTO);
   const { checkIn, checkOut, client } = reservation;
   const [debouncedDni, isDoneWriting] = useDebounce(client.dni, 250);
+  const [alert, setAlert] = useState<AlertProps | null>(null);
 
   useEffect(() => {
     if (isDoneWriting && debouncedDni) {
@@ -98,7 +98,7 @@ const useReservationModal = (onNewReservation: () => void) => {
           paymentDate: moment().format('YYYY-MM-DD'),
           amount: value,
           reservation: convertReservationToDTO(reservation),
-          debt: reservation.debt - value,
+          debt: reservation.debt,
         })
         break;
       default:
@@ -126,34 +126,47 @@ const useReservationModal = (onNewReservation: () => void) => {
   }
 
   const handleSubmit = async (type: string) => {
-    if (type === 'POST') {
-      const formattedReservation = formatReservation(convertReservationToDTO(reservation));
-      await createReservation(formattedReservation)
-    }
-    if (type === 'PUT') {
-      await putClient(reservation.client);
-      const hasNewPayment = newPayment.amount > 0;
-      let formattedReservation = {
-        ...reservation,
-        checkIn: moment(checkIn).format('YYYY-MM-DD'),
-        checkOut: moment(checkOut).format('YYYY-MM-DD'),
+    try {
+      if (type === 'POST') {
+        const formattedReservation = formatReservation(convertReservationToDTO(reservation));
+        await createReservation(formattedReservation);
       }
-      if (hasNewPayment) {
-        await createPayment(newPayment);
-        formattedReservation = {
-          ...formattedReservation,
-          debt: reservation.debt - newPayment.amount,
+      if (type === 'PUT') {
+        await updateClient(reservation.client);
+        const hasNewPayment = newPayment.amount > 0;
+        let formattedReservation = {
+          ...reservation,
+          checkIn: moment(checkIn).format('YYYY-MM-DD'),
+          checkOut: moment(checkOut).format('YYYY-MM-DD'),
+        };
+        if (hasNewPayment) {
+          await createPayment(newPayment);
+          formattedReservation = {
+            ...formattedReservation,
+            debt: reservation.debt - newPayment.amount,
+          };
         }
+        await updateReservation(formattedReservation);
       }
-      await updateReservation(formattedReservation);
+      if (type === 'DELETE') {
+        await eraseReservation(reservation.id);
+      }
+      onNewReservation();
+      closeReservationModal();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error handling submit:', error.message);
+        setAlert({ variant: "warning", text: `Error: ${error.message}` });
+      } else {
+        console.error('Unexpected error:', error);
+        setAlert({ variant: "warning", text: `Error` });
+      }
     }
-    if (type === 'DELETE') {
-      try { await eraseReservation(reservation.id); }
-      catch (error) { console.log('error deleting reservation' + error) }
-    }
-    onNewReservation();
-    closeReservationModal();
   };
+
+  const resetAlert = () => {
+    setAlert(null);
+  }
 
 
   const closeReservationModal = () => {
@@ -161,7 +174,7 @@ const useReservationModal = (onNewReservation: () => void) => {
     dispatch({ type: "RESET_RESERVATION" });
   };
 
-  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation }
+  return { handleMouseDown, handleMouseUp, reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation, alert, resetAlert }
 }
 
 export default useReservationModal;

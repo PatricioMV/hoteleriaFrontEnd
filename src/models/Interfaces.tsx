@@ -104,6 +104,8 @@ export interface ReservationModalProps {
   reservation: Reservation;
   handleChange: (value: any, field: string) => void;
   handleSubmit: (type: string) => void;
+  alert: AlertProps | null;
+  resetAlert: () => void;
 }
 
 export interface ReservationCommentsProps {
@@ -152,3 +154,19 @@ export interface FetchingResponse {
   reservations?: Reservation[];
   payment?: Payment[];
 }
+
+export type AlertVariant =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "danger"
+  | "warning"
+  | "info"
+  | "light"
+  | "dark"
+
+export interface AlertProps {
+  variant: AlertVariant;
+  text: string;
+}
+

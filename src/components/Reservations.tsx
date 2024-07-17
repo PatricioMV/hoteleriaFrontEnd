@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getReservations } from '../services/api';
-import { Table } from 'react-bootstrap';
+import { Alert, Table } from 'react-bootstrap';
 import useReservationModal from '../hooks/useReservationModal';
 import ReservationModal from './ReservationModal';
 import { Reservation } from '../models/Interfaces';
@@ -23,10 +23,15 @@ const Reservations: React.FC = () => {
       });
   }, [reservationModifiedFlag]);
 
-  const { reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation } = useReservationModal(toggleReservationModifiedFlag);
+  const { reservationModalIsOpen, closeReservationModal, reservation, handleChange, handleSubmit, selectReservation, alert, resetAlert } = useReservationModal(toggleReservationModifiedFlag);
   return (
     <div>
       <Table striped bordered hover responsive className="no-select reservations-table" size="sm" >
+        {alert && (
+          <Alert className="fixed-alert" variant={alert.variant} onClose={() => resetAlert()} dismissible>
+            {alert.text}
+          </Alert>
+        )}
         <thead>
           <tr>
             <th>Client</th><th>Check-In</th><th>Check-Out</th><th>Nights stayed</th><th>Price</th><th>Debt</th><th>Room</th>
@@ -38,7 +43,7 @@ const Reservations: React.FC = () => {
           </tr>
         ))}
       </Table>
-      <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleChange={handleChange} handleSubmit={handleSubmit} />
+      <ReservationModal modalIsOpen={reservationModalIsOpen} closeModal={closeReservationModal} reservation={reservation} handleChange={handleChange} handleSubmit={handleSubmit} alert={alert} resetAlert={resetAlert} />
     </div>
   );
 };

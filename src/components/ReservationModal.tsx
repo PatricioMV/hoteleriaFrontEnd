@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, FloatingLabel, Form, FormLabel, Modal, Row, Tab, Table, Tabs } from 'react-bootstrap';
+import { Alert, Button, Col, Container, FloatingLabel, Form, Modal, Row, Tab, Tabs } from 'react-bootstrap';
 import { ReservationModalProps } from '../models/Interfaces';
 import PaymentsTable from './PaymentsTable';
 import ReservationComments from './ReservationComments';
 
-const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeModal, reservation, handleChange, handleSubmit }) => {
+const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeModal, reservation, handleChange, handleSubmit, alert, resetAlert }) => {
     const { checkIn, checkOut, client, room } = reservation;
     const newReservation = reservation.id === 0 ? true : false;
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
@@ -14,10 +14,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
     const closeModalAndResetKey = () => {
         closeModal();
         setKey('reservationInfo');
+        resetAlert();
     }
 
     return (
         <Modal show={modalIsOpen} onHide={closeModalAndResetKey} dialogClassName="custom-modal" size='xl'>
+            {alert && (
+                <Alert className="fixed-alert" variant={alert.variant} onClose={() => resetAlert()} dismissible>
+                    {alert.text}
+                </Alert>
+            )}
             <Modal.Header closeButton >
                 <Modal.Title >{modalTitle}</Modal.Title>
             </Modal.Header>
@@ -166,10 +172,10 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                             </Row>
                         </Form>
                         <Modal.Footer>
-                            {newReservation ? <Button onClick={() => handleSubmit('POST')}> Create Reservation </Button> :
+                            {newReservation ? <Button onClick={() => { resetAlert(); handleSubmit('POST') }}> Create Reservation </Button> :
                                 <Col className='button-container'>
-                                    <Button className='Delete-Button' onClick={() => handleSubmit('DELETE')}>Delete</Button>
-                                    <Button className='Update-Button' onClick={() => handleSubmit('PUT')}>Update</Button>
+                                    <Button className='Delete-Button' onClick={() => { resetAlert(); handleSubmit('DELETE') }}>Delete</Button>
+                                    <Button className='Update-Button' onClick={() => { resetAlert(); handleSubmit('PUT') }}>Update</Button>
                                 </Col>}
                         </Modal.Footer>
                     </Tab>

@@ -305,6 +305,25 @@ input[type=number]::-webkit-outer-spin-button {
   color: white;
 }
 
+@keyframes slideDown {
+  from {
+    top: -100%; 
+  }
+  to {
+    top: 9%; 
+  }
+}
+
+.fixed-alert {
+  position: fixed;
+  top: 9%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 78%;
+  z-index: 999;
+  animation: slideDown 0.3s ease-out; 
+}
+
 /*  reservations-table  */
 .reservations-table {
   width: 100%;

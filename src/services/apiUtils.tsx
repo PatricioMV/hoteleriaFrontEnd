@@ -1,7 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { getRooms, getReservations, postReservation, getReservationsBetweenDatesById, getClientById, postClient, getReservationById, getClientByDni, putClient, putReservation, deleteReservation, getOccupiedRoomsNumber, postRoom, getRoomByNumber, deleteRoom, switchOccupation, getRoomSpecifications, getRoomSpecificationsByType, putRoom, postRoomSpecifications, deleteRoomSpecifications, getRoomSpecificationsById, getPaymentsByReservationId, postPayment, putNewComment, deleteComment, getCommentsByReservationId } from './api';
 import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
-import { PaymentDTO } from '../models/dtos';
 
 export const loadRooms = async (): Promise<Room[]> => {
   try {
@@ -91,8 +90,9 @@ export const createReservation = async (reservation: any) => {
   try {
     const response: AxiosResponse<Reservation> = await postReservation(reservation);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error POSTING Reservation', error);
+    throw new Error(error.response.data);
   }
 };
 
@@ -100,8 +100,9 @@ export const updateReservation = async (reservation: Reservation) => {
   try {
     const response: AxiosResponse<Reservation> = await putReservation(reservation);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error PUTTING Reservation', error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -165,8 +166,9 @@ export const createClient = async (client: Client): Promise<Client | void> => {
   try {
     const response: AxiosResponse<Client> = await postClient(client);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error posting Client', error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -174,8 +176,9 @@ export const updateClient = async (client: Client): Promise<Client | void> => {
   try {
     const response: AxiosResponse<Client> = await putClient(client);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error updating Client', error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -183,8 +186,9 @@ export const createRoomSpecifications = async (roomSpecification: any) => {
   try {
     const response: AxiosResponse = await postRoomSpecifications(roomSpecification);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error POSTING RoomSpecifications', error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -220,8 +224,9 @@ export const eraseRoomSpecification = async (id: number) => {
   try {
     const response: AxiosResponse = await deleteRoomSpecifications(id);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error deleting RoomSpecifications id: ' + id, error);
+    throw new Error(error.response.data);
   }
 }
 
@@ -239,8 +244,9 @@ export const createPayment = async (payment: any): Promise<Payment> => {
   try {
     const response: AxiosResponse<Payment> = await postPayment(payment);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log('Error creating payment', error);
+    throw new Error(error.response.data);
     throw error;
   }
 }
