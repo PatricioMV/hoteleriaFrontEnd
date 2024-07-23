@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Home from '../components/Home';
-import Payments from '../components/Payments';
+//import Payments from '../components/Payments';
 import Reservations from '../components/Reservations';
 
 function AppRouter() {
@@ -33,7 +33,7 @@ function AppRouter() {
       <Container className="mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/payments" element={<Payments />} />
+          <Route path="/payments" element />
           <Route path="/reservations" element={<Reservations />} />
         </Routes>
       </Container>
