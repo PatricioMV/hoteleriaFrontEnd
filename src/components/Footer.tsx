@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import logo from '../assets/stanley-hotel-logo.png'
 
 const Footer: React.FC = () => {
   return (
@@ -12,10 +13,7 @@ const Footer: React.FC = () => {
             <p><strong>Frontend:</strong> TypeScript, React</p>
           </Col>
           <Col md="4">
-            {/* Placeholder for AI-generated hotel logo */}
-            <h5>Stanley Hotel</h5>
-            {/* Replace with your AI-generated logo */}
-            <img src="placeholder_logo_url" alt="Hotel Logo" style={{ width: '100px', height: 'auto' }} />
+            <img src={logo} alt="Hotel Logo" className='logo' />
           </Col>
           <Col md="4">
             <h5>Contact Information</h5>
