@@ -402,6 +402,9 @@ input[type=number]::-webkit-outer-spin-button {
   width: 150px; 
 }
 
-
+.logo { 
+  width: 150px; 
+  height: auto 
+}
 
 
