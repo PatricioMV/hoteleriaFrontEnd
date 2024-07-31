@@ -3,7 +3,7 @@ import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from 
 import { PaymentDTO } from '../models/dtos';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/', // Change this configuration if necessary 
+  baseURL: 'http://localhost:10000', // Change this configuration if necessary 
 });
 
 //Reservation
