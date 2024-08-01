@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Col } from 'react-bootstrap';
 import Home from '../components/Home';
 import Reservations from '../components/Reservations';
 import HotelManagement from './HotelManagement';
+import NotFound from './NotFound';
 
 function Header() {
   return (
@@ -34,6 +35,7 @@ function Header() {
             <Route path="/" element={<Home />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/hotel" element={<HotelManagement />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
       </Router>
