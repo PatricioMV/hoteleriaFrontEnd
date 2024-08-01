@@ -3,7 +3,7 @@ import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from 
 import { PaymentDTO } from '../models/dtos';
 
 const api = axios.create({
-  baseURL: 'http://localhost:10000', // Change this configuration if necessary 
+  baseURL: 'https://stanleyhotelbackend.onrender.com', // Change this configuration if necessary 
 });
 
 //Reservation

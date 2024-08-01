@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           <Col md="4">
             <h5>Technologies Used</h5>
             <p><strong>Backend:</strong> Java, Spring Boot, SQL</p>
-            <p><strong>Frontend:</strong> TypeScript, React</p>
+            <p><strong>Frontend:</strong> TypeScript, React, Node</p>
           </Col>
           <Col md="4">
             <img src={logo} alt="Hotel Logo" className='logo' />
