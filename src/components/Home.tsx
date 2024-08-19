@@ -4,6 +4,7 @@ import { useHotel } from '../hooks/useHotel';
 import CalendarOptions from './CalendarOptions';
 import Calendar from './Calendar';
 import Spinner from './Spinner';
+import ServerStartupToast from './ServerStartupToast';
 
 Modal.setAppElement('#root');
 
@@ -14,6 +15,7 @@ const Home: React.FC = () => {
     <div>
       <CalendarOptions numDays={numDays} handleNumDaysChange={handleNumDaysChange} filterUnavailable={filterUnavailable} handleFilterUnavailableChange={handleFilterUnavailableChange} filterEmpty={filterEmpty} handleFilterEmptyChange={handleFilterEmptyChange} />
       {loading ? <Spinner /> : <Calendar numDays={numDays} rooms={rooms} forceCalendarRender={forceCalendarRender} />}
+      <ServerStartupToast loading={loading} />
     </div>
   );
 };
