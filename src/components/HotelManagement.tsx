@@ -3,9 +3,10 @@ import RoomCard from "./RoomCard";
 import useRoomsTable from "../hooks/useRoomsTable";
 import RoomsTable from "./RoomsTable";
 import Alert from "react-bootstrap/Alert";
+import Spinner from "./Spinner";
 
 const HotelManagement = () => {
-    const { roomTypes, toggleNewRoomFlag, roomsSpecifications, editableRow, formValues, handleChange, handleEdit, isAddingNew, handleSubmit, alert, resetAlert } = useRoomsTable();
+    const { roomTypes, toggleNewRoomFlag, roomsSpecifications, editableRow, formValues, handleChange, handleEdit, isAddingNew, handleSubmit, alert, resetAlert, loading } = useRoomsTable();
 
     return (
         <Container>
@@ -15,7 +16,7 @@ const HotelManagement = () => {
                     {alert.text}
                 </Alert>
             )}
-            <RoomsTable roomsSpecifications={roomsSpecifications} editableRow={editableRow} formValues={formValues} handleChange={handleChange} handleSubmit={handleSubmit} handleEdit={handleEdit} isAddingNew={isAddingNew} />
+            {loading ? <Spinner /> : <RoomsTable roomsSpecifications={roomsSpecifications} editableRow={editableRow} formValues={formValues} handleChange={handleChange} handleSubmit={handleSubmit} handleEdit={handleEdit} isAddingNew={isAddingNew} />}
         </Container>
     );
 };

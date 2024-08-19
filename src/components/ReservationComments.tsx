@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import { Button, Col, FloatingLabel, Form, Row, Spinner } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { addNewCommentToReservation, eraseComment, loadCommentsByReservationId } from "../services/apiUtils";
 import moment from 'moment';
@@ -10,6 +10,7 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
     const [renderedComments, setRenderedComments] = useState(comments);
     const [newComment, setNewComment] = useState(INITIAL_COMMENT);
     const [reloadCommentFlag, setReloadCommentFlag] = useState(false);
+    const [loading, setLoading] = useState(false);
     const timestamp = moment().format('YYYY-MM-DDTHH:mm:ss');
 
     useEffect(() => {
@@ -25,17 +26,21 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
     }, [reloadCommentFlag])
 
     const postComment = async () => {
+        setLoading(true);
         try {
             if (newComment.text.trim() !== '') {
                 const savedReservation = await addNewCommentToReservation(newComment, reservation.id);
-                const savedComment = savedReservation.comments[savedReservation.comments.length - 1]
+                const savedComment = savedReservation.comments[savedReservation.comments.length - 1];
                 setRenderedComments([...renderedComments, savedComment]);
                 setNewComment(INITIAL_COMMENT);
             }
         } catch (error) {
             console.log("Error putting new comment");
+        } finally {
+            setLoading(false);
         }
     };
+
 
     const deleteComment = async (commentId: number) => {
         try {
@@ -110,7 +115,7 @@ const ReservationComments: React.FC<ReservationCommentsProps> = ({ comments, res
                         className="mb-1"
                         onClick={postComment}
                     >
-                        Post comment
+                        Post comment {loading && <Spinner animation="border" size="sm" />}
                     </Button>
                 </Col>
             </Row>

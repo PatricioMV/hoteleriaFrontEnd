@@ -2,8 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 import { Client, Room, Reservation, Payment, RoomSpecifications, Comment } from '../models/Interfaces';
 import { PaymentDTO } from '../models/dtos';
 
+//https://stanleyhotelbackend.onrender.com
+
 const api = axios.create({
-  baseURL: 'https://stanleyhotelbackend.onrender.com', // Change this configuration if necessary 
+  baseURL: 'http://localhost:10000', // Change this configuration if necessary 
 });
 
 //Reservation
