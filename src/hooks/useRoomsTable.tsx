@@ -11,9 +11,11 @@ const useRoomsTable = () => {
     const [isAddingNew, setIsAddingNew] = useState(false);
     const [roomFlag, waveRoomFlag] = useState(false);
     const [alert, setAlert] = useState<AlertProps | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchRoomSpecifications = async () => {
+            setLoading(true);
             try {
                 const roomSpecificationsDB = await loadRoomSpecifications();
                 if (roomSpecificationsDB) {
@@ -25,6 +27,8 @@ const useRoomsTable = () => {
                 }
             } catch (error) {
                 console.error("Error fetching room specifications:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchRoomSpecifications();
@@ -85,7 +89,7 @@ const useRoomsTable = () => {
         setAlert(null);
     }
 
-    return { roomTypes, toggleNewRoomFlag, roomsSpecifications, editableRow, formValues, handleChange, handleEdit, isAddingNew, handleSubmit, alert, resetAlert };
+    return { roomTypes, toggleNewRoomFlag, roomsSpecifications, editableRow, formValues, handleChange, handleEdit, isAddingNew, handleSubmit, alert, resetAlert, loading };
 };
 
 export default useRoomsTable;

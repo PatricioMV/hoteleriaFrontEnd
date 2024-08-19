@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Button, Col, Container, FloatingLabel, Form, Modal, Row, Tab, Tabs } from 'react-bootstrap';
+import { Alert, Button, Col, Container, FloatingLabel, Form, Modal, Row, Spinner, Tab, Tabs } from 'react-bootstrap';
 import { ReservationModalProps } from '../models/Interfaces';
 import PaymentsTable from './PaymentsTable';
 import ReservationComments from './ReservationComments';
@@ -10,12 +10,25 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
     const modalTitle = newReservation ? 'New Reservation' : 'Update Reservation';
     const clientFound = client.id === 0 ? false : true;
     const [key, setKey] = useState<string>('reservationInfo');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const closeModalAndResetKey = () => {
         closeModal();
         setKey('reservationInfo');
         resetAlert();
+        setLoading(false);
     }
+
+    const handleActionWithReset = async (actionType: string) => {
+        setLoading(true);
+        resetAlert();
+        try {
+            await handleSubmit(actionType);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <Modal show={modalIsOpen} onHide={closeModalAndResetKey} dialogClassName="custom-modal" size='xl'>
@@ -172,10 +185,10 @@ const ReservationModal: React.FC<ReservationModalProps> = ({ modalIsOpen, closeM
                             </Row>
                         </Form>
                         <Modal.Footer>
-                            {newReservation ? <Button onClick={() => { resetAlert(); handleSubmit('POST') }}> Create Reservation </Button> :
+                            {newReservation ? <Button onClick={() => { handleActionWithReset('POST') }}> Create Reservation {loading && <Spinner animation="border" size="sm" />}</Button> :
                                 <Col className='button-container'>
-                                    <Button className='Delete-Button' onClick={() => { resetAlert(); handleSubmit('DELETE') }}>Delete</Button>
-                                    <Button className='Update-Button' onClick={() => { resetAlert(); handleSubmit('PUT') }}>Update</Button>
+                                    <Button className='Delete-Button' onClick={() => { handleActionWithReset('DELETE') }}>Delete </Button>
+                                    <Button className='Update-Button' onClick={() => { handleActionWithReset('PUT') }}>Update {loading && <Spinner animation="border" size="sm" />}</Button>
                                 </Col>}
                         </Modal.Footer>
                     </Tab>
